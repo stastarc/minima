@@ -4,17 +4,20 @@ import 'package:minima/app/backend/market/market.dart';
 import 'package:minima/app/frontend/market/widgets/product/rating_item.dart';
 import 'package:minima/app/models/market/rating.dart';
 import 'package:minima/shared/error.dart';
-import 'package:minima/shared/skeletons/skeleton_box.dart';
+import 'package:minima/shared/skeletons/skeleton.dart';
 import 'package:minima/shared/widgets/retry.dart';
 import 'package:collection/collection.dart';
 
 class RatingView extends StatefulWidget {
   final int productId;
-  List<ProductRating>? ratings;
+  final num average;
+
+  ProductRatings? ratings;
 
   RatingView({
     super.key,
     required this.productId,
+    required this.average,
   });
 
   @override
@@ -54,6 +57,7 @@ class _RatingViewState extends State<RatingView> {
             ? RatingOrderBy.high
             : RatingOrderBy.low;
     if (orderBy == this.orderBy) return;
+    this.orderBy = orderBy;
     retry();
   }
 
@@ -89,14 +93,14 @@ class _RatingViewState extends State<RatingView> {
             padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
             child: Row(children: [
               RatingBarIndicator(
-                  rating: 5,
+                  rating: (ratings ?? widget)?.average ?? 0,
                   itemSize: 28,
                   itemBuilder: (context, index) => const Icon(
                         Icons.star,
                         color: Colors.amber,
                       )),
-              const Text('(4.0)',
-                  style: TextStyle(
+              Text('(${(ratings ?? widget)?.average ?? 0})',
+                  style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xFF888888),
                       fontWeight: FontWeight.w500)),
@@ -128,37 +132,33 @@ class _RatingViewState extends State<RatingView> {
             color: Colors.black12,
           ),
           FutureBuilder<void>(
-            future: initailized,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (ratings == null || ratings is BackendError) {
-                  return RetryButton(
-                    text: '상품을 가져올 수 없습니다.',
-                    error: ratings ?? BackendError.unknown(),
-                    onPressed: retry,
-                  );
-                } else {
-                  var ratings = this.ratings as List<ProductRating>;
-                  return Column(children: [
-                    Column(
+              future: initailized,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (ratings == null || ratings is BackendError) {
+                    return RetryButton(
+                      text: '상품을 가져올 수 없습니다.',
+                      error: ratings ?? BackendError.unknown(),
+                      onPressed: retry,
+                    );
+                  } else {
+                    var ratings = this.ratings as ProductRatings;
+                    return Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          for (var rating in ratings)
+                          for (var rating in ratings.ratings)
                             RatingItem(rating: rating),
-                        ]),
-                    const SizedBox(
-                      height: 100,
-                    )
-                  ]);
+                        ]);
+                  }
+                } else {
+                  return Skeleton(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                        for (var i = 0; i < 2; i++) const RatingItemSkeleton()
+                      ]));
                 }
-              } else {
-                return const SkeletonBox(
-                  height: 200,
-                  width: double.infinity,
-                );
-              }
-            },
-          )
+              }),
         ]));
   }
 }

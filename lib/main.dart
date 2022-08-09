@@ -29,6 +29,7 @@ Future<void> main() async {
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: const Color(0xFF54CF8A),
+        unselectedWidgetColor: Colors.grey[400],
         accentColor: Colors.black12,
         splashColor: Colors.black12,
         splashFactory: InkSparkle.splashFactory,

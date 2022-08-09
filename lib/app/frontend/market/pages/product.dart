@@ -1,12 +1,10 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:minima/app/backend/market/market.dart';
 import 'package:minima/app/frontend/market/widgets/product/bottom_bar.dart';
 import 'package:minima/app/frontend/market/widgets/product/content.dart';
 import 'package:minima/app/frontend/market/widgets/product/info_warp.dart';
 import 'package:minima/app/frontend/market/widgets/product/product_title.dart';
+import 'package:minima/app/frontend/market/widgets/product/qna.dart';
 import 'package:minima/app/frontend/market/widgets/product/rating.dart';
 import 'package:minima/app/frontend/market/widgets/product/tabbar.dart';
 import 'package:minima/app/models/market/product.dart';
@@ -19,9 +17,9 @@ import 'package:minima/shared/widgets/retry.dart';
 import '../../../../shared/error.dart';
 
 class ProductPage extends StatefulWidget {
-  int productId;
+  final int productId;
 
-  ProductPage({
+  const ProductPage({
     super.key,
     required this.productId,
   });
@@ -87,15 +85,25 @@ class _ProductPageState extends State<ProductPage> {
                           rating: product.rating.toDouble(),
                         )),
                     InfoWarp(info: product.info),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     TextTabBar(
-                        tabs: const ['상품정보', '상품평', 'Q&A'],
+                        tabs: const ['상품정보', '상품평', '상품문의'],
                         onTabChanged: (i) {
                           return true;
                         }),
                     ProductContentView(product: product),
-                    SizedBox(height: 16),
-                    RatingView(productId: product.id),
+                    const SizedBox(height: 16),
+                    RatingView(productId: product.id, average: product.rating),
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    QnAView(
+                      productId: product.id,
+                      product: product,
+                    ),
+                    const SizedBox(
+                      height: 100,
+                    )
                   ])),
                   ProductBottomBar(product: product),
                 ]);

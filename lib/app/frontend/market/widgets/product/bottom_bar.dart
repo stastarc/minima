@@ -3,7 +3,10 @@ import 'package:minima/app/models/market/product.dart';
 import 'package:minima/shared/number_format.dart';
 import 'package:minima/shared/skeletons/skeleton_box.dart';
 import 'package:minima/shared/skeletons/skeleton_text.dart';
+import 'package:minima/shared/widgets/bottom_sheet.dart';
 import 'package:minima/shared/widgets/button.dart';
+
+import 'buy.dart';
 
 class ProductBottomBar extends StatelessWidget {
   final ProductDetail product;
@@ -68,7 +71,11 @@ class ProductBottomBar extends StatelessWidget {
           ),
           const Spacer(),
           PrimaryButton(
-              onPressed: () {},
+              onPressed: () {
+                showSheet(context,
+                    child: BuySheet(product: product),
+                    padding: const EdgeInsets.fromLTRB(0, 12, 0, 24));
+              },
               child: const Text(
                 '구매하기',
                 style: TextStyle(

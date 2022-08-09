@@ -3,6 +3,23 @@
 
 import 'package:tuple/tuple.dart';
 
+class ProductOption {
+  final String name;
+  final int price;
+  final bool important;
+
+  ProductOption({
+    required this.name,
+    required this.price,
+    required this.important,
+  });
+
+  ProductOption.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        price = json['price'],
+        important = json['important'];
+}
+
 class Product {
   final int id;
   final String title;
@@ -36,6 +53,7 @@ class ProductDetail {
   final num rating;
   final List<String> images;
   final List<Tuple2<int, String>> components;
+  final List<ProductOption> options;
   final String content;
 
   ProductDetail.fromJson(Map<String, dynamic> json)
@@ -48,6 +66,8 @@ class ProductDetail {
         rating = json['rating'],
         images = List<String>.from(json['images']),
         components = componentParse(json['component']),
+        options = List<ProductOption>.from(
+            json['options'].map((x) => ProductOption.fromJson(x)).toList()),
         content = json['content'];
 }
 

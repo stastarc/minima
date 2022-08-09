@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minima/app/frontend/market/topbar.dart';
 import 'package:minima/app/frontend/market/pages/feed.dart';
-import 'package:minima/shared/pllogo.dart';
 
 import '../../../shared/error.dart';
 

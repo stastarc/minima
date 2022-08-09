@@ -58,4 +58,22 @@ class Environ {
           'Content-Type': 'application/json',
         });
   }
+
+  static Future<TResult?> privatePostResopnse<TResult>(
+      String base, String path, TResult Function(dynamic) convert,
+      {Map<String, dynamic>? query, Map<String, dynamic>? body}) async {
+    var req = await privatePost(base, path, query: query, body: body);
+    if (req.statusCode != 200) {
+      throw HttpException('$path ${req.statusCode} ${req.reasonPhrase}');
+    }
+
+    try {
+      return convert(jsonDecode(utf8.decode(req.bodyBytes)));
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return null;
+    }
+  }
 }
