@@ -69,27 +69,27 @@ class Auth {
   Future<SocialLoginStatus> socialLogin(SocialType type) async {
     await wfi();
     String token;
-    switch (type) {
-      case SocialType.kakao:
-        try {
+    try {
+      switch (type) {
+        case SocialType.kakao:
           OAuthToken otoken;
-          if (await isKakaoTalkInstalled()) {
-            otoken = await UserApi.instance.loginWithKakaoTalk();
-          } else {
-            otoken = await UserApi.instance.loginWithKakaoAccount();
-          }
+          // if (await isKakaoTalkInstalled()) {
+          //   otoken = await UserApi.instance.loginWithKakaoTalk();
+          // } else {
+          // }
+          otoken = await UserApi.instance.loginWithKakaoAccount();
           token = otoken.accessToken;
-        } on Exception catch (e) {
-          if (kDebugMode) {
-            print(e);
-          }
+          break;
+        case SocialType.google:
           return SocialLoginStatus.socialError;
-        }
-        break;
-      case SocialType.google:
-        return SocialLoginStatus.socialError;
-      case SocialType.apple:
-        return SocialLoginStatus.socialError;
+        case SocialType.apple:
+          return SocialLoginStatus.socialError;
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return SocialLoginStatus.socialError;
     }
 
     try {
@@ -115,12 +115,13 @@ class Auth {
           'Content-Type': 'application/json',
         });
 
-    print(res.body);
+    if (kDebugMode) {
+      print(res.body);
+    }
 
     if (res.statusCode == 200) {
       final data = json.decode(res.body);
       await setToken(data['token']);
-      print(await getToken());
       return true;
     } else {
       return false;

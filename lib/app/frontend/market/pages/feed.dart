@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minima/app/backend/market/market.dart';
+import 'package:minima/app/frontend/market/widgets/feed/recommended.dart';
 import 'package:minima/app/models/market/feed.dart';
 import 'package:minima/shared/error.dart';
 import 'package:minima/shared/skeletons/skeleton.dart';
@@ -60,10 +61,15 @@ class _FeedPageState extends State<FeedPage> {
             }
 
             return Column(children: [
-              for (final feedPart in feedData!)
-                FeedPartView.fromFeedPart(
-                  feedPart: feedPart,
-                ),
+              ...[
+                for (final feedPart in feedData!)
+                  FeedPartView.fromFeedPart(
+                    feedPart: feedPart,
+                  )
+              ],
+              const RecommendedItem(
+                padding: EdgeInsets.all(26),
+              )
             ]);
           } else {
             return Skeleton(

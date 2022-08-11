@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minima/app/backend/market/market.dart';
 import 'package:minima/shared/widgets/button.dart';
+import 'package:minima/shared/widgets/textfield.dart';
 import 'package:toast/toast.dart';
 
 class QnAWriterSheet extends StatefulWidget {
@@ -71,22 +72,13 @@ class _QnAWriterSheetState extends State<QnAWriterSheet> {
                     color: Color(0xFF434343)),
               ),
               const SizedBox(height: 8),
-              TextField(
+              PrimaryTextField(
+                hint: '문의 내용을 입력해주세요. (최대 400자)',
                 minLines: 5,
                 maxLines: 5,
                 maxLength: 400,
                 controller: content,
                 keyboardType: TextInputType.multiline,
-                decoration: InputDecoration(
-                    hintText: '문의 내용을 입력해주세요. (최대 400자)',
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFF9C9C9C)),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFF9C9C9C)),
-                      borderRadius: BorderRadius.circular(16),
-                    )),
               ),
               const Padding(
                 padding: EdgeInsets.all(8),

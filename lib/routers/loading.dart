@@ -15,7 +15,7 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 1), () async {
+    Timer(const Duration(), () async {
       if (await Auth.instance.verifyToken()) {
         Navigator.of(context).pushReplacementNamed('/main');
       } else {

@@ -27,19 +27,21 @@ Future<void> main() async {
   runApp(
     MaterialApp(
       theme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: const Color(0xFF54CF8A),
-        unselectedWidgetColor: Colors.grey[400],
-        accentColor: Colors.black12,
-        splashColor: Colors.black12,
-        splashFactory: InkSparkle.splashFactory,
-        textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(
-                overlayColor: MaterialStateColor.resolveWith(
-                    (states) => const Color(0x10000000)),
-                splashFactory: InkSparkle.splashFactory)),
-        fontFamily: 'SpoqaHanSansNeo',
-      ),
+          brightness: Brightness.light,
+          primaryColor: const Color(0xFF54CF8A),
+          unselectedWidgetColor: Colors.grey[400],
+          accentColor: Colors.black12,
+          splashColor: Colors.black12,
+          splashFactory: InkSparkle.splashFactory,
+          textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                  overlayColor: MaterialStateColor.resolveWith(
+                      (states) => const Color(0x10000000)),
+                  splashFactory: InkSparkle.splashFactory)),
+          fontFamily: 'SpoqaHanSansNeo',
+          appBarTheme: const AppBarTheme(
+            elevation: 0,
+          )),
       routes: routes,
     ),
   );

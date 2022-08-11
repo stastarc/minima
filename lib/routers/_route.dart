@@ -10,6 +10,19 @@ class AnimatedRoute<T> extends MaterialPageRoute<T> {
   }
 }
 
+Route fade(Widget widget) {
+  return PageRouteBuilder(
+    pageBuilder: (_, __, ___) => widget,
+    transitionsBuilder: (
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child,
+    ) =>
+        FadeTransition(opacity: animation, child: child),
+  );
+}
+
 Route slideRTL(Widget widget) {
   return PageRouteBuilder(
     pageBuilder: (_, __, ___) => widget,

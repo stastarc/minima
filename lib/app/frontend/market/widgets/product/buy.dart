@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:minima/app/backend/market/checkout.dart';
+import 'package:minima/app/backend/market/market.dart';
+import 'package:minima/app/frontend/market/pages/checkout.dart';
+import 'package:minima/app/models/market/checkout.dart';
 import 'package:minima/app/models/market/product.dart';
+import 'package:minima/routers/_route.dart';
 import 'package:minima/shared/number_format.dart';
 import 'package:minima/shared/widgets/button.dart';
 import 'package:minima/shared/widgets/checkbox.dart';
 import 'package:collection/collection.dart';
+import 'package:path/path.dart';
 import 'package:toast/toast.dart';
 
 class BuySheet extends StatefulWidget {
@@ -19,6 +25,7 @@ class BuySheet extends StatefulWidget {
 }
 
 class _BuySheetState extends State<BuySheet> {
+  late BuildContext myContext;
   late List<bool> buyOptions;
   late List<ProductOption> options;
   late int _totalPrice;
@@ -52,24 +59,39 @@ class _BuySheetState extends State<BuySheet> {
         options.mapIndexed((i, e) => buyOptions[i] ? e.price : 0).sum;
   }
 
-  void onBuy(bool now) {
+  void onBuy(bool now) async {
     if (!buyOptions.any((e) => e == true)) {
       Toast.show('옵션을 선택해주세요.',
           duration: Toast.lengthLong, gravity: Toast.bottom);
       return;
     }
 
-    if (now) {
-      // TODO: 즉시 결제
-    } else {
-      // TODO: 장바구니에 추가
-    }
+    await MarketCheckout.instance.update((cache) {
+      final product = widget.product;
+      cache.items.add(CheckoutItem(
+        product: product,
+        options: buyOptions,
+      ));
+      return true;
+    });
 
-    Navigator.pop(context, buyOptions);
+    if (now) {
+      setState(() {
+        Navigator.pop(myContext);
+        Navigator.push(myContext, slideRTL(const CheckoutPage()));
+      });
+    } else {
+      Toast.show('장바구니에 추가되었습니다.',
+          duration: Toast.lengthLong, gravity: Toast.bottom);
+      setState(() {
+        Navigator.pop(myContext);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    myContext = context;
     ToastContext().init(context);
     return Column(
       children: [
@@ -108,8 +130,8 @@ class _BuySheetState extends State<BuySheet> {
               ),
             ),
             Text(
-              _totalPrice > 20000
-                  ? '무료배송 (20,000원 이상 주문시)'
+              _totalPrice > Market.instance.freeDelivery
+                  ? '무료배송 (${currencyFormat(Market.instance.freeDelivery)}원 이상 주문시)'
                   : '배송비 ${currencyFormat(widget.product.deliveryPrice)}원',
               style: const TextStyle(
                 fontSize: 13,

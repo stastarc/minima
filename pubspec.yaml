@@ -47,6 +47,7 @@ dependencies:
   page_view_indicators:
   shimmer:
   flutter_markdown:
+  kpostal:
 
 dev_dependencies:
   flutter_test:

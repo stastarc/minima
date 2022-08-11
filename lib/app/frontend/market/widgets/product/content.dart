@@ -12,9 +12,13 @@ class ProductContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MarkdownBody(
-      selectable: true,
-      data: product.content,
-    );
+    return ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height * 0.5,
+        ),
+        child: MarkdownBody(
+          selectable: true,
+          data: product.content,
+        ));
   }
 }

@@ -47,5 +47,10 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>렌즈 기능을 사용하려면 휴대폰 카메라 권한이 필요합니다.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>

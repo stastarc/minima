@@ -18,11 +18,18 @@ class ProductOption {
       : name = json['name'],
         price = json['price'],
         important = json['important'];
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'price': price,
+        'important': important,
+      };
 }
 
 class Product {
   final int id;
   final String title;
+  final String name;
   final int price;
   final String image;
   final num rating;
@@ -30,6 +37,7 @@ class Product {
   const Product({
     required this.id,
     required this.title,
+    required this.name,
     required this.price,
     required this.image,
     required this.rating,
@@ -38,6 +46,7 @@ class Product {
   Product.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         title = json['title'],
+        name = json['name'],
         price = json['price'],
         image = json['image'],
         rating = json['rating'];
@@ -69,6 +78,39 @@ class ProductDetail {
         options = List<ProductOption>.from(
             json['options'].map((x) => ProductOption.fromJson(x)).toList()),
         content = json['content'];
+
+  ProductDetail.fromJsonInternal(Map<String, dynamic> json)
+      : id = json['id'],
+        title = json['title'],
+        name = json['name'],
+        price = json['price'],
+        deliveryPrice = json['deliveryPrice'],
+        info = List<dynamic>.from(json['info'])
+            .map((e) => Tuple2(e[0] as String, e[1] as String))
+            .toList(),
+        rating = json['rating'],
+        images = List<String>.from(json['images']),
+        components = List<dynamic>.from(json['components'])
+            .map((e) => Tuple2(e[0] as int, e[1] as String))
+            .toList(),
+        options = List<dynamic>.from(json['options'])
+            .map((e) => ProductOption.fromJson(e))
+            .toList(),
+        content = json['content'];
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'name': name,
+        'price': price,
+        'deliveryPrice': deliveryPrice,
+        'info': info.map((e) => [e.item1, e.item2]).toList(),
+        'rating': rating,
+        'images': images,
+        'components': components.map((e) => [e.item1, e.item2]).toList(),
+        'options': options,
+        'content': content,
+      };
 }
 
 List<Tuple2<String, String>> productInfoParse(String info) {
