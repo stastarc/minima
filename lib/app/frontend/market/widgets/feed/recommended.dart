@@ -71,7 +71,7 @@ class RecommendedSheet extends StatefulWidget {
 
 class _RecommendedSheetState extends State<RecommendedSheet> {
   final market = Market.instance;
-  final List<Recommended> choices = [];
+  final List<String> choices = [];
   dynamic recommended;
   late Future<void> initailized;
   int current = 1, checked = -1;
@@ -83,16 +83,14 @@ class _RecommendedSheetState extends State<RecommendedSheet> {
   Future<void> initailize() async {
     try {
       if (surveyDone) {
-        recommended = [
-          for (var c in choices)
-            if (c.content.trim().isNotEmpty) c.content
-        ].join(' ');
+        recommended = choices.join(' ');
         await Future.delayed(const Duration(seconds: 2));
         setState(onDone);
         return;
       } else {
         recommended = await market.getRecommended(id: current);
-        choices.add(recommended);
+        var rec = recommended as Recommended;
+        if (rec.content.isNotEmpty) choices.add(rec.content);
       }
     } catch (e) {
       recommended = BackendError.fromException(e);
@@ -125,6 +123,7 @@ class _RecommendedSheetState extends State<RecommendedSheet> {
       return;
     }
 
+    if (choice.content.isNotEmpty) choices.add(choice.content);
     current = choice.goto;
 
     if (recommended.isEnd) {

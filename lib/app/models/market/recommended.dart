@@ -2,17 +2,20 @@ class RecommendedItem {
   final int goto;
   final String image;
   final String name;
+  final String content;
 
   const RecommendedItem({
     required this.goto,
     required this.image,
     required this.name,
+    required this.content,
   });
 
   RecommendedItem.fromJson(Map<String, dynamic> json)
       : goto = json['goto'],
         image = json['image'],
-        name = json['name'];
+        name = json['name'],
+        content = json['content'];
 }
 
 class Recommended {
