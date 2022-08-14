@@ -10,7 +10,14 @@ import 'package:minima/shared/widgets/textfield.dart';
 const int _SEARCH_DELAY = 1000;
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  final String? query;
+  final bool noRecommended;
+
+  const SearchPage({
+    super.key,
+    this.query,
+    this.noRecommended = false,
+  });
 
   @override
   State createState() => _SearchPageState();
@@ -62,6 +69,10 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
+    if (widget.query != null) {
+      _searchController.text = widget.query!;
+      trySearch();
+    }
   }
 
   @override
@@ -129,7 +140,9 @@ class _SearchPageState extends State<SearchPage> {
                               );
                             }
 
-                            return ProductView(search: search);
+                            return ProductView(
+                                search: search,
+                                noRecommended: widget.noRecommended);
                           }
 
                           return const Skeleton(child: ProductViewSkeleton());

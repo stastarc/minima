@@ -8,10 +8,12 @@ import 'package:minima/routers/_route.dart';
 
 class ProductView extends StatefulWidget {
   final ProductSearch search;
+  final bool noRecommended;
 
   const ProductView({
     super.key,
     required this.search,
+    this.noRecommended = false,
   });
 
   @override
@@ -54,10 +56,11 @@ class _ProductViewState extends State<ProductView> {
               onPressed: () => onPressed(product),
             ),
         ],
-        const RecommendedItem(
-          comment: '나에게 꼭 맞는\n식물을 추천받고 싶으신가요?',
-          padding: EdgeInsets.all(26),
-        )
+        if (!widget.noRecommended)
+          const RecommendedView(
+            comment: '나에게 꼭 맞는\n식물을 추천받고 싶으신가요?',
+            padding: EdgeInsets.all(26),
+          )
       ],
     );
   }

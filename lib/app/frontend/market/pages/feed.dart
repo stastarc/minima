@@ -67,7 +67,7 @@ class _FeedPageState extends State<FeedPage> {
                     feedPart: feedPart,
                   )
               ],
-              const RecommendedItem(
+              const RecommendedView(
                 padding: EdgeInsets.all(26),
               )
             ]);

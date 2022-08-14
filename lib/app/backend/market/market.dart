@@ -1,9 +1,9 @@
-import 'package:http/src/response.dart';
 import 'package:minima/app/backend/environ.dart';
 import 'package:minima/app/models/market/feed.dart';
 import 'package:minima/app/models/market/product.dart';
 import 'package:minima/app/models/market/qna.dart';
 import 'package:minima/app/models/market/rating.dart';
+import 'package:minima/app/models/market/recommended.dart';
 import 'package:minima/app/models/market/search.dart';
 
 class Market {
@@ -63,5 +63,12 @@ class Market {
           'offset': offset,
           'mode': mode.toString().split('.').last,
         });
+  }
+
+  Future<Recommended?> getRecommended({int id = 1}) async {
+    return await Environ.privateGetResopnse(
+        Environ.marketServer,
+        '/market/recommended/$id',
+        (json) => Recommended.fromJson(json['recommended']));
   }
 }

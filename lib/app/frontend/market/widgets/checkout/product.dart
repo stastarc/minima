@@ -53,20 +53,15 @@ class _CheckoutProductItemState extends State<CheckoutProductItem> {
     return Row(
       children: [
         const SizedBox(width: 12),
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: const Color(0xFFD1D1D1),
-              )),
-          child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: SizedBox(
-                height: 98,
-                width: 98,
-                child:
-                    CDN.image(id: widget.item.product.images.firstOrNull ?? ''),
-              )),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: SizedBox(
+            height: 98,
+            width: 98,
+            child: CDN.image(
+                id: widget.item.product.images.firstOrNull ?? '',
+                fit: BoxFit.cover),
+          ),
         ),
         const SizedBox(width: 16),
         Column(

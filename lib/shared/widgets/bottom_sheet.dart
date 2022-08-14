@@ -9,6 +9,7 @@ void showSheet(
   showModalBottomSheet<void>(
     context: context,
     isScrollControlled: isScrollControlled,
+    backgroundColor: Colors.white,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(20),
