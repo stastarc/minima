@@ -67,6 +67,7 @@ class ClipButton extends StatelessWidget {
   final InteractiveInkFeatureFactory? splashFactory;
   final Color? splashColor;
   final Color? color;
+  final Color? backgroundColor;
 
   const ClipButton({
     super.key,
@@ -77,6 +78,7 @@ class ClipButton extends StatelessWidget {
     this.overlay,
     this.borderRadius = const BorderRadius.all(Radius.circular(16)),
     this.color = Colors.transparent,
+    this.backgroundColor,
     required this.child,
     required this.onPressed,
   });
@@ -87,11 +89,16 @@ class ClipButton extends StatelessWidget {
         borderRadius: borderRadius,
         child: SizedBox(
           height: width,
-          width: width,
+          width: height,
           child: Stack(
             children: [
               Positioned.fill(
-                child: child,
+                child: backgroundColor != null
+                    ? Container(
+                        color: backgroundColor,
+                        child: child,
+                      )
+                    : child,
               ),
               Material(
                 color: color,

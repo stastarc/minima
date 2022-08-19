@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minima/app/frontend/myplant/main.dart';
 import 'package:minima/routers/lens.dart';
 import 'package:minima/app/frontend/market/main.dart';
 
@@ -35,13 +36,16 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       length: 5,
       child: Scaffold(
         backgroundColor: const Color(0xFFFFFFFF),
-        body: TabBarView(controller: tabController, children: const [
-          Text('검색'),
-          Text('정원'),
-          LensPage(),
-          MarketPage(),
-          Text('마이'),
-        ]),
+        body: TabBarView(
+            controller: tabController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: const [
+              Text('검색'),
+              MyPlantPage(),
+              LensPage(),
+              MarketPage(),
+              Text('마이'),
+            ]),
         bottomNavigationBar: TabBar(
           controller: tabController,
           labelColor: const Color(0xFF3D3D3D),

@@ -3,7 +3,6 @@ import 'package:minima/app/backend/market/market.dart';
 import 'package:minima/app/frontend/market/widgets/search/product_view.dart';
 import 'package:minima/shared/error.dart';
 import 'package:minima/shared/skeletons/skeleton.dart';
-import 'package:minima/shared/skeletons/skeleton_box.dart';
 import 'package:minima/shared/widgets/retry.dart';
 import 'package:minima/shared/widgets/textfield.dart';
 

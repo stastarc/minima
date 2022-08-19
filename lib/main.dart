@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:minima/routers/loading.dart';
 import 'package:minima/routers/login.dart';
 import 'package:minima/routers/main.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:minima/shared/number_format.dart';
 
 final routes = <String, WidgetBuilder>{
   '/login': (BuildContext context) => const LoginPage(),
@@ -23,6 +25,8 @@ Future<void> main() async {
       DeviceOrientation.portraitUp,
     ],
   );
+
+  await initializeDateFormatting(locale);
 
   runApp(
     MaterialApp(

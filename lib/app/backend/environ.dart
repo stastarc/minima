@@ -12,6 +12,7 @@ class Environ {
   static const String cdnServer = 'cdn.$baseServer';
   static const String lensServer = 'lens.$baseServer';
   static const String marketServer = 'market.$baseServer';
+  static const String myplantServer = 'plant.$baseServer';
 
   static Uri api(String base, String path, {Map<String, dynamic>? query}) {
     return Uri.https(base, path,
@@ -30,16 +31,23 @@ class Environ {
     return await get(await privateApi(base, path, query: query));
   }
 
-  static Future<TResult?> privateGetResopnse<TResult>(
-      String base, String path, TResult Function(dynamic) convert,
-      {Map<String, dynamic>? query}) async {
-    var req = await privateGet(base, path, query: query);
-    if (req.statusCode != 200) {
-      throw HttpException('$path ${req.statusCode} ${req.reasonPhrase}');
+  static Future<TResult?> tryResponseParse<TResult>(
+      dynamic res, TResult Function(dynamic) convert) async {
+    if (res.statusCode != 200) {
+      throw HttpException(
+          '${res.request?.url.path} ${res.statusCode} ${res.reasonPhrase}');
     }
 
     try {
-      return convert(jsonDecode(utf8.decode(req.bodyBytes)));
+      dynamic data;
+      if (res is Response) {
+        data = jsonDecode(utf8.decode(res.bodyBytes));
+      } else if (res is StreamedResponse) {
+        data = jsonDecode(utf8.decode(await res.stream.toBytes()));
+      } else {
+        throw ArgumentError('res must be Response or StreamedResponse');
+      }
+      return convert(data);
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);
@@ -48,12 +56,21 @@ class Environ {
     }
   }
 
+  static Future<TResult?> privateGetResopnse<TResult>(
+      String base, String path, TResult Function(dynamic) convert,
+      {Map<String, dynamic>? query}) async {
+    return await tryResponseParse(
+        await privateGet(base, path, query: query), convert);
+  }
+
   static Future<Response> privatePost(String base, String path,
-      {Map<String, dynamic>? query, Map<String, dynamic>? body}) async {
+      {Map<String, dynamic>? query,
+      Map<String, dynamic>? body,
+      bool jsonencode = true}) async {
     query ??= {};
     query['token'] = Auth.instance.getToken();
     return await post(await privateApi(base, path, query: query),
-        body: jsonEncode(body),
+        body: jsonencode ? jsonEncode(body) : body,
         headers: {
           'Content-Type': 'application/json',
         });
@@ -61,19 +78,12 @@ class Environ {
 
   static Future<TResult?> privatePostResopnse<TResult>(
       String base, String path, TResult Function(dynamic) convert,
-      {Map<String, dynamic>? query, Map<String, dynamic>? body}) async {
-    var req = await privatePost(base, path, query: query, body: body);
-    if (req.statusCode != 200) {
-      throw HttpException('$path ${req.statusCode} ${req.reasonPhrase}');
-    }
-
-    try {
-      return convert(jsonDecode(utf8.decode(req.bodyBytes)));
-    } on Exception catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return null;
-    }
+      {Map<String, dynamic>? query,
+      Map<String, dynamic>? body,
+      bool jsonencode = true}) async {
+    return await tryResponseParse(
+        await privatePost(base, path,
+            query: query, body: body, jsonencode: jsonencode),
+        convert);
   }
 }

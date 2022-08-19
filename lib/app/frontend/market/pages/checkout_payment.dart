@@ -173,13 +173,6 @@ class _CheckoutPaymentPageState extends State<CheckoutPaymentPage> {
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                       ))),
-
-            //   if (_isInPayment)
-            //  ...[
-            // ],
-            // else ...[
-
-            // ]
           ],
         ));
   }

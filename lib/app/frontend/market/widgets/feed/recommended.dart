@@ -125,6 +125,7 @@ class _RecommendedSheetState extends State<RecommendedSheet> {
 
     if (choice.content.isNotEmpty) choices.add(choice.content);
     current = choice.goto;
+    checked = -1;
 
     if (recommended.isEnd) {
       surveyDone = true;

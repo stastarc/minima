@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:minima/app/frontend/market/topbar.dart';
 import 'package:minima/app/frontend/market/pages/feed.dart';
 
-import '../../../shared/error.dart';
-
 class MarketPage extends StatefulWidget {
   const MarketPage({super.key});
 

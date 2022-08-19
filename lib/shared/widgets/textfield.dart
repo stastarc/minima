@@ -13,6 +13,7 @@ class PrimaryTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final Widget? suffix;
+  final Widget? prefixIcon;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
 
@@ -30,6 +31,7 @@ class PrimaryTextField extends StatelessWidget {
     this.padding,
     this.keyboardType,
     this.suffix,
+    this.prefixIcon,
     this.onChanged,
     this.onSubmitted,
   });
@@ -47,6 +49,7 @@ class PrimaryTextField extends StatelessWidget {
       onSubmitted: onSubmitted,
       onChanged: onChanged,
       decoration: InputDecoration(
+          prefixIcon: prefixIcon,
           contentPadding: padding ?? const EdgeInsets.all(13),
           hintText: hint,
           border: OutlineInputBorder(
