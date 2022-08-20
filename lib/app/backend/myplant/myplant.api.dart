@@ -32,6 +32,15 @@ extension MyPlantCache on MyPlant {
         await req.send(), (json) => MyPlantRegisterData.fromJson(json));
   }
 
+  Future<bool?> unregisterMyPlant(int id) async {
+    return await Environ.privatePostResopnse(Environ.myplantServer,
+        '/myplant/plants/unregister', (json) => json['success'],
+        body: {
+          'id': id.toString(),
+        },
+        jsonencode: false);
+  }
+
   Future<List<PlantInfoData>?> searchPlants(String query,
       {int offset = 0}) async {
     return await Environ.privateGetResopnse(
@@ -41,5 +50,34 @@ extension MyPlantCache on MyPlant {
             .map((e) => PlantInfoData.fromJson(e))
             .toList(),
         query: {'query': query.padRight(2), 'offset': offset});
+  }
+
+  Future<DiariesData?> getDiaries(int plantId, {int offset = 0}) async {
+    return await Environ.privateGetResopnse(Environ.myplantServer,
+        '/myplant/diary/$plantId', (json) => DiariesData.fromJson(json),
+        query: {'page': offset});
+  }
+
+  Future<DiaryData?> getDiary(int plantId, DateTime date) async {
+    return await Environ.privateGetResopnse(
+        Environ.myplantServer,
+        '/myplant/diary/$plantId/${isoDateFormat(date)}',
+        (json) => DiaryData.fromJson(json));
+  }
+
+  Future<DiaryData?> setDiary(int plantId, DateTime date, String comment,
+      {List<String> keepImages = const [],
+      List<String> images = const []}) async {
+    var req = MultipartRequest(
+        "post",
+        await Environ.privateApi(Environ.myplantServer,
+            '/myplant/diary/$plantId/${isoDateFormat(date)}'));
+    req.fields['comment'] = comment;
+    req.fields['keep_images'] = keepImages.join(',');
+    for (var image in images) {
+      req.files.add(await MultipartFile.fromPath(basename(image), image));
+    }
+    return await Environ.tryResponseParse(
+        await req.send(), (json) => DiaryData.fromJson(json));
   }
 }

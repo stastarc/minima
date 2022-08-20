@@ -76,7 +76,10 @@ class _ProductPageState extends State<ProductPage> {
                 return Column(children: [
                   Expanded(
                       child: ListView(children: [
-                    ImageListView(images: product.images),
+                    ImageListView(
+                      images: product.images,
+                      height: 400,
+                    ),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(22, 16, 22, 16),
                         child: ProductTitle(

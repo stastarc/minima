@@ -28,8 +28,11 @@ import 'add_plant.register.dart';
 part 'add_plant.page.dart';
 
 class MyPlantAddPage extends StatefulWidget {
+  final VoidCallback onAdd;
+
   const MyPlantAddPage({
     super.key,
+    required this.onAdd,
   });
 
   @override
@@ -69,6 +72,7 @@ class _MyPlantAddPageState extends State<MyPlantAddPage> {
   void onDone() {
     setState(() {
       isDone = true;
+      widget.onAdd();
     });
   }
 

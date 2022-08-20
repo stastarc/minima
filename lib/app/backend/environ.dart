@@ -71,9 +71,11 @@ class Environ {
     query['token'] = Auth.instance.getToken();
     return await post(await privateApi(base, path, query: query),
         body: jsonencode ? jsonEncode(body) : body,
-        headers: {
-          'Content-Type': 'application/json',
-        });
+        headers: jsonencode
+            ? {
+                'Content-Type': 'application/json',
+              }
+            : null);
   }
 
   static Future<TResult?> privatePostResopnse<TResult>(

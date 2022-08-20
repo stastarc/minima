@@ -144,7 +144,7 @@ class _MyPlantRegisterViewState extends State<MyPlantRegisterView> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 22, vertical: 20),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFEDEDED),
+                                color: const Color(0xFFF6F6F6),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Column(

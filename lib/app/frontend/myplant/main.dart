@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:minima/app/backend/myplant/myplant.dart';
 import 'package:minima/app/frontend/myplant/widgets/calendar.dart';
@@ -29,6 +30,7 @@ class _MyPlantPageState extends State<MyPlantPage> {
 
   void retry() {
     setState(() {
+      myPlants = null;
       initialized = initialize();
     });
   }
@@ -62,6 +64,7 @@ class _MyPlantPageState extends State<MyPlantPage> {
                       const Padding(
                           padding: EdgeInsets.fromLTRB(0, 50, 0, 22),
                           child: Text('나의 정원',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
@@ -70,7 +73,10 @@ class _MyPlantPageState extends State<MyPlantPage> {
                       const SizedBox(height: 14),
                       ToDoView(myPlants: myPlants),
                       const SizedBox(height: 14),
-                      MyPlantView(myPlants: myPlants)
+                      MyPlantView(
+                        myPlants: myPlants,
+                        onRefresh: retry,
+                      )
                     ],
                   );
                 }

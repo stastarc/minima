@@ -31,6 +31,7 @@ class MyPlantData {
   final String name;
   final String image;
   final int plantId;
+  final String plantName;
   final ScheduleToDoData? schedule;
 
   const MyPlantData({
@@ -38,6 +39,7 @@ class MyPlantData {
     required this.name,
     required this.image,
     required this.plantId,
+    required this.plantName,
     required this.schedule,
   });
 
@@ -46,6 +48,7 @@ class MyPlantData {
         name = json['name'] as String,
         image = json['image'] as String,
         plantId = json['plant_id'] as int,
+        plantName = json['plant_name'] as String,
         schedule = json['schedule'] == null
             ? null
             : ScheduleToDoData.fromJson(

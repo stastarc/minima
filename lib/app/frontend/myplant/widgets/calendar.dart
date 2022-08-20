@@ -7,8 +7,14 @@ import 'package:minima/shared/widgets/button.dart';
 
 class WidthCalendar extends StatefulWidget {
   final List<MyPlantData> myPlants;
+  final bool showSlider;
+  final double scale;
 
-  const WidthCalendar({super.key, required this.myPlants});
+  const WidthCalendar(
+      {super.key,
+      required this.myPlants,
+      this.showSlider = true,
+      this.scale = 1});
 
   @override
   State createState() => _WidthCalendarState();
@@ -44,38 +50,39 @@ class _WidthCalendarState extends State<WidthCalendar> {
         child: Container(
           color: Colors.white,
           child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                PrimaryButton(
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
-                    child: const Icon(Icons.arrow_back_ios_new_rounded,
-                        color: Color(0xFF3D3D3D), size: 22),
-                    onPressed: () => onSlide(1)),
-                Text(
-                  monthDateFormat(offsetDate),
-                  style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF3D3D3D),
-                      decoration: TextDecoration.none),
-                ),
-                PrimaryButton(
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
-                    child: const Icon(Icons.arrow_forward_ios_rounded,
-                        color: Color(0xFF3D3D3D), size: 22),
-                    onPressed: () => onSlide(-1))
-              ],
-            ),
+            if (widget.showSlider)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  PrimaryButton(
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
+                      child: const Icon(Icons.arrow_back_ios_new_rounded,
+                          color: Color(0xFF3D3D3D), size: 22),
+                      onPressed: () => onSlide(1)),
+                  Text(
+                    monthDateFormat(offsetDate),
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF3D3D3D),
+                        decoration: TextDecoration.none),
+                  ),
+                  PrimaryButton(
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
+                      child: const Icon(Icons.arrow_forward_ios_rounded,
+                          color: Color(0xFF3D3D3D), size: 22),
+                      onPressed: () => onSlide(-1))
+                ],
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 for (var i = 0; i < 7; i++)
                   WidthCalendarItem(
-                    date: offsetDate.add(Duration(days: i)),
-                    today: today,
-                    myPlants: myPlants,
-                  )
+                      date: offsetDate.add(Duration(days: i)),
+                      today: today,
+                      myPlants: myPlants,
+                      scale: widget.scale)
               ],
             )
           ]),
@@ -87,17 +94,14 @@ class WidthCalendarItem extends StatelessWidget {
   final DateTime date;
   final DateTime today;
   final List<MyPlantData> myPlants;
-  final double? width;
-  final double? height;
+  final double scale;
 
-  const WidthCalendarItem({
-    super.key,
-    required this.date,
-    required this.today,
-    required this.myPlants,
-    this.width,
-    this.height = 59,
-  });
+  const WidthCalendarItem(
+      {super.key,
+      required this.date,
+      required this.today,
+      required this.myPlants,
+      this.scale = 1});
 
   String? get _todo {
     for (var item in myPlants) {
@@ -158,10 +162,8 @@ class WidthCalendarItem extends StatelessWidget {
       foregroundColor = Colors.white;
     }
 
-    final circleWidth = 32 * (32 / min(width ?? 32, height ?? 32));
+    final circleWidth = 32 * scale;
     return Container(
-        width: width,
-        height: height,
         padding: const EdgeInsets.all(4),
         decoration: isToday
             ? BoxDecoration(
@@ -175,7 +177,7 @@ class WidthCalendarItem extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 3),
               child: Text(weekDateFormat(date),
                   style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 13 * scale,
                       fontWeight: FontWeight.bold,
                       color: isToday ? Colors.white : Colors.black54)),
             ),
@@ -189,7 +191,7 @@ class WidthCalendarItem extends StatelessWidget {
               child: Center(
                 child: Text(date.day.toString(),
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 16 * scale,
                         fontWeight: FontWeight.bold,
                         color: foregroundColor)),
               ),

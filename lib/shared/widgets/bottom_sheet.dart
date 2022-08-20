@@ -65,11 +65,13 @@ class BottomMenuItem {
   final String title;
   final VoidCallback onPressed;
   final Color? color;
+  final bool enable;
 
   const BottomMenuItem({
     required this.title,
     required this.onPressed,
     this.color,
+    this.enable = true,
   });
 }
 
@@ -88,9 +90,11 @@ class BottomMenuSheet extends StatelessWidget {
         for (final item in items)
           InkWell(
             onTap: () {
+              if (!item.enable) return;
               Navigator.pop(context);
               item.onPressed();
             },
+            enableFeedback: item.enable,
             child: Container(
                 width: double.infinity,
                 padding:

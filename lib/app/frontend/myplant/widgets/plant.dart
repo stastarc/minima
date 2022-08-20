@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:minima/app/backend/cdn/cdn.dart';
+import 'package:minima/app/backend/myplant/myplant.dart';
+import 'package:minima/app/frontend/myplant/pages/myplant.dart';
 import 'package:minima/app/models/myplant/plant.dart';
 import 'package:minima/routers/_route.dart';
 import 'package:minima/shared/widgets/bottom_sheet.dart';
 import 'package:minima/shared/widgets/button.dart';
+import 'package:minima/shared/widgets/dialog.dart';
+import 'package:toast/toast.dart';
 
 import '../pages/add_plant.dart';
 
@@ -11,10 +16,12 @@ part 'plant.menu.dart';
 
 class MyPlantView extends StatefulWidget {
   final List<MyPlantData> myPlants;
+  final VoidCallback onRefresh;
 
   const MyPlantView({
     super.key,
     required this.myPlants,
+    required this.onRefresh,
   });
 
   @override
@@ -23,7 +30,7 @@ class MyPlantView extends StatefulWidget {
 
 class _MyPlantViewState extends State<MyPlantView> {
   void onAdd() {
-    showMyPlantAddMenuSheet(context);
+    showMyPlantAddMenuSheet(context, widget.onRefresh);
   }
 
   @override
@@ -36,6 +43,7 @@ class _MyPlantViewState extends State<MyPlantView> {
         for (final myPlant in widget.myPlants)
           MyPlantItem(
             myPlant: myPlant,
+            onRefresh: widget.onRefresh,
           ),
         ClipButton(
           width: 160,
@@ -62,19 +70,27 @@ class _MyPlantViewState extends State<MyPlantView> {
 
 class MyPlantItem extends StatelessWidget {
   final MyPlantData myPlant;
+  final VoidCallback onRefresh;
 
   const MyPlantItem({
     super.key,
     required this.myPlant,
+    required this.onRefresh,
   });
 
   @override
   Widget build(BuildContext context) {
     onMenu() {
-      showMyPlantMenuSheet(context);
+      showMyPlantMenuSheet(context, onRefresh: onRefresh);
     }
 
-    onPressed() {}
+    onPressed() {
+      Navigator.push(
+          context,
+          slideRTL(MyPlantItemPage(
+            myPlant: myPlant,
+          )));
+    }
 
     return Column(children: [
       ClipButton(

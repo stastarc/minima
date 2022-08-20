@@ -4,8 +4,11 @@ import 'package:page_view_indicators/page_view_indicators.dart';
 
 class ImageListView extends StatefulWidget {
   final List<String> images;
+  final double? width;
+  final double? height;
 
-  const ImageListView({super.key, required this.images});
+  const ImageListView(
+      {super.key, required this.images, this.width, this.height});
 
   @override
   State createState() => _ImageListViewState();
@@ -19,11 +22,14 @@ class _ImageListViewState extends State<ImageListView> {
     return Stack(
       children: [
         SizedBox(
-          height: 400,
+          width: widget.width,
+          height: widget.height,
           child: PageView.builder(
             itemCount: widget.images.length,
-            itemBuilder: (_, i) =>
-                CDN.image(id: widget.images[i], errorComment: '상품 이미지\n준비중'),
+            itemBuilder: (_, i) => CDN.image(
+                id: widget.images[i],
+                errorComment: '상품 이미지\n준비중',
+                fit: BoxFit.cover),
             onPageChanged: (i) => _currentPageNotifier.value = i,
           ),
         ),
