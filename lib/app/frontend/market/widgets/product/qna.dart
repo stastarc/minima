@@ -9,7 +9,6 @@ import 'package:minima/shared/skeletons/skeleton.dart';
 import 'package:minima/shared/widgets/bottom_sheet.dart';
 import 'package:minima/shared/widgets/button.dart';
 import 'package:minima/shared/widgets/retry.dart';
-import 'package:toast/toast.dart';
 
 class QnAView extends StatefulWidget {
   final int productId;

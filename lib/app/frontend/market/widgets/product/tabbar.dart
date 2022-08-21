@@ -41,7 +41,7 @@ class _TextTabBarState extends State<TextTabBar> {
   Widget build(BuildContext context) {
     return Container(
         height: 29,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(
               color: Color(0xFFCECECE),

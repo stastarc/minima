@@ -127,11 +127,15 @@ class _InfinityScrollListViewState extends State<InfinityScrollListView> {
 
 class InfinityScrollController extends ScrollController {
   final VoidCallback onArrived;
+  final void Function(double)? onArrivedAt;
+  final List<double>? arrivedAtList;
   final double proximityPixel;
 
   InfinityScrollController({
     required this.onArrived,
     this.proximityPixel = 200,
+    this.onArrivedAt,
+    this.arrivedAtList,
   }) {
     addListener(_onScroll);
   }
@@ -139,6 +143,14 @@ class InfinityScrollController extends ScrollController {
   void _onScroll() {
     if (position.pixels >= position.maxScrollExtent - proximityPixel) {
       onArrived();
+    }
+
+    if (arrivedAtList != null) {
+      for (final arrivedAt in arrivedAtList!) {
+        if (position.pixels >= arrivedAt) {
+          onArrivedAt!(arrivedAt);
+        }
+      }
     }
   }
 }

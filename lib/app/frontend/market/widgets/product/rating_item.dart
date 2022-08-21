@@ -86,14 +86,14 @@ class RatingItemSkeleton extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(8),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SkeletonText(
-          wordLengths: const [12, 10],
+        const SkeletonText(
+          wordLengths: [12, 10],
           fontSize: 14,
           lineHeight: .3,
         ),
         const SizedBox(height: 8),
-        SkeletonText(
-          wordLengths: const [30, 32, 20],
+        const SkeletonText(
+          wordLengths: [30, 32, 20],
           fontSize: 15,
           lineHeight: .3,
         ),

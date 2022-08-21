@@ -120,18 +120,18 @@ class ProductItemSkeleton extends StatelessWidget {
             radius: 10,
           ),
           const SizedBox(height: 8),
-          SkeletonText(
+          const SkeletonText(
             fontSize: 14,
-            wordLengths: const [10],
+            wordLengths: [10],
           ),
           const SizedBox(height: 4),
-          SkeletonText(
+          const SkeletonText(
             fontSize: 18,
-            wordLengths: const [9],
+            wordLengths: [9],
           ),
-          SkeletonText(
+          const SkeletonText(
             fontSize: 14,
-            wordLengths: const [7],
+            wordLengths: [7],
           ),
         ],
       ),

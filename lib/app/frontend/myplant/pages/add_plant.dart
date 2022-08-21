@@ -17,6 +17,7 @@ import 'package:minima/shared/widgets/bottom_sheet.dart';
 import 'package:minima/shared/widgets/button.dart';
 import 'package:minima/shared/widgets/datepicker.dart';
 import 'package:minima/shared/widgets/expandable.dart';
+import 'package:minima/shared/widgets/open_image.dart';
 import 'package:minima/shared/widgets/page.dart';
 import 'package:minima/shared/widgets/retry.dart';
 import 'package:minima/shared/widgets/textfield.dart';

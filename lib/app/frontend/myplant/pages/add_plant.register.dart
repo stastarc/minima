@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:minima/app/backend/myplant/myplant.dart';
 import 'package:minima/app/models/myplant/plant.dart';
@@ -109,7 +109,8 @@ class _MyPlantRegisterViewState extends State<MyPlantRegisterView> {
           Text(
               succ
                   ? '${widget.name}을(를) 등록했어요!'
-                  : '${widget.name}을(를) 등록하고 있어요.',
+                  : '${widget.name}을(를) 등록하고\n스케줄을 만들고 있어요.',
+              textAlign: TextAlign.center,
               style: const TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.bold,
@@ -141,6 +142,7 @@ class _MyPlantRegisterViewState extends State<MyPlantRegisterView> {
                         for (var e in res.schedule!.cycle.entries)
                           if (e.value != null && schi++ < 3)
                             Container(
+                              width: 100,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 22, vertical: 20),
                               decoration: BoxDecoration(
@@ -151,14 +153,16 @@ class _MyPlantRegisterViewState extends State<MyPlantRegisterView> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(getEmoji(e.key),
-                                        style: const TextStyle(fontSize: 42)),
+                                        style: const TextStyle(
+                                            fontSize: 42,
+                                            fontFamily: 'SegoeUIEmoji')),
                                     const SizedBox(height: 8),
-                                    Text(
+                                    AutoSizeText(
                                         ScheduleToDoItme
                                                 .localizedNames[e.key] ??
                                             '알수없음',
                                         style: const TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold)),
                                     const SizedBox(height: 6),
                                     Text('${e.value!.inDays}일',

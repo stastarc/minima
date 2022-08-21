@@ -114,13 +114,13 @@ class ProductBottomBarSkeleton extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               SkeletonText(
-                wordLengths: const [14],
+                wordLengths: [14],
                 fontSize: 18,
               ),
               SkeletonText(
-                wordLengths: const [10],
+                wordLengths: [10],
                 fontSize: 16,
               )
             ],

@@ -11,6 +11,7 @@ void showDatePickerSheet(BuildContext context,
     void Function(dynamic)? onDone,
     DateTime? minDate,
     DateTime? maxDate,
+    DateTime? selectedDate,
     String title = '날짜를 선택해주세요.'}) {
   showSheet(context,
       child: DatePickerSheet(
@@ -19,6 +20,7 @@ void showDatePickerSheet(BuildContext context,
           onDone: onDone,
           minDate: minDate,
           maxDate: maxDate,
+          selectedDate: selectedDate,
           title: title));
 }
 
@@ -26,8 +28,7 @@ class DatePickerSheet extends StatelessWidget {
   final DateRangePickerSelectionMode selectionMode;
   final void Function(dynamic)? onDateTimeSelected;
   final void Function(dynamic)? onDone;
-  final DateTime? minDate;
-  final DateTime? maxDate;
+  final DateTime? minDate, maxDate, selectedDate;
   final String title;
 
   const DatePickerSheet(
@@ -37,6 +38,7 @@ class DatePickerSheet extends StatelessWidget {
       this.onDone,
       this.minDate,
       this.maxDate,
+      this.selectedDate,
       this.title = '날짜를 선택해주세요.'});
 
   @override
@@ -64,6 +66,7 @@ class DatePickerSheet extends StatelessWidget {
         SfDateRangePicker(
             minDate: minDate,
             maxDate: maxDate,
+            initialSelectedDate: selectedDate,
             selectionColor: const Color(0xFF53CE86),
             todayHighlightColor: const Color(0xFF53CE86),
             selectionMode: selectionMode,
@@ -89,15 +92,17 @@ class DatePickerSheet extends StatelessWidget {
 class DatePickerField extends StatefulWidget {
   final bool Function(DateTime)? onDateSelect;
   final void Function(DateTime) onDateSelected;
+  final DateTime? selectedDate;
   final DateTime? minDate;
   final DateTime? maxDate;
-  final String title;
+  final String? title;
   final String pickerTitle;
-  final String hint;
+  final String? hint;
 
   const DatePickerField({
     super.key,
     this.onDateSelect,
+    this.selectedDate,
     this.minDate,
     this.maxDate,
     this.title = '날짜',
@@ -111,7 +116,16 @@ class DatePickerField extends StatefulWidget {
 }
 
 class _DatePickerFieldState extends State<DatePickerField> {
-  final textField = TextEditingController();
+  late TextEditingController textField;
+
+  @override
+  void initState() {
+    super.initState();
+    textField = TextEditingController(
+        text: widget.selectedDate != null
+            ? longDateFormat(widget.selectedDate!)
+            : null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +138,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
         context,
         minDate: widget.minDate,
         maxDate: widget.maxDate,
+        selectedDate: widget.selectedDate,
         title: widget.pickerTitle,
         onDone: (value) => setState(() {
           if (value == null) return;

@@ -68,21 +68,13 @@ extension _MyPlantAddPageStatePages on _MyPlantAddPageState {
       ];
 
   void onSetImage() {
-    void onPickImage(ImageSource source) async {
-      final picker = ImagePicker();
-      final image = await picker.pickImage(source: source);
-      if (image == null) return;
+    showOpenImageMenu(context, (img) {
+      if (img == null) return;
+      // ignore: invalid_use_of_protected_member
       setState(() {
-        this.image = File(image.path);
+        image = img;
       });
-    }
-
-    showBottomMenuSheet(context, [
-      BottomMenuItem(
-          title: '사진 찍기', onPressed: () => onPickImage(ImageSource.camera)),
-      BottomMenuItem(
-          title: '사진 선택', onPressed: () => onPickImage(ImageSource.gallery)),
-    ]);
+    });
   }
 
   String get plantName =>

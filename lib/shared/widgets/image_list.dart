@@ -2,20 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:page_view_indicators/page_view_indicators.dart';
 
-class ImageListView extends StatefulWidget {
-  final List<String> images;
-  final double? width;
-  final double? height;
+class PageListView extends StatefulWidget {
+  final PageController? controller;
+  final void Function(int index)? onPageChanged;
+  final Widget Function(BuildContext context, int index) itemBuilder;
+  final int itemCount;
+  final double? width, height;
 
-  const ImageListView(
-      {super.key, required this.images, this.width, this.height});
+  const PageListView({
+    super.key,
+    required this.itemBuilder,
+    required this.itemCount,
+    this.controller,
+    this.onPageChanged,
+    this.width,
+    this.height,
+  });
 
   @override
-  State createState() => _ImageListViewState();
+  State createState() => _PageListViewState();
 }
 
-class _ImageListViewState extends State<ImageListView> {
-  final _currentPageNotifier = ValueNotifier<int>(0);
+class _PageListViewState extends State<PageListView> {
+  final notifier = ValueNotifier<int>(0);
+  void onPageChanged(int index) {
+    notifier.value = index;
+    if (widget.onPageChanged != null) {
+      widget.onPageChanged!(index);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +40,10 @@ class _ImageListViewState extends State<ImageListView> {
           width: widget.width,
           height: widget.height,
           child: PageView.builder(
-            itemCount: widget.images.length,
-            itemBuilder: (_, i) => CDN.image(
-                id: widget.images[i],
-                errorComment: '상품 이미지\n준비중',
-                fit: BoxFit.cover),
-            onPageChanged: (i) => _currentPageNotifier.value = i,
+            controller: widget.controller,
+            itemCount: widget.itemCount,
+            itemBuilder: widget.itemBuilder,
+            onPageChanged: onPageChanged,
           ),
         ),
         Positioned(
@@ -40,8 +53,8 @@ class _ImageListViewState extends State<ImageListView> {
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: CirclePageIndicator(
-              itemCount: widget.images.length,
-              currentPageNotifier: _currentPageNotifier,
+              itemCount: widget.itemCount,
+              currentPageNotifier: notifier,
               dotColor: const Color(0xFFDDDDDD),
               selectedDotColor: const Color(0xFF6D6D6D),
             ),
@@ -49,5 +62,41 @@ class _ImageListViewState extends State<ImageListView> {
         ),
       ],
     );
+  }
+}
+
+class ImageListView extends StatelessWidget {
+  final List<String> images;
+  final Color placeholderColor;
+  final double placeholderSize;
+  final String errorComment;
+  final BoxFit? fit;
+  final double? width;
+  final double? height;
+
+  const ImageListView({
+    super.key,
+    required this.images,
+    this.width,
+    this.height,
+    this.placeholderColor = const Color.fromARGB(255, 192, 195, 210),
+    this.placeholderSize = 100,
+    this.errorComment = '이미지 준비중',
+    this.fit = BoxFit.cover,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return PageListView(
+        width: width,
+        height: height,
+        itemCount: images.length,
+        itemBuilder: (_, i) => CDN.image(
+              id: images[i],
+              placeholderColor: placeholderColor,
+              placeholderSize: placeholderSize,
+              errorComment: errorComment,
+              fit: fit,
+            ));
   }
 }

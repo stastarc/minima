@@ -9,10 +9,7 @@ class SkeletonText extends StatelessWidget {
   final List<num> wordLengths;
   final CrossAxisAlignment crossAxisAlignment;
 
-  late final double _wordWidth;
-  late final double _lineHeight;
-
-  SkeletonText({
+  const SkeletonText({
     super.key,
     this.wordWidth = .7,
     this.fontSize = 14,
@@ -20,10 +17,7 @@ class SkeletonText extends StatelessWidget {
     this.lineHeight = .2,
     required this.wordLengths,
     this.crossAxisAlignment = CrossAxisAlignment.start,
-  }) {
-    _wordWidth = wordWidth * fontSize;
-    _lineHeight = wordLengths.isNotEmpty ? lineHeight * fontSize : 0;
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +26,10 @@ class SkeletonText extends StatelessWidget {
       children: [
         for (var length in wordLengths)
           Padding(
-            padding: EdgeInsets.only(bottom: _lineHeight),
+            padding: EdgeInsets.only(
+                bottom: wordLengths.isNotEmpty ? lineHeight * fontSize : 0),
             child: SkeletonBox(
-              width: length * _wordWidth,
+              width: length * (wordWidth * fontSize),
               height: fontSize,
               radius: radius,
             ),

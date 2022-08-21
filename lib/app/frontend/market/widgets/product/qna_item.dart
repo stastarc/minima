@@ -63,12 +63,11 @@ class QnAItemSkeleton extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SkeletonText(wordLengths: const [10], fontSize: 13, lineHeight: .2),
-          const SizedBox(height: 8),
-          SkeletonText(
-              wordLengths: const [17, 14], fontSize: 16, lineHeight: .2),
-          const Divider(
+        children: const [
+          SkeletonText(wordLengths: [10], fontSize: 13, lineHeight: .2),
+          SizedBox(height: 8),
+          SkeletonText(wordLengths: [17, 14], fontSize: 16, lineHeight: .2),
+          Divider(
             thickness: 1,
             color: Colors.black,
           ),

@@ -9,10 +9,12 @@ import 'package:minima/shared/widgets/page.dart';
 
 class MyPlantItemPage extends StatefulWidget {
   final MyPlantData myPlant;
+  final VoidCallback onRefresh;
 
   const MyPlantItemPage({
     super.key,
     required this.myPlant,
+    required this.onRefresh,
   });
 
   @override
@@ -20,7 +22,8 @@ class MyPlantItemPage extends StatefulWidget {
 }
 
 class _MyPlantItemPageState extends State<MyPlantItemPage> {
-  late InfinityScrollController scroll;
+  InfinityScrollController? scroll;
+  bool isInBody = false;
   void Function()? _onArrived;
 
   void onArrived() {
@@ -28,11 +31,23 @@ class _MyPlantItemPageState extends State<MyPlantItemPage> {
     _onArrived!();
   }
 
+  void onArrivedAt(double scroll) {
+    if (scroll >= 250) {
+      if (!isInBody) {
+        isInBody = true;
+        setState(() {});
+      }
+    } else {
+      if (isInBody) {
+        isInBody = false;
+        setState(() {});
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    scroll =
-        InfinityScrollController(onArrived: onArrived, proximityPixel: 1200);
   }
 
   void onDiaryBuilder(void Function() onArrived) {
@@ -41,7 +56,11 @@ class _MyPlantItemPageState extends State<MyPlantItemPage> {
 
   Widget buildBody() {
     return ListView(
-      controller: scroll,
+      controller: scroll ??= InfinityScrollController(
+          onArrived: onArrived,
+          onArrivedAt: onArrivedAt,
+          arrivedAtList: [0, 250],
+          proximityPixel: MediaQuery.of(context).size.height * 2),
       children: [
         const SizedBox(height: 250 - 12 - 2),
         Container(
@@ -74,7 +93,7 @@ class _MyPlantItemPageState extends State<MyPlantItemPage> {
               scale: .8,
             ),
             const SizedBox(height: 8),
-            ToDoView(myPlants: [widget.myPlant]),
+            ToDoView(myPlants: [widget.myPlant], onRefresh: widget.onRefresh),
             DiaryView(plant: widget.myPlant, onBuilder: onDiaryBuilder)
           ]),
         )
@@ -86,7 +105,7 @@ class _MyPlantItemPageState extends State<MyPlantItemPage> {
   Widget build(BuildContext context) {
     return PageWidget(
         fullScreen: true,
-        titleColor: Colors.white,
+        titleColor: isInBody ? Colors.grey[800]! : Colors.white,
         child: SizedBox(
             width: double.infinity,
             height: double.infinity,

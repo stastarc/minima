@@ -55,7 +55,7 @@ class _PageWidgetState extends State<PageWidget> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                             color: widget.titleColor,
                             decoration: TextDecoration.none))),
               if (!widget.hideClose && widget.title != null)
@@ -69,7 +69,7 @@ class _PageWidgetState extends State<PageWidget> {
         backgroundColor: Colors.white,
         body: widget.fullScreen
             ? Stack(
-                children: [Expanded(child: widget.child), topBar()],
+                children: [widget.child, topBar()],
               )
             : Column(
                 children: [

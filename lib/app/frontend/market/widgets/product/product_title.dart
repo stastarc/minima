@@ -68,11 +68,11 @@ class ProductTitleSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SkeletonText(wordLengths: const [18, 8], fontSize: 26),
-        const SizedBox(height: 2),
+      children: const [
+        SkeletonText(wordLengths: [18, 8], fontSize: 26),
+        SizedBox(height: 2),
         SkeletonText(
-          wordLengths: const [8, 11],
+          wordLengths: [8, 11],
           fontSize: 16,
           lineHeight: .4,
         ),

@@ -5,9 +5,12 @@ import 'package:minima/app/backend/myplant/myplant.dart';
 import 'package:minima/app/frontend/myplant/pages/myplant.dart';
 import 'package:minima/app/models/myplant/plant.dart';
 import 'package:minima/routers/_route.dart';
+import 'package:minima/shared/skeletons/skeleton_box.dart';
+import 'package:minima/shared/skeletons/skeleton_text.dart';
 import 'package:minima/shared/widgets/bottom_sheet.dart';
 import 'package:minima/shared/widgets/button.dart';
 import 'package:minima/shared/widgets/dialog.dart';
+import 'package:minima/shared/widgets/future_wait.dart';
 import 'package:toast/toast.dart';
 
 import '../pages/add_plant.dart';
@@ -89,6 +92,7 @@ class MyPlantItem extends StatelessWidget {
           context,
           slideRTL(MyPlantItemPage(
             myPlant: myPlant,
+            onRefresh: onRefresh,
           )));
     }
 
@@ -115,5 +119,34 @@ class MyPlantItem extends StatelessWidget {
             fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
       ),
     ]);
+  }
+}
+
+class MyPlantViewSkeleton extends StatelessWidget {
+  const MyPlantViewSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      alignment: WrapAlignment.spaceEvenly,
+      spacing: 18,
+      runSpacing: 16,
+      children: [
+        for (var i = 0; i < 4; i++)
+          Column(children: const [
+            SkeletonBox(
+              width: 160,
+              height: 160,
+            ),
+            SizedBox(height: 8),
+            SizedBox(
+                width: 92,
+                child: SkeletonText(
+                  wordLengths: [8],
+                  wordWidth: 15,
+                ))
+          ])
+      ],
+    );
   }
 }

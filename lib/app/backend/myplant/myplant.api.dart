@@ -75,9 +75,20 @@ extension MyPlantCache on MyPlant {
     req.fields['comment'] = comment;
     req.fields['keep_images'] = keepImages.join(',');
     for (var image in images) {
-      req.files.add(await MultipartFile.fromPath(basename(image), image));
+      req.files.add(await MultipartFile.fromPath('images', image));
     }
     return await Environ.tryResponseParse(
         await req.send(), (json) => DiaryData.fromJson(json));
+  }
+
+  Future<ScheduleToDoItme?> scheduleDone(int plantId, String schedule) async {
+    return await Environ.privatePostResopnse(
+        Environ.myplantServer,
+        '/myplant/schedule/$plantId/done',
+        (json) => ScheduleToDoItme.fromJson(json),
+        body: {
+          'schedule': schedule,
+        },
+        jsonencode: false);
   }
 }

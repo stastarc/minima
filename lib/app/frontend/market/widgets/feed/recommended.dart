@@ -241,24 +241,24 @@ class _RecommendedSheetState extends State<RecommendedSheet> {
     const width = itemCount <= 6 ? 140.0 : 100.0;
 
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(0, 6, 0, 20),
+      const Padding(
+        padding: EdgeInsets.fromLTRB(0, 6, 0, 20),
         child: SkeletonText(
-          wordLengths: const [12],
+          wordLengths: [12],
           fontSize: 26,
         ),
       ),
       Wrap(spacing: 26, runSpacing: 16, children: [
         for (var i = 0; i < itemCount; i++)
           Column(
-            children: [
-              const SkeletonBox(
+            children: const [
+              SkeletonBox(
                 width: width,
                 height: width,
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               SkeletonText(
-                wordLengths: const [7],
+                wordLengths: [7],
                 fontSize: 13,
               )
             ],

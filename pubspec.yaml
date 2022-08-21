@@ -32,6 +32,8 @@ dependencies:
   kpostal:
   syncfusion_flutter_datepicker:
   image_picker:
+  flutter_local_notifications:
+  workmanager:
 
 dev_dependencies:
   flutter_test:
@@ -62,4 +64,7 @@ flutter:
           weight: 500
         - asset: assets/fonts/SpoqaHanSansNeo/bold.otf
           weight: 700
+    - family: SegoeUIEmoji
+      fonts:
+        - asset: assets/fonts/SegoeUIEmoji/default.ttf
 

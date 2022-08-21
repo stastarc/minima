@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:minima/app/backend/notify/notify.dart';
 import 'package:minima/routers/loading.dart';
 import 'package:minima/routers/login.dart';
 import 'package:minima/routers/main.dart';
@@ -26,6 +27,7 @@ Future<void> main() async {
     ],
   );
 
+  await (await Notify.instance.init()).requestPermission();
   await initializeDateFormatting(locale);
 
   runApp(

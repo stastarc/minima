@@ -31,8 +31,10 @@ class PrimaryButton extends StatelessWidget {
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all(Colors.white),
         padding: MaterialStateProperty.all(EdgeInsets.zero),
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius))),
+        shape: borderRadius > 0
+            ? MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(borderRadius)))
+            : null,
       ),
       child: Ink(
           width: width,

@@ -1,7 +1,7 @@
 class DiaryData {
-  final DateTime date;
-  final String comment;
-  final List<String> images;
+  DateTime date;
+  String comment;
+  List<String> images;
 
   DiaryData({
     required this.date,

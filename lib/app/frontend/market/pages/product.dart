@@ -78,6 +78,7 @@ class _ProductPageState extends State<ProductPage> {
                       child: ListView(children: [
                     ImageListView(
                       images: product.images,
+                      errorComment: '상품 이미지\n준비중',
                       height: 400,
                     ),
                     Padding(
