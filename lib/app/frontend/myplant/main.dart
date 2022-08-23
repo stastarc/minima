@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:minima/app/backend/myplant/myplant.dart';
-import 'package:minima/app/backend/notify/notify.dart';
 import 'package:minima/app/frontend/myplant/widgets/calendar.dart';
 import 'package:minima/app/frontend/myplant/widgets/plant.dart';
 import 'package:minima/app/frontend/myplant/widgets/todo.dart';
@@ -24,7 +23,6 @@ class _MyPlantPageState extends State<MyPlantPage> {
   Future<void> initialize() async {
     try {
       myPlants = await MyPlant.instance.getMyPlants();
-      await Notify.instance.showNotification(title: 'dddd', body: 'fffff');
     } catch (e) {
       myPlants = BackendError.fromException(e);
     }

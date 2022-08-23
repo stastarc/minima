@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -9,6 +10,7 @@ import 'package:minima/routers/login.dart';
 import 'package:minima/routers/main.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:minima/shared/number_format.dart';
+import 'package:workmanager/workmanager.dart';
 
 final routes = <String, WidgetBuilder>{
   '/login': (BuildContext context) => const LoginPage(),
@@ -27,7 +29,14 @@ Future<void> main() async {
     ],
   );
 
+  Workmanager().initialize(callbackDispatcher, isInDebugMode: kDebugMode);
+  Workmanager().registerPeriodicTask(
+    "background_notification",
+    "background notification",
+    frequency: const Duration(minutes: 15),
+  );
   await (await Notify.instance.init()).requestPermission();
+
   await initializeDateFormatting(locale);
 
   runApp(
@@ -51,4 +60,9 @@ Future<void> main() async {
       routes: routes,
     ),
   );
+}
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) =>
+      Notify.instance.onBackgroundUpdate().then((_) => Future.value(true)));
 }

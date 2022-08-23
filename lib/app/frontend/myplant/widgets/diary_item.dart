@@ -24,7 +24,7 @@ class DiaryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isFirst = diary.date.difference(today).inDays < 1;
+    final isFirst = diary.date.difference(today).inDays.abs() < 1;
     return DiaryCard(
         date: diary.date,
         isFirst: isFirst,

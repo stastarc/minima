@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:minima/main.dart';
 import 'package:workmanager/workmanager.dart';
 
 class Notify {
@@ -18,21 +19,7 @@ class Notify {
             requestBadgePermission: false,
             requestSoundPermission: false));
     await _notifications.initialize(settings);
-    WidgetsFlutterBinding.ensureInitialized();
-    Workmanager().initialize(() => Workmanager().executeTask(executeTask),
-        isInDebugMode: kDebugMode);
-    Workmanager().registerPeriodicTask(
-      "background_notification",
-      "background notification",
-      frequency: const Duration(seconds: 5),
-    );
     return this;
-  }
-
-  Future<bool> executeTask(
-      String taskName, Map<String, dynamic>? inputData) async {
-    await onBackgroundUpdate();
-    return true;
   }
 
   Future<void> onBackgroundUpdate() async {

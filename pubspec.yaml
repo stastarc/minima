@@ -34,6 +34,7 @@ dependencies:
   image_picker:
   flutter_local_notifications:
   workmanager:
+  webview_flutter:
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +46,7 @@ flutter:
 
   assets:
     - assets/
+    - assets/html/
     - assets/images/
     - assets/images/dummy/
     - assets/images/icons/

@@ -31,7 +31,7 @@ class _DiaryViewState extends State<DiaryView> {
   bool loading = false;
 
   void ensureTodayCard() {
-    if (diaries.any((e) => e.date.difference(today).inDays < 1)) return;
+    if (diaries.any((e) => e.date.difference(today).inDays.abs() < 1)) return;
     diaries.insert(
         0,
         DiaryData(

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="overflow: hidden;margin:0;height: 100vh;">
+    <canvas width="720" height="480" id="canvas"></canvas>
+    <script>
+"use strict";
+class ImageUtils {
+    // 비동기 이미지 로드
+    static load(src) {
+        return new Promise(function (resolve, reject) {
+            var img = new Image();
+            img.onload = function () {
+                resolve(img);
+            };
+            img.onerror = function () {
+                reject(new Error('Could not load image at ' + src));
+            };
+            img.src = src;
+        });
+    }
+    // 비동기 이미지 로드
+    static async loadCanvas(src) {
+        return ImageUtils.imageCanvas(await ImageUtils.load(src));
+    }
+    // 비동기 이미지 로드
+    static imageCanvas(image) {
+        let canvas = document.createElement('canvas');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0, image.width, image.height);
+        return {
+            image: canvas,
+            context: ctx,
+            width: image.width,
+            height: image.height
+        };
+    }
+    static canvas(canvas) {
+        return {
+            image: canvas,
+            context: canvas.getContext('2d'),
+            width: canvas.width,
+            height: canvas.height
+        };
+    }
+    // 이미지 리사이즈
+    static resize(img, width, height, ratio) {
+        let canvas = document.createElement('canvas');
+        if (ratio == 'min') {
+            let hov = img.height > img.width;
+            let scale = hov ?
+                width / img.width : height / img.height;
+            if (hov)
+                height = img.height * scale;
+            else
+                width = img.width * scale;
+        }
+        else if (ratio == 'max') {
+            let scale;
+            if (img.width > img.height)
+                scale = img.width / width;
+            else
+                scale = img.height / height;
+            width = img.width / scale;
+            height = img.height / scale;
+        }
+        width = Math.floor(width);
+        height = Math.floor(height);
+        canvas.width = width;
+        canvas.height = height;
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        return {
+            image: canvas,
+            context: ctx,
+            width: width,
+            height: height
+        };
+    }
+    // 이미지 자르기
+    static crop(img, x, y, width, height) {
+        let canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(img.image, x, y, img.width, img.height);
+        return {
+            image: canvas,
+            context: ctx,
+            width: width,
+            height: height
+        };
+    }
+}
+class RandomUtils {
+    // 정수 랜덤
+    static random(min, max) {
+        min = Math.ceil(min);
+        return Math.floor(Math.random() * (Math.floor(max) - min + 1)) + min;
+    }
+    // 소수포함 랜덤
+    static randomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+    // 영역 랜덤
+    static doublePointRand(dp) {
+        return {
+            x: RandomUtils.random(dp.x1, dp.x2),
+            y: RandomUtils.random(dp.y1, dp.y2)
+        };
+    }
+}
+class ArrayUtils {
+    static indexOfMax(arr) {
+        if (arr.length === 0)
+            return -1;
+        let max = arr[0];
+        let maxIndex = 0;
+        for (let i = 1; i < arr.length; i++) {
+            if (arr[i] > max) {
+                maxIndex = i;
+                max = arr[i];
+            }
+        }
+        return maxIndex;
+    }
+}
+class Mask {
+    constructor(zones, size, points) {
+        this.zones = zones;
+        this.size = size;
+        this.points = points;
+        this.rect = {
+            x: points.x1,
+            y: points.y1,
+            width: points.x2 - points.x1,
+            height: points.y2 - points.y1
+        };
+    }
+    // 영역 로스
+    rectLoss() {
+        return (this.rect.width + this.rect.height) / (this.size.width + this.size.height);
+    }
+    // 영역 점수
+    getScore(point) {
+        let index = point.y * this.size.width + point.x;
+        return this.zones[index];
+    }
+    // 영역 점수
+    getScoreBoolean(point, n) {
+        return this.getScore(point) > n;
+    }
+    // 색상 영역 찾기
+    static colorZone(img, color, option, size, ratio) {
+        if (size)
+            img = ImageUtils.resize(img.image, size.width, size.height, ratio);
+        let data = img.context.getImageData(0, 0, img.width, img.height).data;
+        let color_i = color == 'r' ? 0 : color == 'g' ? 1 : 2;
+        let zones = [];
+        let x1 = -1, y1 = -1, x2 = -1, y2 = -1;
+        for (let y = 0; y < img.height; y++) {
+            for (let x = 0; x < img.width; x++) {
+                let i = (y * img.width + x) * 4, tc = data[i + color_i], dr = color_i == 0 ? NaN : tc - data[i], dg = color_i == 1 ? NaN : tc - data[i + 1], db = color_i == 2 ? NaN : tc - data[i + 2];
+                if (tc < option.minLight ||
+                    dr < option.minDiff ||
+                    dg < option.minDiff ||
+                    db < option.minDiff)
+                    zones.push(0);
+                else {
+                    zones.push(Math.round(tc + (color_i == 0 ? 0 : dr) + (color_i == 1 ? 0 : dg) + (color_i == 2 ? 0 : db) / 3));
+                    if (x1 == -1 || x1 > x)
+                        x1 = x;
+                    else if (x2 < x)
+                        x2 = x;
+                    if (y1 == -1)
+                        y1 = y;
+                    else if (y2 < y)
+                        y2 = y;
+                }
+            }
+        }
+        if (x1 == -1)
+            return undefined;
+        return new Mask(zones, {
+            width: img.width,
+            height: img.height
+        }, {
+            x1: x1,
+            y1: y1,
+            x2: x2,
+            y2: y2
+        });
+    }
+}
+class DotColor {
+    constructor(inner, outer) {
+        this.innerMaxTransparent = 1;
+        this.outerMaxTransparent = .8;
+        this.inner = inner;
+        this.outer = outer;
+    }
+    getInner(t = 1) {
+        return DotColor.getColor(this.inner, t, this.innerMaxTransparent);
+    }
+    getOuter(t = 1) {
+        return DotColor.getColor(this.outer, t, this.outerMaxTransparent);
+    }
+    static getColor(color, t, m) {
+        if (t == 1)
+            return color;
+        return color + Math.round(Math.min(m, Math.max(0, t)) * 255)
+            .toString(16).padStart(2, '0');
+    }
+}
+class Dot {
+    constructor(x, y, options, size, transparent = 0) {
+        this.x = x;
+        this.y = y;
+        this.options = options;
+        this.size = size ?? this.resize();
+        this.transparent = transparent;
+    }
+    draw(context) {
+        if (this.transparent <= 0)
+            return;
+        let color = this.options.color;
+        context.beginPath();
+        context.arc(this.x, this.y, 3 * this.size, 0, 2 * Math.PI);
+        context.fillStyle = color.getInner(this.transparent);
+        context.fill();
+        context.lineWidth = this.size;
+        context.strokeStyle = color.getOuter(this.transparent);
+        context.stroke();
+    }
+    respawn(point) {
+        this.x = point.x;
+        this.y = point.y;
+        this.resize();
+    }
+    resize() {
+        return this.size = RandomUtils.randomArbitrary(this.options.minSize, this.options.maxSize);
+    }
+    static create(point, options) {
+        return new Dot(point.x, point.y, options, undefined, 0);
+    }
+}
+class ScannerUtils {
+    // 스캔 헤더
+    static createHeaderGradient(context, point, size) {
+        let grd = context.createLinearGradient(point.x, point.y, point.x + size.width, point.y + size.height);
+        grd.addColorStop(0, "#f5f5f500");
+        grd.addColorStop(0.18, "#f5f5f5cd");
+        grd.addColorStop(0.33, "#f5f5f500");
+        grd.addColorStop(1, "#f5f5f500");
+        return grd;
+    }
+}
+ScannerUtils.headerOffset = 0.18;
+ScannerUtils.headerReturnOffset = -1.1;
+ScannerUtils.headerRightPadding = .2;
+ScannerUtils.headerLeftPadding = .8;
+class ScannerOptions {
+    constructor(viewScale, dotCount, scannerSpeed, positionChunkSize, scannerChunkSize, drawOptions, dotOptions, maskOptions) {
+        this.viewScale = viewScale;
+        this.dotCount = dotCount;
+        this.scannerSpeed = scannerSpeed;
+        this.positionChunkSize = positionChunkSize;
+        this.scannerChunkSize = scannerChunkSize;
+        this.drawOptions = drawOptions;
+        this.dotOptions = dotOptions;
+        this.maskOptions = maskOptions;
+    }
+    static default() {
+        return new ScannerOptions(720, 8, 3.2, 128, 128, {
+            baseRefreshRate: 1000 / 144
+        }, {
+            color: new DotColor("#ffffff", "#d2fde6"),
+            maxSize: 3,
+            minSize: 3
+        }, {
+            minLight: 100,
+            minDiff: 10
+        });
+    }
+    fit(viewScale) {
+        let scale = viewScale / this.viewScale;
+        this.viewScale = viewScale;
+        this.dotCount = Math.round(this.dotCount * scale);
+        this.scannerSpeed = Math.round(this.scannerSpeed * scale);
+        this.dotOptions.maxSize = Math.round(this.dotOptions.maxSize * scale);
+        this.dotOptions.minSize = Math.round(this.dotOptions.minSize * scale);
+    }
+}
+class Draw {
+    constructor(view, target, options) {
+        this.FPS = 0;
+        this.delta = 0;
+        this.speed = 0;
+        this.updateTime = 0;
+        this.lastFPSTime = 0;
+        this.updateTicks = 0;
+        this.running = false;
+        this.showFPS = false;
+        this.view = view;
+        this.target = target;
+        this.context = view.context;
+        this.options = options;
+    }
+    start() {
+        if (this.running)
+            return;
+        this.running = true;
+        this.lastFPSTime = this.updateTime = Date.now();
+        this.update();
+    }
+    stop() {
+        this.running = false;
+    }
+    update() {
+        if (!this.running)
+            return;
+        let oldTime = this.updateTime, now = this.updateTime = Date.now(), baseRR = this.options.baseRefreshRate;
+        this.delta = Math.min(now - oldTime, 999);
+        this.speed = this.delta / baseRR;
+        try {
+            this.target.update(this);
+        }
+        catch (e) {
+            console.error(e);
+        }
+        // FPS
+        if (now - this.lastFPSTime > 1000) {
+            this.FPS = this.updateTicks;
+            this.updateTicks = 0;
+            this.lastFPSTime = now;
+        }
+        if (this.showFPS) {
+            let con = this.context;
+            let fps = `FPS: ${this.FPS}`;
+            con.font = "16px Arial";
+            con.fillStyle = "#000000";
+            let size = con.measureText(fps);
+            con.fillRect(10, 10, size.width, 16);
+            con.fillStyle = "#ffffff";
+            con.fillText(fps, 10, 10 + 16);
+        }
+        this.updateTicks++;
+        requestAnimationFrame(() => this.update());
+    }
+}
+class Scanner {
+    constructor(view) {
+        this.debug = false;
+        this.scannerOffset = 0;
+        this.scannerIndex = 0;
+        this.view = view;
+        this.dots = [];
+    }
+    build(image, options) {
+        let view = this.view, isVertical = view.width < view.height;
+        options.fit(Math.max(view.width, view.height));
+        image = ImageUtils.resize(image.image, view.width, view.height, 'min');
+        let positionMask = Mask.colorZone(image, 'g', options.maskOptions, {
+            width: isVertical ? options.positionChunkSize : 1,
+            height: isVertical ? 1 : options.positionChunkSize
+        }, undefined);
+        let position = positionMask
+            ? Math.max(image.width, image.height) * (ArrayUtils.indexOfMax(positionMask.zones) /
+                options.positionChunkSize) - view.height / 2
+            : Math.max(image.width, image.height) / 2 - view.height / 2;
+        let scopedImage = ImageUtils.crop(image, isVertical ? -position : 0, isVertical ? 0 : -position, view.width, view.height);
+        let mask = Mask.colorZone(scopedImage, 'g', options.maskOptions, {
+            width: options.scannerChunkSize,
+            height: options.scannerChunkSize
+        }, 'min');
+        let dotCount = mask ? Math.round(options.dotCount * mask.rectLoss()) : 0;
+        for (let i = 0; i < dotCount; i++) {
+            let point = RandomUtils.doublePointRand(mask.points);
+            if (!mask?.getScoreBoolean(point, options.maskOptions.minDiff)) {
+                i--;
+                continue;
+            }
+            point.x = view.width * (point.x / mask.size.width);
+            point.y = view.height * (point.y / mask.size.height);
+            let dot = Dot.create(point, options.dotOptions);
+            this.dots.push(dot);
+        }
+        this.image = image;
+        this.scopedImage = scopedImage;
+        this.mask = mask;
+        this.options = options;
+        this.draw = new Draw(view, this, options.drawOptions);
+    }
+    start() {
+        this.returnHeader();
+        this.draw.start();
+    }
+    stop() {
+        this.draw.stop();
+    }
+    update(draw) {
+        let con = draw.context, view = draw.view, img = this.scopedImage;
+        // 소스
+        con.drawImage(img.image, 0, 0, img.width, img.height);
+        // 스캐너
+        this.scannerOffset += this.options.scannerSpeed * draw.speed;
+        var headerSize = ScannerUtils.headerOffset * view.width;
+        if (this.scannerOffset > view.width + headerSize)
+            this.returnHeader();
+        con.fillStyle = ScannerUtils.createHeaderGradient(con, { x: this.scannerOffset, y: 0 }, { width: view.width, height: 0 }); // view.height/2})
+        con.fillRect(0, 0, view.width, view.height);
+        // 도트
+        let scannerOffset = this.scannerOffset + (ScannerUtils.headerOffset * view.width);
+        let lefpad = view.width * ScannerUtils.headerLeftPadding, rigpad = view.width * ScannerUtils.headerRightPadding;
+        for (let dot of this.dots) {
+            if (dot.x > scannerOffset && dot.x < scannerOffset + rigpad) {
+                dot.transparent = (scannerOffset + rigpad - dot.x) / rigpad;
+            }
+            else if (dot.x < scannerOffset && dot.x > scannerOffset - lefpad) {
+                dot.transparent = (dot.x - (scannerOffset - lefpad)) / lefpad;
+            }
+            else if (dot.id != this.scannerIndex) {
+                dot.respawn(this.dotSpawn());
+                dot.id = this.scannerIndex;
+                dot.transparent = 0;
+                continue;
+            }
+            dot.draw(con);
+        }
+        if (this.debug && this.mask) {
+            let mask = this.mask, size = mask.size, rect = mask.rect;
+            con.strokeStyle = '#d2ffc2';
+            con.lineWidth = 2;
+            con.strokeRect(view.width * (rect.x / size.width), view.height * (rect.y / size.height), view.width * (rect.width / size.width), view.height * (rect.height / size.height));
+        }
+    }
+    returnHeader() {
+        this.scannerOffset = ScannerUtils.headerReturnOffset * this.view.width;
+        this.scannerIndex++;
+    }
+    dotSpawn() {
+        let mask = this.mask;
+        while (true) {
+            let point = RandomUtils.doublePointRand(mask.points);
+            if (!mask.getScoreBoolean(point, this.options.maskOptions.minDiff))
+                continue;
+            point.x = this.view.width * (point.x / mask.size.width);
+            point.y = this.view.height * (point.y / mask.size.height);
+            return point;
+        }
+    }
+}
+let scanner;
+let view = document.getElementById('canvas');
+function runScanner(src, options, debug) {
+    view.width = document.body.clientWidth
+    view.height = document.body.clientHeight
+    console.log(view.width, view.height)
+    ImageUtils.loadCanvas(src).then(image => {
+        scanner = new Scanner(ImageUtils.canvas(view));
+        scanner.build(image, options);
+        if (debug) {
+            scanner.debug = true;
+            scanner.draw.showFPS = true;
+            console.log('build complete!');
+        }
+        scanner.start();
+    });
+}
+//# sourceMappingURL=analysis.js.map
+    </script>
+</body>
+</html>

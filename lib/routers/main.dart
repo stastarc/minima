@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:minima/app/frontend/lens/main.dart';
 import 'package:minima/app/frontend/myplant/main.dart';
-import 'package:minima/routers/lens.dart';
 import 'package:minima/app/frontend/market/main.dart';
 
 class MainPage extends StatefulWidget {
