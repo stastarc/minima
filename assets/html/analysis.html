@@ -275,14 +275,14 @@ class ScannerOptions {
         this.maskOptions = maskOptions;
     }
     static default() {
-        return new ScannerOptions(720, 8, 3.2, 128, 128, {
+        return new ScannerOptions(720, 15, 3.2, 92, 128, {
             baseRefreshRate: 1000 / 144
         }, {
             color: new DotColor("#ffffff", "#d2fde6"),
-            maxSize: 3,
-            minSize: 3
+            maxSize: 2.5,
+            minSize: 2.5
         }, {
-            minLight: 100,
+            minLight: 80,
             minDiff: 10
         });
     }
@@ -408,7 +408,7 @@ class Scanner {
         con.drawImage(img.image, 0, 0, img.width, img.height);
         // 스캐너
         this.scannerOffset += this.options.scannerSpeed * draw.speed;
-        var headerSize = ScannerUtils.headerOffset * view.width;
+        var headerSize = ScannerUtils.headerOffset * (view.width * 1.5);
         if (this.scannerOffset > view.width + headerSize)
             this.returnHeader();
         con.fillStyle = ScannerUtils.createHeaderGradient(con, { x: this.scannerOffset, y: 0 }, { width: view.width, height: 0 }); // view.height/2})

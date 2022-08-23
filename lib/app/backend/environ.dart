@@ -33,6 +33,8 @@ class Environ {
 
   static Future<TResult?> tryResponseParse<TResult>(
       dynamic res, TResult Function(dynamic) convert) async {
+    // print(utf8.decode(res.bodyBytes));
+    // print(utf8.decode(await res.stream.toBytes()));
     if (res.statusCode != 200) {
       throw HttpException(
           '${res.request?.url.path} ${res.statusCode} ${res.reasonPhrase}');

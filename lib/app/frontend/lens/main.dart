@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:minima/app/frontend/lens/pages/analysis.dart';
 import 'package:minima/app/frontend/lens/widgets/bottombar.dart';
 import 'package:minima/app/frontend/lens/widgets/camera.dart';
@@ -29,10 +32,15 @@ class _LensPageState extends State<LensPage> {
 
   void onCamera() async {
     if (_onCamera == null) return;
-    _onCamera!().then((image) {
-      // if (image == null) return;
-      Navigator.push(context, slideRTL(AnalysisPage(image: image)));
-    });
+    final data = (await _onCamera!())?.readAsBytesSync() ??
+        (kDebugMode
+            ? (await rootBundle.load('assets/images/dummy/야추.jpg'))
+                .buffer
+                .asUint8List()
+            : null);
+    if (data == null) return;
+
+    await Navigator.push(context, slideRTL(AnalysisPage(image: data)));
   }
 
   void onChange() {

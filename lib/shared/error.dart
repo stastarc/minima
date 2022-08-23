@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class BackendError {
   final String message;
   final int code;
@@ -6,7 +8,10 @@ class BackendError {
 
   factory BackendError.unknown() => const BackendError('알 수 없는 오류가 발생했습니다.', 0);
 
-  BackendError.fromException(Object e)
-      : message = e.toString(),
-        code = e.runtimeType.toString().hashCode;
+  static BackendError fromException(Object e) {
+    if (kDebugMode) {
+      print(e);
+    }
+    return BackendError(e.toString(), e.runtimeType.toString().hashCode);
+  }
 }

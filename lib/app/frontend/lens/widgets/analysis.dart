@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,30 +8,41 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class AnalysisAnimationView extends StatefulWidget {
   final double? width, height;
+  final Uint8List image;
 
-  const AnalysisAnimationView({super.key, this.width, this.height});
+  const AnalysisAnimationView({
+    super.key,
+    this.width,
+    this.height,
+    required this.image,
+  });
+
   @override
   State createState() => _AnalysisAnimationViewState();
 }
 
 class _AnalysisAnimationViewState extends State<AnalysisAnimationView> {
   late WebViewController _controller;
+  bool isLoading = true;
 
-  void onWebViewCreated(WebViewController controller) {
+  void onWebViewCreated(WebViewController controller) async {
     _controller = controller;
-    rootBundle.loadString('assets/html/analysis.html').then((html) {
-      controller.loadHtmlString(html);
+    controller.loadHtmlString(
+        await rootBundle.loadString('assets/html/analysis.html'));
+  }
+
+  void onPageFinished(String url) async {
+    await _controller.runJavascript(
+        "runScanner('data:image/jpg;base64,${base64.encode(widget.image)}', ScannerOptions.default(), false)");
+    await Future.delayed(const Duration(milliseconds: 200));
+    setState(() {
+      isLoading = false;
     });
   }
 
-  void onPageFinished(String url) {
-    Future.delayed(const Duration(seconds: 1), () {
-      rootBundle.load('assets/images/dummy/야추.jpg').then((bytes) {
-        final str =
-            "runScanner('data:image/jpg;base64,${base64.encode(bytes.buffer.asUint8List())}', ScannerOptions.default(), false)";
-        _controller.runJavascript(str);
-      });
-    });
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -38,7 +51,7 @@ class _AnalysisAnimationViewState extends State<AnalysisAnimationView> {
       width: widget.width,
       height: widget.height,
       child: WebView(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.transparent,
           initialUrl: 'about:blank',
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: onWebViewCreated,

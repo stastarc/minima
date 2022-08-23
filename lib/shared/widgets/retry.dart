@@ -5,10 +5,15 @@ import '../error.dart';
 class RetryButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String? text;
+  final String buttonText;
   final BackendError error;
 
   const RetryButton(
-      {super.key, required this.onPressed, this.text, required this.error});
+      {super.key,
+      required this.onPressed,
+      this.text,
+      required this.error,
+      this.buttonText = '다시 시도'});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +28,9 @@ class RetryButton extends StatelessWidget {
         const SizedBox(height: 16),
         OutlinedButton(
             onPressed: onPressed,
-            child: const Text(
-              '다시 시도',
-              style: TextStyle(color: Colors.black45),
+            child: Text(
+              buttonText,
+              style: const TextStyle(color: Colors.black45),
             ))
       ]),
     );
