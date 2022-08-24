@@ -12,34 +12,45 @@ class CDN {
     return Environ.api(Environ.cdnServer, '/data/$id');
   }
 
-  static CachedNetworkImage image({
+  static Widget _buildError({
+    double placeholderSize = 100,
+    String errorComment = '이미지 준비중',
+  }) {
+    return Center(
+        child: Text(errorComment,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 172, 172, 172),
+                fontSize: 16 * (placeholderSize / 100))));
+  }
+
+  static Widget image({
     Color placeholderColor = const Color.fromARGB(255, 192, 195, 210),
     double placeholderSize = 100,
     String errorComment = '이미지 준비중',
     BoxFit? fit,
     double? width,
     double? height,
-    required String id,
+    required String? id,
   }) {
+    if (id == null || id.isEmpty) {
+      return _buildError(
+          placeholderSize: placeholderSize, errorComment: errorComment);
+    }
+
     return CachedNetworkImage(
-      fit: fit,
-      width: width,
-      height: height,
-      imageUrl: link(id).toString(),
-      placeholder: (_, __) => Center(
-        child: Loading(
-          color: placeholderColor,
-          size: 52 * (placeholderSize / 100),
-        ),
-      ),
-      errorWidget: (_, __, ___) => Center(
-        child: Text(errorComment,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 172, 172, 172),
-                fontSize: 16 * (placeholderSize / 100))),
-      ),
-    );
+        fit: fit,
+        width: width,
+        height: height,
+        imageUrl: link(id).toString(),
+        placeholder: (_, __) => Center(
+              child: Loading(
+                color: placeholderColor,
+                size: 52 * (placeholderSize / 100),
+              ),
+            ),
+        errorWidget: (_, __, ___) => _buildError(
+            errorComment: errorComment, placeholderSize: placeholderSize));
   }
 }

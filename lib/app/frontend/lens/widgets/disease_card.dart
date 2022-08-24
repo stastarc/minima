@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/models/lens/analysis.dart';
+import 'package:minima/shared/widgets/bottom_sheet.dart';
 import 'package:minima/shared/widgets/rounded_card.dart';
+import 'package:collection/collection.dart';
+
+import 'disease_sheet.dart';
 
 class DiseaseCard extends StatelessWidget {
   final AnalysisDiseaseData? disease;
@@ -30,39 +35,59 @@ class DiseaseCard extends StatelessWidget {
           fontSize: 16,
         ),
       ),
+      const SizedBox(height: 4),
     ]);
   }
 
-  Widget buildDisease() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Row(children: const [
-        Icon(Icons.warning_rounded, color: Colors.red, size: 26),
-        SizedBox(width: 8),
+  Widget buildDisease(BuildContext context) {
+    void onTab() {
+      showSheet(context,
+          padding: EdgeInsets.zero, child: DiseaseSheet(disease: disease!));
+    }
+
+    return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: CDN.image(
+            width: 92,
+            height: 92,
+            id: disease!.images.firstOrNull,
+            fit: BoxFit.cover),
+      ),
+      const SizedBox(width: 14),
+      Expanded(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
-          '질병 있음',
-          style: TextStyle(
-            color: Colors.red,
-            fontSize: 17,
+          disease!.name,
+          style: const TextStyle(
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-      ]),
-      const SizedBox(height: 8),
-      Text(
-        '이 식물은 질병이 있습니다.',
-        style: TextStyle(
-          color: Colors.red,
-          fontSize: 17,
+        Text(
+          disease!.content,
+          style: const TextStyle(fontSize: 15, color: Color(0xFF3D3D3D)),
         ),
-      ),
-      const SizedBox(height: 8),
-      Text(
-        '${disease!.name}',
-        style: TextStyle(
-          color: Colors.red,
-          fontSize: 17,
-        ),
-      ),
+        Align(
+            alignment: Alignment.topRight,
+            child: GestureDetector(
+              onTap: onTab,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Text(
+                    '자세히',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 18,
+                  )
+                ],
+              ),
+            ))
+      ]))
     ]);
   }
 
@@ -71,8 +96,9 @@ class DiseaseCard extends StatelessWidget {
     final hasDisease = disease != null;
     return RCard(
       width: double.infinity,
+      padding: const EdgeInsets.all(14),
       color: hasDisease ? const Color(0xFFF8E5E5) : const Color(0xFFD3F1DB),
-      child: hasDisease ? buildDisease() : buildHealthy(),
+      child: hasDisease ? buildDisease(context) : buildHealthy(),
     );
   }
 }

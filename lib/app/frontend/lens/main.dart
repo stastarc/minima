@@ -34,7 +34,7 @@ class _LensPageState extends State<LensPage> {
     if (_onCamera == null) return;
     final data = (await _onCamera!())?.readAsBytesSync() ??
         (kDebugMode
-            ? (await rootBundle.load('assets/images/dummy/야추.jpg'))
+            ? (await rootBundle.load('assets/images/dummy/질병.jpg'))
                 .buffer
                 .asUint8List()
             : null);

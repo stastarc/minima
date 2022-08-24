@@ -116,7 +116,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                   right: 0,
                   child: ListView(
                     children: [
-                      const SizedBox(height: backgroundHeight - 20 - 4),
+                      const SizedBox(height: backgroundHeight - (20 * 2) - 4),
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
