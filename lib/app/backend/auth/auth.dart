@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
 import 'package:minima/app/backend/environ.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-enum SocialType { kakao, google, apple }
+import 'user.dart';
+import '../../models/auth/auth.dart';
 
 enum SocialLoginStatus { cancelled, success, backendError, socialError }
 
@@ -72,12 +73,12 @@ class Auth {
     try {
       switch (type) {
         case SocialType.kakao:
-          OAuthToken otoken;
+          kakao.OAuthToken otoken;
           // if (await isKakaoTalkInstalled()) {
           //   otoken = await UserApi.instance.loginWithKakaoTalk();
           // } else {
           // }
-          otoken = await UserApi.instance.loginWithKakaoAccount();
+          otoken = await kakao.UserApi.instance.loginWithKakaoAccount();
           token = otoken.accessToken;
           break;
         case SocialType.google:
@@ -126,5 +127,11 @@ class Auth {
     } else {
       return false;
     }
+  }
+
+  Future<void> logout() async {
+    storage.remove('auth.token');
+    User.instance.profile = null;
+    token = null;
   }
 }

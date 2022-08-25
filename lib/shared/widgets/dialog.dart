@@ -71,3 +71,20 @@ class MessageDialog extends StatelessWidget {
     );
   }
 }
+
+void showMessageDialog(
+  BuildContext context, {
+  required String title,
+  required String message,
+  required List<MessageDialogButtion> buttons,
+  TextAlign textAlign = TextAlign.left,
+}) {
+  showDialog(
+      context: context,
+      builder: (c) => MessageDialog(
+            title: title,
+            message: message,
+            buttons: buttons,
+            textAlign: textAlign,
+          ));
+}

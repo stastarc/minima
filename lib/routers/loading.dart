@@ -1,7 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:minima/app/backend/auth/auth.dart';
+import 'package:minima/app/backend/auth/user.dart';
 import 'package:minima/shared/pllogo.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -16,7 +17,18 @@ class _LoadingPageState extends State<LoadingPage> {
   void initState() {
     super.initState();
     Timer(const Duration(), () async {
-      if (await Auth.instance.verifyToken()) {
+      bool isAuth = false;
+
+      try {
+        isAuth = await User.instance.getMyCached() != null;
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+        isAuth = false;
+      }
+
+      if (isAuth) {
         Navigator.of(context).pushReplacementNamed('/main');
       } else {
         Navigator.of(context).pushReplacementNamed('/login');

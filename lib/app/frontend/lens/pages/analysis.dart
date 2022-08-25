@@ -8,6 +8,7 @@ import 'package:minima/app/frontend/lens/widgets/result_view.dart';
 import 'package:minima/app/models/lens/analysis.dart';
 import 'package:minima/routers/_route.dart';
 import 'package:minima/shared/error.dart';
+import 'package:minima/shared/skeletons/skeleton.dart';
 import 'package:minima/shared/skeletons/skeleton_box.dart';
 import 'package:minima/shared/widgets/page.dart';
 import 'package:minima/shared/widgets/retry.dart';
@@ -62,9 +63,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
           return AnalysisResultView(result: result);
         }
 
-        return const SkeletonBox(
-          width: double.infinity,
-        );
+        return const Skeleton(child: AnalysisResultViewSkeleton());
       },
     );
   }

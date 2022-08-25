@@ -1,8 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:minima/main.dart';
-import 'package:workmanager/workmanager.dart';
 
 class Notify {
   static Notify? _instance;
@@ -23,7 +19,7 @@ class Notify {
   }
 
   Future<void> onBackgroundUpdate() async {
-    showNotification(title: 'ddddd', body: 'ddddd');
+    // showNotification(title: 'ddddd', body: 'ddddd');
   }
 
   Future<bool?> requestPermission() async {

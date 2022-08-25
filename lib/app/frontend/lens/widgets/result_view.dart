@@ -8,6 +8,8 @@ import 'package:minima/app/frontend/lens/widgets/related_images.dart';
 import 'package:minima/app/frontend/lens/widgets/related_plants.dart';
 import 'package:minima/app/frontend/lens/widgets/related_product.dart';
 import 'package:minima/app/models/lens/analysis.dart';
+import 'package:minima/shared/skeletons/skeleton_box.dart';
+import 'package:minima/shared/skeletons/skeleton_text.dart';
 
 class AnalysisResultView extends StatelessWidget {
   final AnalysisResultData result;
@@ -34,7 +36,7 @@ class AnalysisResultView extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             Text(
               plant.name.en ?? 'Unknown',
               style: const TextStyle(
@@ -42,18 +44,18 @@ class AnalysisResultView extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 12),
             MoreRCard(
                 width: double.infinity,
                 moreChild: Text(
                   plant.moreDescription,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w500, height: 1.4),
+                      fontSize: 14, fontWeight: FontWeight.w500, height: 1.4),
                 ),
                 child: Text(
                   plant.description,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w500, height: 1.4),
+                      fontSize: 14, fontWeight: FontWeight.w500, height: 1.4),
                 )),
             const SizedBox(height: 18),
             DiseaseCard(disease: healthy ? null : result.info.disease),
@@ -83,5 +85,46 @@ class AnalysisResultView extends StatelessWidget {
         ),
       ),
     ]);
+  }
+}
+
+class AnalysisResultViewSkeleton extends StatelessWidget {
+  const AnalysisResultViewSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          child: Column(children: const [
+            SkeletonText(
+              wordLengths: [14],
+              fontSize: 28,
+            ),
+            SizedBox(height: 10),
+            SkeletonText(
+              wordLengths: [14],
+              fontSize: 18,
+            ),
+            SizedBox(height: 18),
+            SkeletonBox(
+              width: double.infinity,
+              height: 50,
+            ),
+            SizedBox(height: 18),
+            SkeletonBox(
+              width: double.infinity,
+              height: 150,
+            ),
+            SizedBox(height: 18),
+            SkeletonBox(
+              width: double.infinity,
+              height: 170,
+            ),
+          ]),
+        ),
+      ],
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minima/app/frontend/lens/main.dart';
+import 'package:minima/app/frontend/my/main.dart';
 import 'package:minima/app/frontend/myplant/main.dart';
 import 'package:minima/app/frontend/market/main.dart';
 
@@ -16,7 +17,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    tabController = TabController(vsync: this, length: 5);
+    tabController = TabController(vsync: this, length: 4);
     tabController.addListener(_handleTabSelection);
   }
 
@@ -33,29 +34,27 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 4,
       child: Scaffold(
         backgroundColor: const Color(0xFFFFFFFF),
         body: TabBarView(
             controller: tabController,
             physics: const NeverScrollableScrollPhysics(),
             children: const [
-              Text('검색'),
               MyPlantPage(),
               LensPage(),
               MarketPage(),
-              Text('마이'),
+              MyPage(),
             ]),
         bottomNavigationBar: TabBar(
           controller: tabController,
           labelColor: const Color(0xFF3D3D3D),
           indicatorColor: Colors.transparent,
           tabs: [
-            Tab(icon: Icon(Icons.search, color: getTabColor(0))),
-            Tab(icon: Icon(Icons.book, color: getTabColor(1))),
-            Tab(icon: Icon(Icons.camera_sharp, color: getTabColor(2))),
-            Tab(icon: Icon(Icons.shopping_bag, color: getTabColor(3))),
-            Tab(icon: Icon(Icons.person, color: getTabColor(4))),
+            Tab(icon: Icon(Icons.book, color: getTabColor(0))),
+            Tab(icon: Icon(Icons.camera_sharp, color: getTabColor(1))),
+            Tab(icon: Icon(Icons.shopping_bag, color: getTabColor(2))),
+            Tab(icon: Icon(Icons.person, color: getTabColor(3))),
           ],
         ),
       ),

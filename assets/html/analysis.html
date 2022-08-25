@@ -262,7 +262,7 @@ class ScannerUtils {
 ScannerUtils.headerOffset = 0.18;
 ScannerUtils.headerReturnOffset = -1.1;
 ScannerUtils.headerRightPadding = .2;
-ScannerUtils.headerLeftPadding = .8;
+ScannerUtils.headerLeftPadding = .6;
 class ScannerOptions {
     constructor(viewScale, dotCount, scannerSpeed, positionChunkSize, scannerChunkSize, drawOptions, dotOptions, maskOptions) {
         this.viewScale = viewScale;
@@ -275,7 +275,7 @@ class ScannerOptions {
         this.maskOptions = maskOptions;
     }
     static default() {
-        return new ScannerOptions(720, 15, 3.2, 92, 128, {
+        return new ScannerOptions(720, 20, 3.2, 92, 128, {
             baseRefreshRate: 1000 / 144
         }, {
             color: new DotColor("#ffffff", "#d2fde6"),

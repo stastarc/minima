@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class RCard extends StatelessWidget {
   final Widget child;
   final Widget? suffix;
+  final CrossAxisAlignment crossAxisAlignment;
   final EdgeInsets padding;
   final Color color;
   final double borderRadius;
@@ -12,6 +13,7 @@ class RCard extends StatelessWidget {
     super.key,
     required this.child,
     this.suffix,
+    this.crossAxisAlignment = CrossAxisAlignment.end,
     this.padding = const EdgeInsets.all(12),
     this.color = const Color(0xFFF9F9F9),
     this.borderRadius = 14,
@@ -32,7 +34,7 @@ class RCard extends StatelessWidget {
       child: suffix == null
           ? child
           : Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: crossAxisAlignment,
               children: [
                 Expanded(child: child),
                 suffix!,

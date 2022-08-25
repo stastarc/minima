@@ -50,7 +50,7 @@ class ManagementView extends StatelessWidget {
           children: [
             Text(title,
                 style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black)),
             RichText(
@@ -59,7 +59,7 @@ class ManagementView extends StatelessWidget {
                   TextSpan(text: data.comment),
                 ],
                     style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                         height: 1.4,
                         color: Color(0xFF5D5D5D)))),

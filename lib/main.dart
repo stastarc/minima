@@ -29,7 +29,7 @@ Future<void> main() async {
     ],
   );
 
-  Workmanager().initialize(callbackDispatcher, isInDebugMode: kDebugMode);
+  Workmanager().initialize(callbackDispatcher); //, isInDebugMode: kDebugMode);
   Workmanager().registerPeriodicTask(
     "background_notification",
     "background notification",

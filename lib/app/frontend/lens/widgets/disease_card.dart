@@ -67,7 +67,7 @@ class DiseaseCard extends StatelessWidget {
         ),
         Text(
           disease!.content,
-          style: const TextStyle(fontSize: 15, color: Color(0xFF3D3D3D)),
+          style: const TextStyle(fontSize: 14, color: Color(0xFF3D3D3D)),
         ),
         Align(
             alignment: Alignment.topRight,

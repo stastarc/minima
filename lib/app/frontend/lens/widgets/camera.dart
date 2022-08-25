@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 class CameraView extends StatefulWidget {
-  final void Function(VoidCallback change, Future<File?> Function() capture)
-      onBuilder;
+  final void Function(VoidCallback change, void Function(FlashMode flush) flush,
+      Future<File?> Function() capture) onBuilder;
 
   const CameraView({super.key, required this.onBuilder});
 
@@ -46,21 +47,32 @@ class _CameraViewState extends State<CameraView> {
   }
 
   Future<File?> onCapture() async {
-    return null;
-    if (cameras == null) return null;
-    final image = await cameraController!.takePicture();
-    return File(image.path);
+    // return null;
+    try {
+      if (cameras == null) return null;
+      final image = await cameraController!.takePicture();
+      return File(image.path);
+    } catch (e) {
+      Toast.show('카메라를 사용할 수 없어요.\n$e', duration: Toast.lengthLong);
+      return null;
+    }
+  }
+
+  void onFlush(FlashMode flush) {
+    if (cameraController == null) return;
+    cameraController!.setFlashMode(flush);
   }
 
   @override
   void initState() {
     super.initState();
     initialize();
-    widget.onBuilder(onChangeCamera, onCapture);
+    widget.onBuilder(onChangeCamera, onFlush, onCapture);
   }
 
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return isLoading
         ? Ink(
             width: double.infinity,
