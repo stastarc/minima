@@ -67,7 +67,7 @@ class _QnAViewState extends State<QnAView> {
               '상품문의',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 23,
                 fontWeight: FontWeight.w500,
               ),
             ),

@@ -5,7 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:minima/shared/widgets/bottom_sheet.dart';
 
 void showOpenImageMenu(
-    BuildContext context, void Function(File? image) callback) {
+    BuildContext context, void Function(File? image) callback,
+    {List<BottomMenuItem>? items}) {
   void onPickImage(ImageSource source) async {
     final picker = ImagePicker();
     final image = await picker.pickImage(source: source);
@@ -13,6 +14,7 @@ void showOpenImageMenu(
   }
 
   showBottomMenuSheet(context, [
+    ...?items,
     BottomMenuItem(
         title: '사진 찍기', onPressed: () => onPickImage(ImageSource.camera)),
     BottomMenuItem(

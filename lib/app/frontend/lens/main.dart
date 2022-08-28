@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:minima/app/frontend/lens/pages/analysis.dart';
 import 'package:minima/app/frontend/lens/widgets/bottombar.dart';
 import 'package:minima/app/frontend/lens/widgets/camera.dart';
@@ -31,7 +31,17 @@ class _LensPageState extends State<LensPage> {
     super.initState();
   }
 
-  void onGallery() {}
+  void onGallery() async {
+    try {
+      final picker = ImagePicker();
+      final image = await picker.pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      await Navigator.push(
+          context, slideRTL(AnalysisPage(image: await image.readAsBytes())));
+    } catch (e) {
+      Toast.show('사진을 읽을 수 없어요.\n$e', duration: Toast.lengthLong);
+    }
+  }
 
   void onCamera() async {
     if (_onCamera == null) return;
@@ -76,7 +86,7 @@ class _LensPageState extends State<LensPage> {
       children: [
         Positioned(
             top: 52,
-            bottom: 130,
+            bottom: 130 - 16,
             left: 0,
             right: 0,
             child: CameraView(

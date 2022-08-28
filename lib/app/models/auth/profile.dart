@@ -2,8 +2,8 @@ import 'package:minima/app/models/auth/auth.dart';
 
 class ProfileData {
   final int id;
-  final String nickname;
-  final String? picture;
+  String nickname;
+  String? picture;
   final SocialType socialType;
   final String email;
   final UserStatus status;

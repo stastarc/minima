@@ -59,10 +59,13 @@ class _MyPlantItemPageState extends State<MyPlantItemPage> {
       controller: scroll ??= InfinityScrollController(
           onArrived: onArrived,
           onArrivedAt: onArrivedAt,
-          arrivedAtList: [0, 250],
+          arrivedAtList: [
+            const Arrived(arrivedAt: 0, proximityPixel: 240),
+            const Arrived(arrivedAt: 250, proximityPixel: 50)
+          ],
           proximityPixel: MediaQuery.of(context).size.height * 2),
       children: [
-        const SizedBox(height: 250 - 12 - 2),
+        const SizedBox(height: 250 - 12 * 2),
         Container(
           width: double.infinity,
           decoration: BoxDecoration(

@@ -40,7 +40,7 @@ class _TextTabBarState extends State<TextTabBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 29,
+        height: 25,
         decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(
@@ -58,7 +58,7 @@ class _TextTabBarState extends State<TextTabBar> {
                           padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
                           child: Ink(
                             width: double.infinity,
-                            height: 28,
+                            height: 24,
                             decoration: currentTab == i
                                 ? const BoxDecoration(
                                     border: Border(
@@ -71,7 +71,7 @@ class _TextTabBarState extends State<TextTabBar> {
                               tab,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   color: Color(0xFF494949),
                                   fontWeight: FontWeight.w600),
                             ),

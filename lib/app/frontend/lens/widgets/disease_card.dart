@@ -21,7 +21,7 @@ class DiseaseCard extends StatelessWidget {
           '질병 없음',
           style: TextStyle(
             color: Colors.black,
-            fontSize: 16,
+            fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -32,7 +32,7 @@ class DiseaseCard extends StatelessWidget {
         style: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.w500,
-          fontSize: 16,
+          fontSize: 14,
         ),
       ),
       const SizedBox(height: 4),
@@ -61,7 +61,7 @@ class DiseaseCard extends StatelessWidget {
         Text(
           disease!.name,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -78,11 +78,11 @@ class DiseaseCard extends StatelessWidget {
                 children: const [
                   Text(
                     '자세히',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
-                    size: 18,
+                    size: 17,
                   )
                 ],
               ),

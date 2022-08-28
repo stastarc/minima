@@ -17,14 +17,12 @@ class _MarketPageState extends State<MarketPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView(
-        scrollDirection: Axis.vertical,
-        children: const [
-          MarketTopBar(),
-          FeedPage(),
-        ],
-      ),
+    return ListView(
+      scrollDirection: Axis.vertical,
+      children: const [
+        MarketTopBar(),
+        FeedPage(),
+      ],
     );
   }
 }

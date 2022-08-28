@@ -55,17 +55,8 @@ class _FeedPartViewState extends State<FeedPartView> {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
               child: Text(widget.title,
                   style: const TextStyle(
-                      fontSize: 26, fontWeight: FontWeight.bold))),
-          ProductRow(
-              products: widget.products,
-              productBuilder: (products) sync* {
-                yield const SizedBox(width: 16);
-                for (final product in products) {
-                  yield product;
-                }
-                yield const SizedBox(width: 16);
-              },
-              onPressed: onProductPressed),
+                      fontSize: 20, fontWeight: FontWeight.bold))),
+          ProductRow(products: widget.products, onPressed: onProductPressed),
         ]);
   }
 }
@@ -84,7 +75,7 @@ class FeedPartSkeleton extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
               child: SkeletonText(
-                fontSize: 30,
+                fontSize: 20,
                 wordLengths: wordLengths,
                 lineHeight: .5,
               )),

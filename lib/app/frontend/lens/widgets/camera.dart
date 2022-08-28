@@ -58,9 +58,9 @@ class _CameraViewState extends State<CameraView> {
     }
   }
 
-  void onFlush(FlashMode flush) {
+  void onFlush(FlashMode flush) async {
     if (cameraController == null) return;
-    cameraController!.setFlashMode(flush);
+    await cameraController!.setFlashMode(flush);
   }
 
   @override

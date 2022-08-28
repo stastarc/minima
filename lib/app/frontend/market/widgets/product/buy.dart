@@ -98,7 +98,7 @@ class _BuySheetState extends State<BuySheet> {
         const Text(
           '옵션 선택하기',
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 23,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -124,7 +124,7 @@ class _BuySheetState extends State<BuySheet> {
             Text(
               '총 ${currencyFormat(getTotalPrice())}원',
               style: const TextStyle(
-                fontSize: 23,
+                fontSize: 22,
                 color: Color(0xFF54CE87),
                 fontWeight: FontWeight.bold,
               ),
@@ -134,9 +134,9 @@ class _BuySheetState extends State<BuySheet> {
                   ? '무료배송 (${currencyFormat(Market.instance.freeDelivery)}원 이상 주문시)'
                   : '배송비 ${currencyFormat(widget.product.deliveryPrice)}원',
               style: const TextStyle(
-                fontSize: 13,
+                fontSize: 12,
                 color: Color(0xFF8E8E8E),
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
               ),
             )
           ]),
@@ -224,8 +224,8 @@ class _BuyOptionItemState extends State<BuyOptionItem> {
               Text(
                 widget.option.name,
                 style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const Spacer(),

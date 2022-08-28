@@ -32,16 +32,16 @@ class AnalysisResultView extends StatelessWidget {
               plant.name.ko ?? '알수없음',
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 28,
+                fontSize: 27,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Text(
               plant.name.en ?? 'Unknown',
               style: const TextStyle(
                 color: Colors.black54,
-                fontSize: 18,
+                fontSize: 17,
               ),
             ),
             const SizedBox(height: 12),

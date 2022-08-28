@@ -10,6 +10,7 @@ import 'package:minima/shared/error.dart';
 import 'package:minima/shared/skeletons/skeleton.dart';
 import 'package:minima/shared/skeletons/skeleton_box.dart';
 import 'package:minima/shared/skeletons/skeleton_text.dart';
+import 'package:minima/shared/widgets/bottom_sheet.dart';
 import 'package:minima/shared/widgets/button.dart';
 import 'package:minima/shared/widgets/datepicker.dart';
 import 'package:minima/shared/widgets/dialog.dart';
@@ -162,10 +163,21 @@ class _DiaryEditPageState extends State<DiaryEditPage> {
     } else if (image is File) {
       child = Image.file(image, fit: BoxFit.cover);
     } else {
-      child = const Icon(
-        Icons.add,
-        size: 32,
-        color: Colors.white,
+      child = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.add,
+            size: 32,
+            color: Colors.white,
+          ),
+          if (index <= 1)
+            const Text('사진은 5장까지 추가할 수 있어요.',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500)),
+        ],
       );
     }
     return ClipButton(

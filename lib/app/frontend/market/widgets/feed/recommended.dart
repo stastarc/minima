@@ -35,7 +35,7 @@ class RecommendedView extends StatelessWidget {
           children: [
             Text(comment,
                 style: const TextStyle(
-                    fontSize: 26,
+                    fontSize: 23,
                     fontWeight: FontWeight.bold,
                     color: Colors.black)),
             const SizedBox(height: 8),

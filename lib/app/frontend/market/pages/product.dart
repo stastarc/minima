@@ -106,7 +106,7 @@ class _ProductPageState extends State<ProductPage> {
                       product: product,
                     ),
                     const SizedBox(
-                      height: 100,
+                      height: 8,
                     )
                   ])),
                   ProductBottomBar(product: product),

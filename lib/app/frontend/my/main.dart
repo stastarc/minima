@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:minima/app/backend/auth/auth.dart';
 import 'package:minima/app/backend/auth/user.dart';
+import 'package:minima/app/frontend/my/pages/profile_edit.dart';
 import 'package:minima/app/frontend/my/widgets/card_item.dart';
 import 'package:minima/app/frontend/my/widgets/profile_picture.dart';
 import 'package:minima/app/models/auth/profile.dart';
+import 'package:minima/routers/_route.dart';
 import 'package:minima/shared/error.dart';
 import 'package:minima/shared/widgets/dialog.dart';
 import 'package:minima/shared/widgets/retry.dart';
@@ -81,7 +83,11 @@ class _MyPageState extends State<MyPage> {
                           ],
                         ),
                       ),
-                      const Icon(Icons.edit_outlined, size: 22),
+                      GestureDetector(
+                        onTap: () => Navigator.push(context,
+                            slideRTL(ProfileEditPage(profile: profile))),
+                        child: const Icon(Icons.edit_outlined, size: 22),
+                      ),
                     ],
                   ),
                 ),

@@ -23,7 +23,7 @@ class ProductTitle extends StatelessWidget {
         Text(title,
             maxLines: 2,
             style: const TextStyle(
-              fontSize: 26,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
             )),
         const SizedBox(height: 2),
@@ -31,7 +31,7 @@ class ProductTitle extends StatelessWidget {
             maxLines: 2,
             style: const TextStyle(
               color: Color(0xFF888888),
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: FontWeight.w600,
             )),
         const SizedBox(height: 4),
@@ -39,7 +39,7 @@ class ProductTitle extends StatelessWidget {
           children: [
             RatingBarIndicator(
                 rating: rating,
-                itemSize: 22,
+                itemSize: 20,
                 itemBuilder: (context, index) => const Icon(
                       Icons.star,
                       color: Colors.amber,

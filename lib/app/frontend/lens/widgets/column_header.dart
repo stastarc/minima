@@ -13,14 +13,14 @@ class ColumnHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 32),
+          Icon(icon, size: 30),
           const SizedBox(width: 4),
           Text(
             title,
             style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: 18,
             ),
           ),
         ],

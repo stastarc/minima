@@ -27,7 +27,7 @@ class InfoWarp extends StatelessWidget {
             Text(value,
                 style: const TextStyle(
                     fontSize: 13,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                     color: Color(0xFF54CE8A))),
             RatingBarIndicator(
                 itemCount: 3,
@@ -66,8 +66,8 @@ class InfoWarp extends StatelessWidget {
                 ),
                 Text(inf.item1,
                     style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                         color: Color(0xFF888888))),
                 const Spacer(),
                 specialInfo(inf.item1, inf.item2) ??
@@ -76,7 +76,7 @@ class InfoWarp extends StatelessWidget {
                         textAlign: TextAlign.right,
                         style: const TextStyle(
                             fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                             color: Color(0xFF54CE8A))),
                 const SizedBox(
                   width: 8,

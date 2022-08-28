@@ -25,13 +25,13 @@ class RatingItem extends StatelessWidget {
           Text(
             '${rating.writer?.nickname ?? '익명'} (${dateFormat(rating.updatedAt)})',
             style: const TextStyle(
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: Color(0xFF555555)),
           ),
           RatingBarIndicator(
               rating: rating.rating.toDouble(),
-              itemSize: 24,
+              itemSize: 22,
               itemBuilder: (context, index) => const Icon(
                     Icons.star,
                     color: Colors.amber,
@@ -40,7 +40,7 @@ class RatingItem extends StatelessWidget {
           Text(
             rating.comment,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -48,7 +48,7 @@ class RatingItem extends StatelessWidget {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-              height: 240,
+              height: 220,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Row(

@@ -81,7 +81,7 @@ class _RatingViewState extends State<RatingView> {
             '상품평',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 23,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -94,7 +94,7 @@ class _RatingViewState extends State<RatingView> {
             child: Row(children: [
               RatingBarIndicator(
                   rating: (ratings ?? widget)?.average ?? 0,
-                  itemSize: 28,
+                  itemSize: 25,
                   itemBuilder: (context, index) => const Icon(
                         Icons.star,
                         color: Colors.amber,

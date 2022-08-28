@@ -35,7 +35,6 @@ class _AnalysisAnimationViewState extends State<AnalysisAnimationView> {
     if (!isLoading) return;
     await _controller.runJavascript(
         "runScanner('data:image/jpg;base64,${base64.encode(widget.image)}', ScannerOptions.default(), false)");
-    await Future.delayed(const Duration(milliseconds: 200));
     isLoading = false;
     setState(() {});
   }

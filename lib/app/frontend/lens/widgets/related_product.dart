@@ -18,11 +18,6 @@ class RelatedProductView extends StatelessWidget {
         const ColumnHeader(title: '관련 상품', icon: Icons.shopping_bag_outlined),
         ProductRow(
             products: products,
-            productBuilder: (products) sync* {
-              for (final product in products) {
-                yield product;
-              }
-            },
             onPressed: (product) {
               Navigator.push(
                   context,

@@ -35,6 +35,7 @@ dependencies:
   flutter_local_notifications:
   workmanager:
   webview_flutter:
+  image:
 
 dev_dependencies:
   flutter_test:

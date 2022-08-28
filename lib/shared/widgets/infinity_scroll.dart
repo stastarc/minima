@@ -128,7 +128,7 @@ class _InfinityScrollListViewState extends State<InfinityScrollListView> {
 class InfinityScrollController extends ScrollController {
   final VoidCallback onArrived;
   final void Function(double)? onArrivedAt;
-  final List<double>? arrivedAtList;
+  final List<Arrived>? arrivedAtList;
   final double proximityPixel;
 
   InfinityScrollController({
@@ -146,11 +146,29 @@ class InfinityScrollController extends ScrollController {
     }
 
     if (arrivedAtList != null) {
-      for (final arrivedAt in arrivedAtList!) {
-        if (position.pixels >= arrivedAt) {
-          onArrivedAt!(arrivedAt);
+      for (final arrived in arrivedAtList!) {
+        if (position.pixels >= arrived.arrivedAt &&
+            position.pixels < arrived.arrivedAt + arrived.proximityPixel) {
+          if (onArrivedAt != null) {
+            onArrivedAt!(arrived.arrivedAt);
+          }
+
+          if (arrived.onArrived != null) {
+            arrived.onArrived!();
+          }
         }
       }
     }
   }
+}
+
+class Arrived {
+  final double arrivedAt, proximityPixel;
+  final VoidCallback? onArrived;
+
+  const Arrived({
+    required this.arrivedAt,
+    required this.proximityPixel,
+    this.onArrived,
+  });
 }

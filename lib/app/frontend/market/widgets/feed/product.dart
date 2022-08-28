@@ -16,7 +16,7 @@ class ProductItem extends StatelessWidget {
 
   const ProductItem(
       {super.key,
-      this.width = 135,
+      this.width = 130,
       required this.image,
       required this.title,
       required this.price,
@@ -39,24 +39,15 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 270,
       child: TextButton(
           onPressed: onPressed,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                        color: const Color.fromARGB(255, 209, 209, 209))),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: SizedBox(
-                      height: width,
-                      width: width,
-                      child: image,
-                    )),
+              SizedBox(
+                height: width,
+                width: width,
+                child: image,
               ),
               const SizedBox(height: 4),
               Container(
@@ -67,14 +58,15 @@ class ProductItem extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF1A1A1A)),
                 ),
               ),
+              const SizedBox(height: 4),
               Text('${currencyFormat(price)}원',
                   style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       height: 1.2,
                       letterSpacing: .3,
@@ -82,7 +74,7 @@ class ProductItem extends StatelessWidget {
               Row(children: [
                 RatingBarIndicator(
                     rating: rating.toDouble(),
-                    itemSize: 20,
+                    itemSize: 17,
                     itemBuilder: (context, index) => const Icon(
                           Icons.star,
                           color: Colors.amber,
@@ -105,12 +97,11 @@ class ProductItem extends StatelessWidget {
 class ProductItemSkeleton extends StatelessWidget {
   final double width;
 
-  const ProductItemSkeleton({super.key, this.width = 135});
+  const ProductItemSkeleton({super.key, this.width = 130});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 270,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

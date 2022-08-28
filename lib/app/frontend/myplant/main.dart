@@ -65,11 +65,11 @@ class _MyPlantPageState extends State<MyPlantPage> {
               return ListView(
                 children: [
                   const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 50, 0, 22),
+                      padding: EdgeInsets.fromLTRB(0, 38, 0, 16),
                       child: Text('나의 정원',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 32,
+                              fontSize: 27,
                               fontWeight: FontWeight.bold,
                               color: Colors.black))),
                   WidthCalendar(myPlants: myPlants),
@@ -88,11 +88,11 @@ class _MyPlantPageState extends State<MyPlantPage> {
           return ListView(
             children: [
               const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 50, 0, 22),
+                  padding: EdgeInsets.fromLTRB(0, 38, 0, 16),
                   child: Text('나의 정원',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 27,
                           fontWeight: FontWeight.bold,
                           color: Colors.black))),
               Skeleton(

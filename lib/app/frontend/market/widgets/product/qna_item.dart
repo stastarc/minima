@@ -22,7 +22,7 @@ class QnAItem extends StatelessWidget {
           Text(
             '${qna.writer?.nickname ?? '익명'} (${dateFormat(qna.uploadedAt)})',
             style: const TextStyle(
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: Color(0xFF555555)),
           ),
@@ -30,7 +30,7 @@ class QnAItem extends StatelessWidget {
           Text(
             'Q: ${qna.content}',
             style: const TextStyle(
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
                 color: Color(0xFF333333)),
           ),
@@ -38,7 +38,7 @@ class QnAItem extends StatelessWidget {
           Text(
             'A: ${qna.answer ?? '아직 답변이 없습니다.'}',
             style: const TextStyle(
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF444444)),
           ),

@@ -13,35 +13,32 @@ class MarketTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(28, 28, 28, 18),
+      padding: const EdgeInsets.fromLTRB(22, 28, 28, 18),
       child: Row(
         children: [
-          const PLLogo(size: 38),
-          const SizedBox(width: 8),
-          const Text('MARKET',
-              style: TextStyle(
-                  color: Color(0xFF4CC760),
-                  fontFamily: 'ibm',
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800)),
+          const PLLogo(size: 36),
+          const SizedBox(width: 4),
+          // const Text('MARKET',
+          //     style: TextStyle(
+          //         color: Color(0xFF4CC760),
+          //         fontFamily: 'ibm',
+          //         fontSize: 20,
+          //         fontWeight: FontWeight.w800)),
           const Spacer(),
-          PrimaryButton(
-              padding: const EdgeInsets.all(2),
-              decoration: const BoxDecoration(shape: BoxShape.circle),
+          GestureDetector(
               child:
                   const Icon(Icons.search, color: Color(0xFF1A1A1A), size: 28),
-              onPressed: () {
+              onTap: () {
                 Navigator.push(context, fade(const SearchPage()));
               }),
-          PrimaryButton(
-              padding: const EdgeInsets.all(2),
-              decoration: const BoxDecoration(shape: BoxShape.circle),
+          const SizedBox(width: 24),
+          GestureDetector(
               child: const Icon(Icons.shopping_bag_outlined,
                   color: Color(0xFF1A1A1A), size: 28),
-              onPressed: () {
+              onTap: () {
                 Navigator.push(context, slideRTL(const CheckoutPage()));
               }),
-          const SizedBox(width: 16),
+          const SizedBox(width: 24),
           const CircleAvatar(
             radius: 16,
             backgroundColor: Color.fromARGB(255, 255, 166, 166),

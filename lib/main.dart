@@ -21,8 +21,8 @@ final routes = <String, WidgetBuilder>{
 Future<void> main() async {
   KakaoSdk.init(nativeAppKey: '2ee4d13ab260eb610cf7ae9a2a3d57d3');
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
-      overlays: [SystemUiOverlay.top]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom]);
   SystemChrome.setPreferredOrientations(
     [
       DeviceOrientation.portraitUp,
