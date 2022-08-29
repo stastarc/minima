@@ -20,6 +20,9 @@ final routes = <String, WidgetBuilder>{
 
 Future<void> main() async {
   KakaoSdk.init(nativeAppKey: '2ee4d13ab260eb610cf7ae9a2a3d57d3');
+
+  await initializeDateFormatting(locale);
+
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom]);
@@ -29,15 +32,19 @@ Future<void> main() async {
     ],
   );
 
+  await (await Notify.instance.init()).requestPermission();
+
   Workmanager().initialize(callbackDispatcher); //, isInDebugMode: kDebugMode);
+  // IOS not support
   Workmanager().registerPeriodicTask(
     "background_notification",
     "background notification",
     frequency: const Duration(minutes: 15),
   );
-  await (await Notify.instance.init()).requestPermission();
-
-  await initializeDateFormatting(locale);
+  if (kDebugMode) {
+    Workmanager().registerOneOffTask(
+        'background_notification_test', 'background notification test');
+  }
 
   runApp(
     MaterialApp(

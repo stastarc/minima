@@ -2,6 +2,8 @@
     package="com.example.minima">
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-feature android:name="android.hardware.camera.flash" />
    <application
         android:label="minima"
         android:name="${applicationName}"

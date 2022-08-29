@@ -46,6 +46,11 @@ String isoDateFormat(DateTime date) {
   return _isoDateFormat.format(date);
 }
 
+String timeFormat(Duration time) {
+  final isAM = time.inHours < 12;
+  return "${isAM ? "오전" : "오후"} ${time.inHours % 12}:${(time.inMinutes % 60).toString().padLeft(2, "0")}";
+}
+
 bool colorIsLight(Color color) {
   final r = color.red;
   final g = color.green;

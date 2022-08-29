@@ -32,24 +32,26 @@ class Environ {
   }
 
   static Future<TResult?> tryResponseParse<TResult>(
-      dynamic res, TResult Function(dynamic) convert) async {
-    // print(utf8.decode(res.bodyBytes));
-    // print(utf8.decode(await res.stream.toBytes()));
+      dynamic res, TResult Function(dynamic) convert,
+      {TResult? Function(String)? failed}) async {
+    String body = utf8.decode(
+        res is StreamedResponse ? await res.stream.toBytes() : res.bodyBytes);
+
+    if (kDebugMode) {
+      print('HTTP: ${res.request?.url.path} : $body');
+    }
+
     if (res.statusCode != 200) {
+      if (failed != null) {
+        final r = failed(body);
+        if (r != null) return r;
+      }
       throw HttpException(
           '${res.request?.url.path} ${res.statusCode} ${res.reasonPhrase}');
     }
 
     try {
-      dynamic data;
-      if (res is Response) {
-        data = jsonDecode(utf8.decode(res.bodyBytes));
-      } else if (res is StreamedResponse) {
-        data = jsonDecode(utf8.decode(await res.stream.toBytes()));
-      } else {
-        throw ArgumentError('res must be Response or StreamedResponse');
-      }
-      return convert(data);
+      return convert(jsonDecode(body));
     } on Exception catch (e) {
       if (kDebugMode) {
         print(e);

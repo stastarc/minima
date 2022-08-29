@@ -42,7 +42,6 @@ class _MyPlantRegisterViewState extends State<MyPlantRegisterView> {
       widget.onDone();
     } catch (e) {
       result = BackendError.fromException(e);
-      setState(() {});
     }
   }
 

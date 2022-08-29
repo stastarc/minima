@@ -14,13 +14,10 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: size,
-        height: size,
-        child: ClipOval(
-          child: image == null
-              ? SvgPicture.asset('assets/images/icons/profile.svg')
-              : CDN.image(id: image),
-        ));
+    return ClipOval(
+      child: image == null
+          ? SvgPicture.asset('assets/images/icons/profile.svg')
+          : CDN.image(id: image, width: size, height: size, fit: BoxFit.cover),
+    );
   }
 }

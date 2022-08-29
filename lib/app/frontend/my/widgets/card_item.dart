@@ -4,14 +4,14 @@ import 'package:minima/shared/widgets/rounded_card.dart';
 class CardItem extends StatelessWidget {
   final String title;
   final Widget icon, child;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const CardItem({
     super.key,
     required this.title,
     required this.icon,
     required this.child,
-    required this.onTap,
+    this.onTap,
   });
 
   @override

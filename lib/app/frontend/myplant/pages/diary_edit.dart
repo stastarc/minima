@@ -89,7 +89,7 @@ class _DiaryEditPageState extends State<DiaryEditPage> {
     }
 
     _isLoading = false;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void retry() {

@@ -75,7 +75,9 @@ extension MyPlantCache on MyPlant {
     req.fields['comment'] = comment;
     req.fields['keep_images'] = keepImages.join(',');
     for (var image in images) {
-      req.files.add(await MultipartFile.fromPath('images', image));
+      req.files.add(MultipartFile.fromBytes(
+          'images', (await CDN.instance.fitImagePath(image, ensure: true))!,
+          filename: 'image.jpg'));
     }
     return await Environ.tryResponseParse(
         await req.send(), (json) => DiaryData.fromJson(json));

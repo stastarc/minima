@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minima/app/backend/auth/auth.dart';
 import 'package:minima/app/backend/auth/user.dart';
+import 'package:minima/app/frontend/my/pages/notify.dart';
 import 'package:minima/app/frontend/my/pages/profile_edit.dart';
 import 'package:minima/app/frontend/my/widgets/card_item.dart';
 import 'package:minima/app/frontend/my/widgets/profile_picture.dart';
@@ -27,6 +28,12 @@ class _MyPageState extends State<MyPage> {
     } catch (e) {
       profile = BackendError.fromException(e);
     }
+  }
+
+  void onUpdate(ProfileData data) {
+    setState(() {
+      profile = data;
+    });
   }
 
   void retry() {
@@ -84,8 +91,12 @@ class _MyPageState extends State<MyPage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.push(context,
-                            slideRTL(ProfileEditPage(profile: profile))),
+                        onTap: () => Navigator.push(
+                            context,
+                            slideRTL(ProfileEditPage(
+                              profile: profile,
+                              onUpdate: onUpdate,
+                            ))),
                         child: const Icon(Icons.edit_outlined, size: 22),
                       ),
                     ],
@@ -108,16 +119,18 @@ class _MyPageState extends State<MyPage> {
                             onTap: () {}),
                         const SizedBox(height: 12),
                         CardItem(
-                            title: '알림 설정',
-                            icon: const Icon(
-                              Icons.notifications_sharp,
-                              size: 32,
-                            ),
-                            child: const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 22,
-                            ),
-                            onTap: () {}),
+                          title: '알림 설정',
+                          icon: const Icon(
+                            Icons.notifications_sharp,
+                            size: 32,
+                          ),
+                          child: const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 22,
+                          ),
+                          onTap: () =>
+                              Navigator.push(context, slideRTL(NotifyPage())),
+                        ),
                         const SizedBox(height: 12),
                         CardItem(
                             title: '개인정보 보호 설정',

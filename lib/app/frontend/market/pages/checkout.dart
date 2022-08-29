@@ -118,6 +118,12 @@ class _CheckoutPagePageState extends State<CheckoutPage> {
 
     final cache = checkout as CheckoutCache;
 
+    if (cache.address == null) {
+      Toast.show('주소를 입력해주세요',
+          duration: Toast.lengthLong, gravity: Toast.bottom);
+      return;
+    }
+
     Navigator.pop(myContext);
     Navigator.push(
         myContext,

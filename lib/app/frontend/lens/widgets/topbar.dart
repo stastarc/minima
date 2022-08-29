@@ -14,15 +14,12 @@ class _TopBarViewState extends State<TopBarView> {
 
   void onFlush() {
     switch (flash) {
-      case FlashMode.off:
-        flash = FlashMode.auto;
-        break;
-      case FlashMode.auto:
-        flash = FlashMode.always;
-        break;
-      case FlashMode.always:
-      default:
+      case FlashMode.torch:
         flash = FlashMode.off;
+        break;
+      case FlashMode.off:
+      default:
+        flash = FlashMode.torch;
         break;
     }
     widget.onFlush(flash);
@@ -48,9 +45,7 @@ class _TopBarViewState extends State<TopBarView> {
           child: Icon(
               flash == FlashMode.off
                   ? Icons.flash_off_rounded
-                  : flash == FlashMode.auto
-                      ? Icons.flash_auto_rounded
-                      : Icons.flash_on_rounded,
+                  : Icons.flash_on_rounded,
               size: 28),
         ),
         const SizedBox(width: 20),

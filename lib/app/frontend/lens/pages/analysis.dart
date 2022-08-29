@@ -16,8 +16,9 @@ import 'package:minima/shared/widgets/retry.dart';
 class AnalysisPage extends StatefulWidget {
   // final File image;
   final Uint8List image;
+  final VoidCallback? onClose;
 
-  const AnalysisPage({super.key, required this.image});
+  const AnalysisPage({super.key, required this.image, this.onClose});
 
   @override
   State createState() => _AnalysisPageState();
@@ -33,6 +34,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     } catch (e) {
       result = BackendError.fromException(e);
     }
+    if (!mounted) return;
     setState(() {});
   }
 
@@ -98,6 +100,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
   Widget build(BuildContext context) {
     const backgroundHeight = 300.0;
     return PageWidget(
+        onClose: widget.onClose,
         fullScreen: true,
         titleColor: Colors.grey[200]!,
         child: SizedBox(

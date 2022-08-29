@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/models/myplant/diary.dart';
 import 'package:minima/app/models/myplant/info.dart';
 import 'package:minima/app/models/myplant/plant.dart';

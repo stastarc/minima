@@ -25,39 +25,72 @@ class _LensPageState extends State<LensPage> {
   Future<File?> Function()? _onCamera;
   VoidCallback? _onChange;
   void Function(FlashMode flush)? _flush;
+  bool _isPaused = false;
 
   @override
   void initState() {
     super.initState();
   }
 
+  void pause() {
+    setState(() {
+      _isPaused = true;
+    });
+  }
+
+  void resume() {
+    setState(() {
+      _isPaused = false;
+    });
+  }
+
   void onGallery() async {
     try {
+      pause();
       final picker = ImagePicker();
       final image = await picker.pickImage(source: ImageSource.gallery);
-      if (image == null) return;
+
+      if (image == null) {
+        resume();
+        return;
+      }
+
       await Navigator.push(
-          context, slideRTL(AnalysisPage(image: await image.readAsBytes())));
+          context,
+          slideRTL(AnalysisPage(
+            image: await image.readAsBytes(),
+            onClose: resume,
+          )));
     } catch (e) {
       Toast.show('사진을 읽을 수 없어요.\n$e', duration: Toast.lengthLong);
+      resume();
     }
   }
 
   void onCamera() async {
     if (_onCamera == null) return;
     try {
+      pause();
       final data = (await _onCamera!())?.readAsBytesSync() ??
           (kDebugMode
               ? (await rootBundle.load('assets/images/dummy/질병.jpg'))
                   .buffer
                   .asUint8List()
               : null);
-      if (data == null) return;
+      if (data == null) {
+        resume();
+        return;
+      }
 
-      await Navigator.push(context, slideRTL(AnalysisPage(image: data)));
+      await Navigator.push(
+          context,
+          slideRTL(AnalysisPage(
+            image: data,
+            onClose: resume,
+          )));
     } catch (e) {
+      resume();
       Toast.show('카메라를 사용할 수 없어요.\n$e', duration: Toast.lengthLong);
-      return;
     }
   }
 
@@ -89,9 +122,13 @@ class _LensPageState extends State<LensPage> {
             bottom: 130 - 16,
             left: 0,
             right: 0,
-            child: CameraView(
-              onBuilder: onBuilder,
-            )),
+            child: _isPaused
+                ? Ink(
+                    color: Colors.black,
+                  )
+                : CameraView(
+                    onBuilder: onBuilder,
+                  )),
         ...buildCameraGrid(context),
         Positioned(
             top: 0,

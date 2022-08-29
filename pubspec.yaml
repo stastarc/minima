@@ -36,6 +36,7 @@ dependencies:
   workmanager:
   webview_flutter:
   image:
+  flutter_time_picker_spinner:
 
 dev_dependencies:
   flutter_test:

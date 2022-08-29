@@ -58,7 +58,7 @@ class _DiaryViewState extends State<DiaryView> {
     }
 
     loading = false;
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void onReset() {
