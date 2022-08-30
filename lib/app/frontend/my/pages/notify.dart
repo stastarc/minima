@@ -6,6 +6,7 @@ import 'package:minima/app/models/notify/settings.dart';
 import 'package:minima/shared/number_format.dart';
 import 'package:minima/shared/widgets/page.dart';
 import 'package:minima/shared/widgets/switch.dart';
+import 'package:minima/shared/widgets/timepicker.dart';
 
 class NotifyPage extends StatefulWidget {
   @override
@@ -71,7 +72,16 @@ class _NotifyPageState extends State<NotifyPage> {
                                   fontSize: 17,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black87)),
-                          onTap: () {})
+                          onTap: () => showTimePickerSheet(
+                                selectedDate: DateTime(1).add(settings.time),
+                                onDone: (time) {
+                                  if (time == null) return;
+                                  settings.time = Duration(
+                                      hours: time.hour, minutes: time.minute);
+                                  onUpdate();
+                                },
+                                context,
+                              ))
                     ],
                   ));
             } else {

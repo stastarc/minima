@@ -1,5 +1,5 @@
 class AnalysisCreditData {
-  final int credit;
+  int credit;
 
   AnalysisCreditData({
     required this.credit,

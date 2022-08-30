@@ -136,7 +136,7 @@ class _MyPlantRegisterViewState extends State<MyPlantRegisterView> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         for (var e in res.schedule!.cycle.entries)
                           if (e.value != null && schi++ < 3)

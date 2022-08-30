@@ -48,8 +48,8 @@ extension MyPlantItemMenu on MyPlantItem {
           title: '정말로 삭제하시겠어요?',
           message: '식물을 정원에서 삭제하면 식물과 함께한 다이어리가 모두 사라져요 😥\n정말로 삭제할까요?',
           buttons: [
-            MessageDialogButtion.closeButton(title: '취소'),
-            MessageDialogButtion.closeButton(
+            MessageDialogButton.closeButton(title: '취소'),
+            MessageDialogButton.closeButton(
                 title: '확인', isDestructive: true, onTap: delete),
           ]);
     }

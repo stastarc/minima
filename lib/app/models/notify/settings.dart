@@ -1,6 +1,7 @@
 class NotifySettings {
   bool enabled;
   Duration time;
+  DateTime? lastNotify;
 
   NotifySettings({
     required this.enabled,
@@ -16,10 +17,14 @@ class NotifySettings {
       : enabled = json['enabled'] as bool,
         time = Duration(
           seconds: (json['time'] as num).toInt(),
-        );
+        ),
+        lastNotify = json['last_notify'] != null
+            ? DateTime.parse(json['last_notify'] as String)
+            : null;
 
   Map<String, dynamic> toJson() => {
         'enabled': enabled,
         'time': time.inSeconds,
+        'last_notify': lastNotify?.toIso8601String(),
       };
 }

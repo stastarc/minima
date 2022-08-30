@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-class MessageDialogButtion {
+class MessageDialogButton {
   final String title;
   final void Function(BuildContext context) onTap;
   final bool isDestructive;
 
-  const MessageDialogButtion({
+  const MessageDialogButton({
     required this.title,
     required this.onTap,
     this.isDestructive = false,
   });
 
-  factory MessageDialogButtion.closeButton(
+  factory MessageDialogButton.closeButton(
           {String title = '확인',
           bool isDestructive = false,
           void Function(BuildContext context)? onTap}) =>
-      MessageDialogButtion(
+      MessageDialogButton(
         title: title,
         onTap: (context) {
           Navigator.of(context).pop();
@@ -28,7 +28,7 @@ class MessageDialogButtion {
 class MessageDialog extends StatelessWidget {
   final String title, message;
   final TextAlign textAlign;
-  final List<MessageDialogButtion> buttons;
+  final List<MessageDialogButton> buttons;
 
   const MessageDialog({
     super.key,
@@ -76,7 +76,7 @@ void showMessageDialog(
   BuildContext context, {
   required String title,
   required String message,
-  required List<MessageDialogButtion> buttons,
+  required List<MessageDialogButton> buttons,
   TextAlign textAlign = TextAlign.left,
 }) {
   showDialog(

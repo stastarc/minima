@@ -18,7 +18,6 @@ class Notify {
   late Future<void> initialize;
   late SharedPreferences storage;
   int _index = 0;
-  DateTime? _today;
   NotifySettings? _settings;
   bool initialized = false;
 
@@ -72,18 +71,20 @@ class Notify {
     await wfi();
     _settings ??= NotifySettings.defaults();
     await storage.setString(
-        'checkout.cache', json.encode((_settings!).toJson()));
+        'notify.settings', json.encode((_settings!).toJson()));
   }
 
   Future<void> update(bool Function(NotifySettings) func) async {
-    await wfi();
     final cache = await get();
     if (func(cache)) await save();
   }
 
   Future<void> onBackgroundUpdate() async {
     final now = DateTime.now();
-    final diff = _today != null ? now.difference(_today!) : null;
+    var cache = await get();
+
+    final diff =
+        cache.lastNotify != null ? now.difference(cache.lastNotify!) : null;
     if (diff?.inDays == 0) return;
     final settings = await get();
     if (!settings.enabled || now.hour < settings.time.inHours) return;
@@ -112,7 +113,8 @@ class Notify {
         }
       }
 
-      _today = DateTime.now();
+      cache.lastNotify = now;
+      await save();
     } catch (e) {
       if (kDebugMode) print(e);
     }

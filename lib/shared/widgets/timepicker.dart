@@ -1,50 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
-import 'package:minima/shared/number_format.dart';
 import 'package:minima/shared/widgets/bottom_sheet.dart';
-import 'package:minima/shared/widgets/button.dart';
-import 'package:minima/shared/widgets/textfield.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
+import 'button.dart';
 
 void showTimePickerSheet(BuildContext context,
     {selectionMode = DateRangePickerSelectionMode.single,
-    void Function(dynamic)? onDateTimeSelected,
-    void Function(dynamic)? onDone,
-    DateTime? minDate,
-    DateTime? maxDate,
+    void Function(DateTime)? onSelected,
+    void Function(DateTime?)? onDone,
     DateTime? selectedDate,
     String title = '날짜를 선택해주세요.'}) {
   showSheet(context,
       child: TimePickerSheet(
-          onDateTimeSelected: onDateTimeSelected,
+          onSelected: onSelected,
           selectionMode: selectionMode,
           onDone: onDone,
-          minDate: minDate,
-          maxDate: maxDate,
           selectedDate: selectedDate,
           title: title));
 }
 
 class TimePickerSheet extends StatelessWidget {
   final DateRangePickerSelectionMode selectionMode;
-  final void Function(dynamic)? onDateTimeSelected;
-  final void Function(dynamic)? onDone;
-  final DateTime? minDate, maxDate, selectedDate;
+  final void Function(DateTime)? onSelected;
+  final void Function(DateTime?)? onDone;
+  final DateTime? selectedDate;
   final String title;
 
   const TimePickerSheet(
       {super.key,
       this.selectionMode = DateRangePickerSelectionMode.single,
-      this.onDateTimeSelected,
+      this.onSelected,
       this.onDone,
-      this.minDate,
-      this.maxDate,
       this.selectedDate,
       this.title = '시간을 선택해주세요.'});
 
   @override
   Widget build(BuildContext context) {
-    dynamic value;
+    DateTime? value;
+
     void _onDone() {
       if (onDone != null) {
         onDone!(value);
@@ -52,27 +46,42 @@ class TimePickerSheet extends StatelessWidget {
       Navigator.of(context).pop();
     }
 
-    // void onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
-    //   value = args.value;
-    //   if (onDateTimeSelected != null) {
-    //     onDateTimeSelected!(args.value);
-    //   }
-    // }
-
     return Column(
       children: [
         Text(title,
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500)),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         TimePickerSpinner(
+          time: selectedDate,
+          minutesInterval: 5,
           is24HourMode: false,
-          normalTextStyle: TextStyle(fontSize: 24, color: Colors.deepOrange),
-          highlightedTextStyle: TextStyle(fontSize: 24, color: Colors.yellow),
+          highlightedTextStyle:
+              const TextStyle(fontSize: 32, color: Colors.black87),
+          normalTextStyle: const TextStyle(fontSize: 32, color: Colors.black26),
           spacing: 50,
           itemHeight: 80,
           isForce2Digits: true,
-          onTimeChange: (time) {},
+          onTimeChange: (time) {
+            value = time;
+            if (onSelected != null) {
+              onSelected!(time);
+            }
+          },
         ),
+        const SizedBox(height: 8),
+        PrimaryButton(
+            borderRadius: 14,
+            width: double.infinity,
+            padding: const EdgeInsets.all(14),
+            onPressed: _onDone,
+            child: const Text(
+              '완료',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            )),
       ],
     );
   }

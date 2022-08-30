@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:minima/app/backend/auth/auth.dart';
 import 'package:minima/app/backend/auth/user.dart';
+import 'package:minima/app/backend/lens/lens.dart';
 import 'package:minima/app/frontend/my/pages/notify.dart';
+import 'package:minima/app/frontend/my/pages/privacy.dart';
 import 'package:minima/app/frontend/my/pages/profile_edit.dart';
 import 'package:minima/app/frontend/my/widgets/card_item.dart';
+import 'package:minima/app/frontend/my/widgets/lens.dart';
 import 'package:minima/app/frontend/my/widgets/profile_picture.dart';
 import 'package:minima/app/models/auth/profile.dart';
+import 'package:minima/app/models/lens/credit.dart';
 import 'package:minima/routers/_route.dart';
 import 'package:minima/shared/error.dart';
+import 'package:minima/shared/widgets/bottom_sheet.dart';
 import 'package:minima/shared/widgets/dialog.dart';
 import 'package:minima/shared/widgets/retry.dart';
 
@@ -21,18 +26,26 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   late Future<void> initialized;
   dynamic profile;
+  AnalysisCreditData? credit;
 
   Future<void> initialize() async {
     try {
       profile = await User.instance.getMyCached();
+      credit = await Lens.instance.getCredit();
     } catch (e) {
       profile = BackendError.fromException(e);
     }
   }
 
-  void onUpdate(ProfileData data) {
+  void onProfileUpdate(ProfileData data) {
     setState(() {
       profile = data;
+    });
+  }
+
+  void onCreditUpdate(AnalysisCreditData credit) {
+    setState(() {
+      this.credit = credit;
     });
   }
 
@@ -95,7 +108,7 @@ class _MyPageState extends State<MyPage> {
                             context,
                             slideRTL(ProfileEditPage(
                               profile: profile,
-                              onUpdate: onUpdate,
+                              onUpdate: onProfileUpdate,
                             ))),
                         child: const Icon(Icons.edit_outlined, size: 22),
                       ),
@@ -107,7 +120,7 @@ class _MyPageState extends State<MyPage> {
                     child: Column(
                       children: [
                         CardItem(
-                            title: '남은 렌즈 30개',
+                            title: '남은 렌즈 ${credit?.credit ?? "??"}개',
                             icon: const Icon(
                               Icons.camera,
                               size: 32,
@@ -116,7 +129,12 @@ class _MyPageState extends State<MyPage> {
                               Icons.arrow_forward_ios_rounded,
                               size: 22,
                             ),
-                            onTap: () {}),
+                            onTap: () {
+                              showSheet(context,
+                                  child: LensSheet(
+                                    onUpdate: onCreditUpdate,
+                                  ));
+                            }),
                         const SizedBox(height: 12),
                         CardItem(
                           title: '알림 설정',
@@ -133,29 +151,31 @@ class _MyPageState extends State<MyPage> {
                         ),
                         const SizedBox(height: 12),
                         CardItem(
-                            title: '개인정보 보호 설정',
-                            icon: const Icon(
-                              Icons.verified_user_rounded,
-                              size: 36,
-                            ),
-                            child: const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 22,
-                            ),
-                            onTap: () {}),
+                          title: '개인정보 보호',
+                          icon: const Icon(
+                            Icons.verified_user_rounded,
+                            size: 36,
+                          ),
+                          child: const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 22,
+                          ),
+                          onTap: () => Navigator.push(
+                              context, slideRTL(const PrivacyPage())),
+                        ),
                         const SizedBox(height: 12),
-                        CardItem(
-                            title: '주문 내역',
-                            icon: const Icon(
-                              Icons.shopping_bag_rounded,
-                              size: 36,
-                            ),
-                            child: const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 22,
-                            ),
-                            onTap: () {}),
-                        const SizedBox(height: 12),
+                        // CardItem(
+                        //     title: '주문 내역',
+                        //     icon: const Icon(
+                        //       Icons.shopping_bag_rounded,
+                        //       size: 36,
+                        //     ),
+                        //     child: const Icon(
+                        //       Icons.arrow_forward_ios_rounded,
+                        //       size: 22,
+                        //     ),
+                        //     onTap: () {}),
+                        // const SizedBox(height: 12),
                         Align(
                           alignment: Alignment.topRight,
                           child: GestureDetector(
@@ -163,8 +183,8 @@ class _MyPageState extends State<MyPage> {
                                 title: '로그아웃',
                                 message: '정말로 로그아웃하고 로그인 페이지로 돌아가시겠어요?',
                                 buttons: [
-                                  MessageDialogButtion.closeButton(title: '취소'),
-                                  MessageDialogButtion.closeButton(
+                                  MessageDialogButton.closeButton(title: '취소'),
+                                  MessageDialogButton.closeButton(
                                       title: '확인',
                                       isDestructive: true,
                                       onTap: (_) => Auth.instance.logout().then(
