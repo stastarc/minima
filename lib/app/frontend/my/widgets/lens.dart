@@ -76,7 +76,7 @@ class _LensSheetState extends State<LensSheet> {
                     children: [
                       const Icon(
                         Icons.camera,
-                        size: 32,
+                        size: 28,
                       ),
                       const SizedBox(width: 8),
                       RichText(
@@ -95,7 +95,7 @@ class _LensSheetState extends State<LensSheet> {
                                         fontSize: 12.5)),
                             ],
                             style: const TextStyle(
-                                fontSize: 16.5,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black)),
                       ),
@@ -105,9 +105,9 @@ class _LensSheetState extends State<LensSheet> {
                             ? '광고 보기'
                             : '${currencyFormat(item.item3)}원',
                         style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
+                            fontSize: 12, fontWeight: FontWeight.bold),
                       ),
-                      const Icon(Icons.arrow_forward_ios_rounded, size: 20),
+                      const Icon(Icons.arrow_forward_ios_rounded, size: 18),
                     ],
                   ),
                 )),

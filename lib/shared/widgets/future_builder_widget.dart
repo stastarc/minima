@@ -9,7 +9,8 @@ class FutureBuilderWidget<T> extends StatefulWidget {
   final Widget? loading;
   final Widget Function(dynamic)? errorBuilder;
   final Widget Function()? loadingBuilder;
-  final Widget Function(T) completedBuilder;
+  final Widget Function(T)? completedBuilder;
+  final Widget Function(T?)? defaultBuilder;
   final String retryText;
   final VoidCallback? onRetry;
 
@@ -20,7 +21,8 @@ class FutureBuilderWidget<T> extends StatefulWidget {
     this.loading,
     this.errorBuilder,
     this.loadingBuilder,
-    required this.completedBuilder,
+    this.completedBuilder,
+    this.defaultBuilder,
     this.retryText = '다시 시도',
     this.onRetry,
   });
@@ -62,6 +64,9 @@ class _FutureBuilderWidgetState<T> extends State<FutureBuilderWidget<T>> {
           if (snapshot.hasError) {
             if (widget.errorBuilder != null) {
               return widget.errorBuilder!(snapshot.error);
+            } else if (widget.onRetry == null &&
+                widget.defaultBuilder != null) {
+              return widget.defaultBuilder!(null);
             } else {
               return RetryButton(
                   buttonText: widget.retryText,
@@ -71,11 +76,17 @@ class _FutureBuilderWidgetState<T> extends State<FutureBuilderWidget<T>> {
                       : BackendError.unknown());
             }
           } else {
-            return widget.completedBuilder(snapshot.data as T);
+            if (widget.completedBuilder != null) {
+              return widget.completedBuilder!(snapshot.data as T);
+            } else {
+              return widget.defaultBuilder!(snapshot.data as T);
+            }
           }
         } else {
           if (widget.loadingBuilder != null) {
             return widget.loadingBuilder!();
+          } else if (widget.defaultBuilder != null) {
+            return widget.defaultBuilder!(null);
           } else {
             return widget.loading ??
                 const Center(

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
 import 'package:minima/app/backend/environ.dart';
@@ -133,5 +134,14 @@ class Auth {
     storage.remove('auth.token');
     User.instance.profile = null;
     token = null;
+  }
+
+  Future<bool> sendFeedback(String content) async {
+    await wfi();
+    return (await Environ.privatePostResopnse(
+            Environ.authServer, '/feedback/', (json) => json['success'],
+            body: {'feedback': content, 'info': await Environ.getDeviceInfo()},
+            jsonencode: false)) ==
+        true;
   }
 }

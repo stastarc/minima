@@ -1,18 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 import 'auth/auth.dart';
 
 class Environ {
-  static const String baseServer = 'nekos.ml';
-  static const String authServer = 'auth.$baseServer';
-  static const String cdnServer = 'cdn.$baseServer';
-  static const String lensServer = 'lens.$baseServer';
-  static const String marketServer = 'market.$baseServer';
-  static const String myplantServer = 'plant.$baseServer';
+  static const String baseServer = 'minima.green';
+  static const String domainPrefix = kDebugMode ? 'dev-' : '';
+  static const String authServer = '${domainPrefix}auth.$baseServer';
+  static const String cdnServer = '${domainPrefix}cdn.$baseServer';
+  static const String lensServer = '${domainPrefix}lens.$baseServer';
+  static const String marketServer = '${domainPrefix}market.$baseServer';
+  static const String myplantServer = '${domainPrefix}plant.$baseServer';
+
+  static String? deviceInfo;
 
   static Uri api(String base, String path, {Map<String, dynamic>? query}) {
     return Uri.https(base, path,
@@ -91,5 +95,10 @@ class Environ {
         await privatePost(base, path,
             query: query, body: body, jsonencode: jsonencode),
         convert);
+  }
+
+  static Future<String> getDeviceInfo() async {
+    if (deviceInfo != null) return deviceInfo!;
+    return jsonEncode((await DeviceInfoPlugin().deviceInfo).toMap());
   }
 }

@@ -50,7 +50,7 @@ class _NotifyPageState extends State<NotifyPage> {
                         title: '앱 알림',
                         icon: const Icon(
                           Icons.alarm,
-                          size: 32,
+                          size: 28,
                         ),
                         child: PrimarySwitch(
                           value: settings.enabled,
@@ -65,11 +65,11 @@ class _NotifyPageState extends State<NotifyPage> {
                           title: '알림 시간',
                           icon: const Icon(
                             Icons.access_time,
-                            size: 32,
+                            size: 28,
                           ),
                           child: Text(timeFormat(settings.time),
                               style: const TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black87)),
                           onTap: () => showTimePickerSheet(

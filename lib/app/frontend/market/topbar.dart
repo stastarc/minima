@@ -18,12 +18,6 @@ class MarketTopBar extends StatelessWidget {
         children: [
           const PLLogo(size: 36),
           const SizedBox(width: 4),
-          // const Text('MARKET',
-          //     style: TextStyle(
-          //         color: Color(0xFF4CC760),
-          //         fontFamily: 'ibm',
-          //         fontSize: 20,
-          //         fontWeight: FontWeight.w800)),
           const Spacer(),
           GestureDetector(
               child:

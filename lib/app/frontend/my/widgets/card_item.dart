@@ -28,7 +28,7 @@ class CardItem extends StatelessWidget {
                 const SizedBox(width: 10),
                 Text(title,
                     style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3C3C3C))),
               ],

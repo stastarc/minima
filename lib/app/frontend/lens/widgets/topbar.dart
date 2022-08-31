@@ -1,4 +1,6 @@
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TopBarView extends StatefulWidget {
@@ -44,12 +46,12 @@ class _TopBarViewState extends State<TopBarView> {
           onTap: onFlush,
           child: Icon(
               flash == FlashMode.off
-                  ? Icons.flash_off_rounded
-                  : Icons.flash_on_rounded,
-              size: 28),
+                  ? BootstrapIcons.lightning_charge
+                  : BootstrapIcons.lightning_charge_fill,
+              size: 24),
         ),
         const SizedBox(width: 20),
-        const Icon(Icons.help_outline),
+        const Icon(CupertinoIcons.question_circle, size: 25),
         const SizedBox(width: 20),
       ]),
     );

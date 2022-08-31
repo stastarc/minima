@@ -14,7 +14,7 @@ dependencies:
   camera:
   path_provider:
   path:
-  cupertino_icons: ^1.0.2
+  cupertino_icons:
   flutter_svg:
   transition:
   kakao_flutter_sdk:
@@ -37,6 +37,8 @@ dependencies:
   webview_flutter:
   image:
   flutter_time_picker_spinner:
+  device_info_plus:
+  bootstrap_icons:
 
 dev_dependencies:
   flutter_test:

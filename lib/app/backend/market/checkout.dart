@@ -29,10 +29,14 @@ class MarketCheckout {
   Future<CheckoutCache> get() async {
     if (cache != null) return cache!;
     await wfi();
-    final checkout = storage.getString('checkout.cache');
-    cache = checkout == null
-        ? CheckoutCache.empty()
-        : CheckoutCache.fromJson(json.decode(checkout));
+    try {
+      final checkout = storage.getString('checkout.cache');
+      cache = checkout == null
+          ? CheckoutCache.empty()
+          : CheckoutCache.fromJson(json.decode(checkout));
+    } catch (e) {
+      cache = CheckoutCache.empty();
+    }
     return cache!;
   }
 
