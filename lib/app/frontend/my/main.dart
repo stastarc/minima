@@ -27,7 +27,6 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   late Future<void> initialized;
-  late Future<AnalysisCreditData?> _credit;
   dynamic profile;
 
   Future<void> initialize() async {
@@ -39,15 +38,15 @@ class _MyPageState extends State<MyPage> {
   }
 
   void onProfileUpdate(ProfileData data) {
-    setState(() {
-      profile = data;
-    });
+    if (mounted) {
+      setState(() {
+        profile = data;
+      });
+    }
   }
 
   void onCreditUpdate(AnalysisCreditData credit) {
-    setState(() {
-      _credit = Future.value(credit);
-    });
+    setState(() {});
   }
 
   void retry() {
@@ -60,7 +59,6 @@ class _MyPageState extends State<MyPage> {
   void initState() {
     super.initState();
     initialized = initialize();
-    _credit = Lens.instance.getCredit();
   }
 
   @override
@@ -112,7 +110,11 @@ class _MyPageState extends State<MyPage> {
                               profile: profile,
                               onUpdate: onProfileUpdate,
                             ))),
-                        child: const Icon(Icons.edit_outlined, size: 22),
+                        child: const Icon(
+                          Icons.edit,
+                          size: 22,
+                          color: Color(0xFF7D7D7D),
+                        ),
                       ),
                     ],
                   ),
@@ -122,7 +124,7 @@ class _MyPageState extends State<MyPage> {
                     child: Column(
                       children: [
                         FutureBuilderWidget<AnalysisCreditData?>(
-                            future: _credit,
+                            futureBuilder: Lens.instance.getCredit,
                             defaultBuilder: (credit) => CardItem(
                                 title:
                                     '남은 렌즈 ${credit != null ? "${credit.credit}개" : ""}',

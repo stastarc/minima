@@ -48,18 +48,16 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.fromLTRB(35, 150, 35, 80),
           child: Column(
             children: [
-              const PLLogo(size: 91),
+              const PLLogo(size: 106),
               const Padding(
                 padding: EdgeInsets.only(top: 8),
                 child: Text('로그인',
-                    style: TextStyle(
-                        fontFamily: 'ibm',
-                        fontSize: 36,
-                        fontWeight: FontWeight.w800)),
+                    style:
+                        TextStyle(fontSize: 36, fontWeight: FontWeight.w800)),
               ),
               const Padding(
                   padding: EdgeInsets.only(top: 12),
-                  child: Text('나만의 식물 전문가,\n플랜트 렌즈',
+                  child: Text('나만의 식물 전문가,\n미니마',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           height: 1.3,

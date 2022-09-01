@@ -27,16 +27,11 @@ class RelatedPlantsView extends StatelessWidget {
               for (var plant in plants) ...[
                 Column(
                   children: [
-                    Container(
-                      width: 145,
-                      height: 145,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: const Color(0xFFD1D1D1))),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CDN.image(id: plant.image, fit: BoxFit.cover)),
-                    ),
+                    CDN.image(
+                        id: plant.image,
+                        fit: BoxFit.cover,
+                        width: 145,
+                        height: 145),
                     const SizedBox(height: 4),
                     Text(
                       plant.name.ko ?? '알수없음',

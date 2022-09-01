@@ -2,6 +2,9 @@ import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:minima/app/backend/lens/lens.dart';
+import 'package:minima/app/models/lens/credit.dart';
+import 'package:minima/shared/widgets/future_builder_widget.dart';
 
 class TopBarView extends StatefulWidget {
   final void Function(FlashMode flush) onFlush;
@@ -39,8 +42,12 @@ class _TopBarViewState extends State<TopBarView> {
         const SizedBox(width: 20),
         const Icon(Icons.camera_sharp),
         const SizedBox(width: 5),
-        const Text('8',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        FutureBuilderWidget<AnalysisCreditData?>(
+          future: Lens.instance.getCredit(),
+          defaultBuilder: (credit) => Text(credit?.credit.toString() ?? '',
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        ),
         const Spacer(),
         GestureDetector(
           onTap: onFlush,

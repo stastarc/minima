@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:minima/app/backend/auth/user.dart';
 import 'package:minima/app/frontend/market/pages/checkout.dart';
 import 'package:minima/app/frontend/market/pages/search.dart';
+import 'package:minima/app/frontend/my/widgets/profile_picture.dart';
+import 'package:minima/app/models/auth/profile.dart';
 import 'package:minima/routers/_route.dart';
 import 'package:minima/shared/pllogo.dart';
-import 'package:minima/shared/widgets/button.dart';
+import 'package:minima/shared/widgets/future_builder_widget.dart';
 
 class MarketTopBar extends StatelessWidget {
   const MarketTopBar({
@@ -33,11 +36,13 @@ class MarketTopBar extends StatelessWidget {
                 Navigator.push(context, slideRTL(const CheckoutPage()));
               }),
           const SizedBox(width: 24),
-          const CircleAvatar(
-            radius: 16,
-            backgroundColor: Color.fromARGB(255, 255, 166, 166),
-            backgroundImage: AssetImage('assets/images/icons/profile.png'),
-          ),
+          FutureBuilderWidget<ProfileData?>(
+            future: User.instance.getInfo(),
+            defaultBuilder: (user) => ProfilePicture(
+              image: user?.picture,
+              size: 32,
+            ),
+          )
         ],
       ),
     );

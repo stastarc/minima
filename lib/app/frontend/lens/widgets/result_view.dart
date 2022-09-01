@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:minima/app/frontend/lens/widgets/bottom_survey.dart';
 import 'package:minima/app/frontend/lens/widgets/disease_card.dart';
@@ -65,10 +66,11 @@ class AnalysisResultView extends StatelessWidget {
             const SizedBox(height: 18),
             ManagementView(data: plant.content.management),
             RelatedPlantsView(plants: plant.releventPlants),
-            RelatedProductView(products: result.relatedProducts),
+            if (kDebugMode)
+              RelatedProductView(products: result.relatedProducts),
           ]),
         ),
-        const BottomSurveryView()
+        // const BottomSurveryView()
       ],
     );
   }

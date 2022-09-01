@@ -39,7 +39,7 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: PLLogo(size: 120)),
+      body: Center(child: PLLogo(size: 130)),
     );
   }
 }
