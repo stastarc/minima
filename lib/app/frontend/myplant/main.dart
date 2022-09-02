@@ -99,7 +99,7 @@ class _MyPlantPageState extends State<MyPlantPage> {
                 child: Column(
                   children: [
                     Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(18),
                         child: Column(
                           children: const [
                             SkeletonBox(

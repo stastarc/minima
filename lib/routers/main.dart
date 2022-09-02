@@ -1,3 +1,4 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:minima/app/frontend/lens/main.dart';
 import 'package:minima/app/frontend/my/main.dart';
@@ -50,8 +51,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           controller: tabController,
           labelColor: const Color(0xFF3D3D3D),
           indicatorColor: Colors.transparent,
+          splashFactory: NoSplash.splashFactory,
           tabs: [
-            Tab(icon: Icon(Icons.book, color: getTabColor(0))),
+            Tab(icon: Icon(FluentIcons.book_24_filled, color: getTabColor(0))),
             Tab(icon: Icon(Icons.camera_sharp, color: getTabColor(1))),
             Tab(icon: Icon(Icons.shopping_bag, color: getTabColor(2))),
             Tab(icon: Icon(Icons.person, color: getTabColor(3))),

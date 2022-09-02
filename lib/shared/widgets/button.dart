@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minima/shared/widgets/gradient.dart';
 
 class PrimaryButton extends StatelessWidget {
   final Widget child;
@@ -43,16 +44,7 @@ class PrimaryButton extends StatelessWidget {
           decoration: decoration ??
               BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-                  gradient: grey
-                      ? null
-                      : const LinearGradient(
-                          colors: [
-                            Color(0xFF55CF94),
-                            Color(0xFF53CE78),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+                  gradient: grey ? null : primaryGradient,
                   color: grey ? const Color(0xFFB1B1B1) : null),
           child: child),
     );

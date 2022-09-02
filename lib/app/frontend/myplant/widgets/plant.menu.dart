@@ -43,26 +43,29 @@ extension MyPlantItemMenu on MyPlantItem {
       );
     }
 
-    void onDelete() {
-      showMessageDialog(context,
-          title: '정말로 삭제하시겠어요?',
-          message: '식물을 정원에서 삭제하면 식물과 함께한 다이어리가 모두 사라져요 😥\n정말로 삭제할까요?',
-          buttons: [
-            MessageDialogButton.closeButton(title: '취소'),
-            MessageDialogButton.closeButton(
-                title: '확인', isDestructive: true, onTap: delete),
-          ]);
-    }
-
     showBottomMenuSheet(context, [
       BottomMenuItem(
         title: '이름/사진 바꾸기',
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              slideRTL(MyPlantEditPage(
+                myPlant: myPlant,
+                onRefresh: onRefresh,
+              )));
+        },
       ),
       BottomMenuItem(
         title: '식물 삭제하기',
         color: const Color(0xFFFF4B4B),
-        onPressed: () => onDelete(),
+        onPressed: () => showMessageDialog(context,
+            title: '정말로 삭제하시겠어요?',
+            message: '식물을 정원에서 삭제하면 식물과 함께한 다이어리가 모두 사라져요 😥\n정말로 삭제할까요?',
+            buttons: [
+              MessageDialogButton.closeButton(title: '취소'),
+              MessageDialogButton.closeButton(
+                  title: '확인', isDestructive: true, onTap: delete),
+            ]),
       ),
     ]);
   }

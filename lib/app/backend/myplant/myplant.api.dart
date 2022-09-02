@@ -41,6 +41,22 @@ extension MyPlantCache on MyPlant {
         jsonencode: false);
   }
 
+  Future<MyPlantData> updateMyPlant(int id,
+      {String? name, String? image}) async {
+    var req = MultipartRequest(
+        "post",
+        await Environ.privateApi(
+            Environ.myplantServer, '/myplant/plants/$id/edit'));
+    req.fields['id'] = id.toString();
+    if (name != null) req.fields['name'] = name;
+    if (image != null) {
+      req.files.add(
+          await MultipartFile.fromPath('image', image, filename: 'image.jpg'));
+    }
+    return (await Environ.tryResponseParse(
+        await req.send(), (json) => MyPlantData.fromJson(json)))!;
+  }
+
   Future<List<PlantInfoData>?> searchPlants(String query,
       {int offset = 0}) async {
     return await Environ.privateGetResopnse(
@@ -92,5 +108,11 @@ extension MyPlantCache on MyPlant {
           'schedule': schedule,
         },
         jsonencode: false);
+  }
+
+  Future<GuideData?> getGuide(String action, [int plantId = 0]) async {
+    return await Environ.privateGetResopnse(Environ.myplantServer,
+        '/info/guide', (json) => GuideData.fromJson(json),
+        query: {'plant_id': plantId, 'action': action});
   }
 }

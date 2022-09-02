@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
 import 'package:minima/app/backend/environ.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +16,7 @@ class Auth {
   static Auth? _instance;
   static Auth get instance => _instance ??= Auth();
 
+  final googleSignIn = GoogleSignIn();
   late Future<void> initialize;
   late SharedPreferences storage;
   bool initialized = false;
@@ -74,16 +75,21 @@ class Auth {
     try {
       switch (type) {
         case SocialType.kakao:
-          kakao.OAuthToken otoken;
-          // if (await isKakaoTalkInstalled()) {
-          //   otoken = await UserApi.instance.loginWithKakaoTalk();
-          // } else {
-          // }
-          otoken = await kakao.UserApi.instance.loginWithKakaoAccount();
+          kakao.OAuthToken? otoken;
+          try {
+            if (await kakao.isKakaoTalkInstalled()) {
+              otoken = await kakao.UserApi.instance.loginWithKakaoTalk();
+            }
+          } finally {
+            otoken ??= await kakao.UserApi.instance.loginWithKakaoAccount();
+          }
           token = otoken.accessToken;
           break;
         case SocialType.google:
-          return SocialLoginStatus.socialError;
+          final otoken = await googleSignIn.signIn();
+          if (otoken == null) return SocialLoginStatus.cancelled;
+          token = (otoken).serverAuthCode!;
+          break;
         case SocialType.apple:
           return SocialLoginStatus.socialError;
       }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:minima/app/models/myplant/plant.dart';
 import 'package:minima/shared/number_format.dart';
 import 'package:minima/shared/widgets/button.dart';
+import 'package:minima/shared/widgets/gradient.dart';
 
 class WidthCalendar extends StatefulWidget {
   final List<MyPlantData> myPlants;
@@ -103,14 +104,13 @@ class WidthCalendarItem extends StatelessWidget {
       required this.myPlants,
       this.scale = 1});
 
-  String? get _todo {
+  Iterable<String> get _todo sync* {
     for (var item in myPlants) {
       if (item.schedule != null) {
         final todo = item.schedule?.todo(date);
-        if (todo?.isNotEmpty == true) return todo!.first;
+        if (todo != null) yield* todo;
       }
     }
-    return null;
   }
 
   bool isDone(String schedule) {
@@ -120,16 +120,15 @@ class WidthCalendarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final todo = _todo;
+    final todos = _todo;
     final isToday = date.year == today.year &&
         date.month == today.month &&
         date.day == today.day;
 
-    dynamic backgroundColor, foregroundColor;
+    List<Color> dots = [];
 
-    if (todo != null) {
-      final isDone = this.isDone(todo);
-      Color keyColor = Colors.black;
+    for (var todo in todos) {
+      Color? keyColor;
 
       switch (todo) {
         case "water":
@@ -147,31 +146,16 @@ class WidthCalendarItem extends StatelessWidget {
         default:
       }
 
-      if (isDone) {
-        backgroundColor = keyColor;
-        foregroundColor = Colors.white;
-      } else {
-        foregroundColor = keyColor;
+      if (keyColor != null) {
+        dots.add(keyColor);
       }
-    } else {
-      foregroundColor = Colors.black45;
-    }
-
-    if (isToday) {
-      backgroundColor ??= foregroundColor;
-      foregroundColor = Colors.white;
     }
 
     final circleWidth = 32 * scale;
     return Container(
         padding: const EdgeInsets.all(4),
-        decoration: isToday
-            ? BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.circular(circleWidth / 2),
-              )
-            : null,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 3),
@@ -179,23 +163,41 @@ class WidthCalendarItem extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 13 * scale,
                       fontWeight: FontWeight.bold,
-                      color: isToday ? Colors.white : Colors.black54)),
+                      color: Colors.black54)),
             ),
             Container(
               width: circleWidth,
               height: circleWidth,
-              decoration: isToday
-                  ? null
-                  : BoxDecoration(
-                      color: backgroundColor, shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                  gradient: isToday ? primaryGradient : null,
+                  shape: BoxShape.circle),
               child: Center(
                 child: Text(date.day.toString(),
                     style: TextStyle(
                         fontSize: 16 * scale,
                         fontWeight: FontWeight.bold,
-                        color: foregroundColor)),
+                        color: isToday ? Colors.white : Colors.black45)),
               ),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(3, 3, 3, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (var i = 0; i < max(3, dots.length); i++)
+                    Container(
+                        width: 5 * scale,
+                        height: 5 * scale,
+                        margin: const EdgeInsets.only(left: 1, right: 1),
+                        decoration: BoxDecoration(
+                          color: i < dots.length ? dots[i] : Colors.white,
+                          shape: i < dots.length
+                              ? BoxShape.circle
+                              : BoxShape.rectangle,
+                        ))
+                ],
+              ),
+            ),
           ],
         ));
   }

@@ -70,17 +70,17 @@ class _LoginPageState extends State<LoginPage> {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                      SocialButton(
-                        type: SocialType.google,
-                        onSuccess: onSuccess,
-                        onFail: onFail,
-                        onTab: onLogin,
-                        child: SvgPicture.asset(
-                          'assets/images/icons/social/google.svg',
-                          width: 36,
-                          height: 36,
-                        ),
-                      ),
+                      // SocialButton(
+                      //   type: SocialType.google,
+                      //   onSuccess: onSuccess,
+                      //   onFail: onFail,
+                      //   onTab: onLogin,
+                      //   child: SvgPicture.asset(
+                      //     'assets/images/icons/social/google.svg',
+                      //     width: 36,
+                      //     height: 36,
+                      //   ),
+                      // ),
                       SocialButton(
                         color: const Color(0xFFFEE500),
                         type: SocialType.kakao,
@@ -93,18 +93,18 @@ class _LoginPageState extends State<LoginPage> {
                           height: 33,
                         ),
                       ),
-                      SocialButton(
-                        color: const Color(0xFF000000),
-                        type: SocialType.apple,
-                        onSuccess: onSuccess,
-                        onFail: onFail,
-                        onTab: onLogin,
-                        child: SvgPicture.asset(
-                          'assets/images/icons/social/apple.svg',
-                          width: 27,
-                          height: 32,
-                        ),
-                      ),
+                      // SocialButton(
+                      //   color: const Color(0xFF000000),
+                      //   type: SocialType.apple,
+                      //   onSuccess: onSuccess,
+                      //   onFail: onFail,
+                      //   onTab: onLogin,
+                      //   child: SvgPicture.asset(
+                      //     'assets/images/icons/social/apple.svg',
+                      //     width: 27,
+                      //     height: 32,
+                      //   ),
+                      // ),
                     ])))
               else
                 const Expanded(

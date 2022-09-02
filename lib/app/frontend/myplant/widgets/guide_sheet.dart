@@ -1,9 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/backend/myplant/myplant.dart';
+import 'package:minima/app/models/myplant/guide.dart';
 import 'package:minima/app/models/myplant/plant.dart';
 import 'package:minima/app/models/myplant/schedule.dart';
+import 'package:minima/shared/skeletons/skeleton.dart';
+import 'package:minima/shared/skeletons/skeleton_box.dart';
+import 'package:minima/shared/skeletons/skeleton_text.dart';
 import 'package:minima/shared/widgets/button.dart';
+import 'package:minima/shared/widgets/future_builder_widget.dart';
 import 'package:minima/shared/widgets/future_wait.dart';
 import 'package:toast/toast.dart';
 import 'package:tuple/tuple.dart';
@@ -45,115 +51,177 @@ class _GuideSheetState extends State<GuideSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(32, 22, 32, 0),
-                  width: double.infinity,
-                  height: 220,
-                  child: Image.asset(
-                    'assets/images/dummy/water.jpg',
-                    fit: BoxFit.cover,
+    return FutureBuilderWidget<GuideData>(
+      futureBuilder: () async =>
+          (await MyPlant.instance.getGuide(widget.todo.name, widget.plant.id))!,
+      completedBuilder: (guide) => Column(
+        children: [
+          Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(32, 22, 32, 0),
+                    width: double.infinity,
+                    height: 220,
+                    child: CDN.image(id: guide.image, fit: BoxFit.cover),
                   ),
-                ),
-                const ColumnHeader(
-                  title: '튜토리얼',
-                  width: 110,
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 22),
-                  child: AutoSizeText('''1~2주에 한번 잎에 쌓인 먼지를 가볍게 닦어요.
-
-주변 습도를 높여 식물의 온도를 낮추고 질병을 예방할 수 있어요.
-그 무엇보다 깨끗해야 이뻐보이죠!''',
-                      style: TextStyle(
-                          color: Color(0xFF3D3D3D),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400)),
-                ),
-                const ColumnHeader(
-                  title: '준비물',
-                  width: 100,
-                ),
-                Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        for (var e in const [
-                          Tuple3('화분', '🪴', '지름 15cm'),
-                          Tuple3('분갈이 흙', '🌱', '2L'),
-                          Tuple3('물', '💧', '종이컵 한컵'),
-                        ])
-                          Container(
-                            width: 110,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 22, vertical: 20),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF6F6F6),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(e.item2,
-                                      style: const TextStyle(
-                                          fontSize: 42,
-                                          fontFamily: 'SegoeUIEmoji')),
-                                  const SizedBox(height: 8),
-                                  Text(e.item1,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold)),
-                                  const SizedBox(height: 6),
-                                  Text(e.item3,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          fontSize: 12.5,
-                                          fontWeight: FontWeight.w500))
-                                ]),
-                          )
-                      ],
-                    )),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 26, 16, 16),
-                    child: PrimaryButton(
-                        borderRadius: 14,
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(14),
-                        onPressed: onDone,
-                        child: const Text(
-                          '완료했어요',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        )))
-              ],
+                  const ColumnHeader(
+                    title: '튜토리얼',
+                    width: 110,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 22),
+                    child: AutoSizeText(guide.description,
+                        style: const TextStyle(
+                            color: Color(0xFF3D3D3D),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400)),
+                  ),
+                  const ColumnHeader(
+                    title: '준비물',
+                    width: 100,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          for (var equipment in guide.equipments)
+                            Container(
+                              width: 110,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 22, vertical: 20),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF6F6F6),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    if (equipment.icon.indexOf('!') == 0)
+                                      CDN.image(
+                                          id: equipment.icon.substring(1),
+                                          width: 46,
+                                          height: 46,
+                                          fit: BoxFit.cover)
+                                    else
+                                      Text(equipment.icon,
+                                          style: const TextStyle(
+                                              fontSize: 42,
+                                              fontFamily: 'SegoeUIEmoji')),
+                                    const SizedBox(height: 8),
+                                    Text(equipment.equipmentName,
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                    const SizedBox(height: 6),
+                                    Text(equipment.description,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            fontSize: 12.5,
+                                            fontWeight: FontWeight.w500))
+                                  ]),
+                            )
+                        ],
+                      )),
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 26, 16, 16),
+                      child: PrimaryButton(
+                          borderRadius: 14,
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(14),
+                          onPressed: onDone,
+                          child: const Text(
+                            '완료했어요',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          )))
+                ],
+              ),
+              Column(
+                children: [
+                  const Text('가이드',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  Text(widget.todo.localizedName,
+                      style: const TextStyle(
+                          fontSize: 14, color: Color(0xFF3D3D3D))),
+                ],
+              ),
+            ],
+          )
+        ],
+      ),
+      loading: Skeleton(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Column(children: const [
+              SkeletonText(
+                wordLengths: [6],
+                fontSize: 24,
+              ),
+              SkeletonText(wordLengths: [12], fontSize: 14),
+            ]),
+          ),
+          const SkeletonBox(
+            height: 200,
+            width: double.infinity,
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 15),
+          ),
+          const ColumnHeaderSkeleton(width: 110),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+            child: SkeletonText(
+              wordLengths: [28, 26],
+              fontSize: 15,
+              lineHeight: .4,
             ),
-            Column(
-              children: [
-                const Text('가이드',
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                Text(widget.todo.localizedName,
-                    style: const TextStyle(
-                        fontSize: 14, color: Color(0xFF3D3D3D))),
-              ],
-            ),
-          ],
-        )
-      ],
+          ),
+          const ColumnHeaderSkeleton(width: 110),
+          Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: const [
+                  SkeletonBox(
+                    width: 110,
+                    height: 135,
+                  ),
+                  SkeletonBox(
+                    width: 110,
+                    height: 135,
+                  ),
+                  SkeletonBox(
+                    width: 110,
+                    height: 135,
+                  ),
+                ],
+              )),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(16, 26, 16, 16),
+              child: SkeletonBox(
+                radius: 14,
+                width: double.infinity,
+                height: 45,
+              ))
+        ],
+      )),
     );
   }
 }
@@ -191,6 +259,28 @@ class ColumnHeader extends StatelessWidget {
       child: Text(title,
           style: const TextStyle(
               color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)),
+    );
+  }
+}
+
+class ColumnHeaderSkeleton extends StatelessWidget {
+  final double? width;
+
+  const ColumnHeaderSkeleton({
+    super.key,
+    this.width,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: 17 + 6 + 6,
+      decoration: const BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
+      ),
     );
   }
 }

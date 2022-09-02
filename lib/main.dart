@@ -12,6 +12,8 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:minima/shared/number_format.dart';
 import 'package:workmanager/workmanager.dart';
 
+import 'behavior.dart';
+
 final routes = <String, WidgetBuilder>{
   '/login': (BuildContext context) => const LoginPage(),
   '/main': (BuildContext context) => const MainPage(),
@@ -64,6 +66,12 @@ Future<void> main() async {
           appBarTheme: const AppBarTheme(
             elevation: 0,
           )),
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: AppBehavior(),
+          child: child!,
+        );
+      },
       routes: routes,
     ),
   );

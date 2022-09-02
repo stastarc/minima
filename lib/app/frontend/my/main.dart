@@ -1,3 +1,4 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:minima/app/backend/auth/auth.dart';
 import 'package:minima/app/backend/auth/user.dart';
@@ -111,7 +112,7 @@ class _MyPageState extends State<MyPage> {
                               onUpdate: onProfileUpdate,
                             ))),
                         child: const Icon(
-                          Icons.edit,
+                          FluentIcons.edit_24_filled,
                           size: 22,
                           color: Color(0xFF7D7D7D),
                         ),

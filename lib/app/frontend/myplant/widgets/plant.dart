@@ -3,6 +3,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/backend/myplant/myplant.dart';
 import 'package:minima/app/frontend/myplant/pages/myplant.dart';
+import 'package:minima/app/frontend/myplant/pages/myplant_edit.dart';
 import 'package:minima/app/models/myplant/plant.dart';
 import 'package:minima/routers/_route.dart';
 import 'package:minima/shared/skeletons/skeleton_box.dart';
@@ -129,8 +130,8 @@ class MyPlantViewSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
-      spacing: 18,
-      runSpacing: 16,
+      spacing: 14,
+      runSpacing: 12,
       children: [
         for (var i = 0; i < 4; i++)
           Column(children: const [

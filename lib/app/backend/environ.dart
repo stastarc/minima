@@ -9,7 +9,7 @@ import 'auth/auth.dart';
 
 class Environ {
   static const String baseServer = 'minima.green';
-  static const String domainPrefix = kDebugMode ? 'dev-' : '';
+  static const String domainPrefix = (kDebugMode || true) ? 'dev-' : '';
   static const String authServer = '${domainPrefix}auth.$baseServer';
   static const String cdnServer = '${domainPrefix}cdn.$baseServer';
   static const String lensServer = '${domainPrefix}lens.$baseServer';
