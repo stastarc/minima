@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/backend/notify/notify.dart';
 import 'package:minima/routers/loading.dart';
 import 'package:minima/routers/login.dart';
@@ -42,10 +43,15 @@ Future<void> main() async {
     "background_notification",
     "background notification",
     frequency: const Duration(minutes: 15),
+    constraints: Constraints(
+      networkType: NetworkType.connected,
+    ),
   );
   if (kDebugMode) {
     Workmanager().registerOneOffTask(
         'background_notification_test', 'background notification test');
+
+    await CDN.instance.cache.emptyCache();
   }
 
   runApp(

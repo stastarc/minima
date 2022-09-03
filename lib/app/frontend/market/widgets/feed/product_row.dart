@@ -17,7 +17,7 @@ class ProductRow extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemCount: products.length + 2,
           itemBuilder: (context, index) {
-            if (index == 0 || index >= products.length) {
+            if (index == 0 || index > products.length) {
               return const SizedBox(width: 2);
             }
             final product = products[index - 1];

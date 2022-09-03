@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/backend/market/market.dart';
 import 'package:minima/app/frontend/market/widgets/search/product_view.dart';
+import 'package:minima/app/models/market/search.dart';
 import 'package:minima/shared/error.dart';
 import 'package:minima/shared/skeletons/skeleton.dart';
 import 'package:minima/shared/widgets/retry.dart';
@@ -37,6 +39,9 @@ class _SearchPageState extends State<SearchPage> {
       final query = _searchController.text.trim();
       search = await Market.instance.search(query);
       lastSearchQuery = query;
+      await CDN.instance.preloadImages([
+        for (var product in (search as ProductSearch).products) product.image,
+      ]);
     } catch (e) {
       search = BackendError.fromException(e);
     }

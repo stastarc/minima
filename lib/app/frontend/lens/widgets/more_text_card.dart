@@ -7,7 +7,8 @@ class MoreRCard extends StatefulWidget {
   final EdgeInsets padding;
   final Color color;
   final double borderRadius;
-  final double? width, height;
+  final double? width, height, paddingVertical;
+  final bool columnMode;
 
   const MoreRCard({
     super.key,
@@ -18,6 +19,8 @@ class MoreRCard extends StatefulWidget {
     this.borderRadius = 14,
     this.width,
     this.height,
+    this.paddingVertical,
+    this.columnMode = false,
   });
 
   @override
@@ -36,6 +39,10 @@ class _MoreRCardState extends State<MoreRCard> {
   @override
   Widget build(BuildContext context) {
     return RCard(
+      columnMode: widget.columnMode,
+      crossAxisAlignment: widget.columnMode
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.end,
       padding: widget.padding,
       color: widget.color,
       borderRadius: widget.borderRadius,
@@ -52,9 +59,12 @@ class _MoreRCardState extends State<MoreRCard> {
               ))
           : null,
       child: _isExpanded
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [widget.child, widget.moreChild!])
+          ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              widget.child,
+              if (widget.paddingVertical != null)
+                SizedBox(height: widget.paddingVertical),
+              widget.moreChild!
+            ])
           : widget.child,
     );
   }

@@ -51,7 +51,8 @@ android {
     defaultConfig {
         applicationId "com.minima.minima"
         // 카메라 21
-        minSdkVersion 21
+        // workmanager 23
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

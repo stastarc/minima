@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/models/market/product.dart';
 
 class ProductContentView extends StatelessWidget {
@@ -19,6 +20,8 @@ class ProductContentView extends StatelessWidget {
         child: MarkdownBody(
           selectable: true,
           data: product.content,
+          imageBuilder: (uri, title, alt) =>
+              CDN.image(id: uri.toString(), absoluteUrl: true),
         ));
   }
 }

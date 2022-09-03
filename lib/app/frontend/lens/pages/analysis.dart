@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:minima/app/backend/lens/lens.dart';
-import 'package:minima/app/frontend/lens/widgets/analysis.dart';
+import 'package:minima/app/frontend/lens/widgets/analysis/analysis.dart';
 import 'package:minima/app/frontend/lens/widgets/result_view.dart';
 import 'package:minima/app/models/lens/analysis.dart';
 import 'package:minima/routers/_route.dart';
@@ -25,6 +25,7 @@ class AnalysisPage extends StatefulWidget {
 }
 
 class _AnalysisPageState extends State<AnalysisPage> {
+  static const backgroundHeight = 300.0;
   dynamic result;
   late Future<void> initialized;
 
@@ -87,8 +88,8 @@ class _AnalysisPageState extends State<AnalysisPage> {
             if (snapshot.connectionState != ConnectionState.done)
               AnalysisAnimationView(
                 image: widget.image,
-                width: double.infinity,
-                height: double.infinity,
+                width: MediaQuery.of(context).size.width,
+                height: backgroundHeight,
               ),
           ],
         );
@@ -98,7 +99,6 @@ class _AnalysisPageState extends State<AnalysisPage> {
 
   @override
   Widget build(BuildContext context) {
-    const backgroundHeight = 300.0;
     return PageWidget(
         onClose: widget.onClose,
         fullScreen: true,

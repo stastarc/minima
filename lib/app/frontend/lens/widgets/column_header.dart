@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
 
 class ColumnHeader extends StatelessWidget {
-  final IconData icon;
+  final dynamic icon;
   final String title;
 
   const ColumnHeader({super.key, required this.icon, required this.title});
@@ -13,7 +14,10 @@ class ColumnHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 30),
+          if (icon is IconData)
+            Icon(icon, size: 30)
+          else
+            Iconify(icon, size: 30),
           const SizedBox(width: 4),
           Text(
             title,

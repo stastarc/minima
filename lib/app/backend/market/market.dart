@@ -12,17 +12,20 @@ class Market {
 
   final int freeDelivery = 50000;
 
-  Future<ProductDetail?> getProductDetail(int productId) async {
-    return await Environ.privateGetResopnse(Environ.marketServer,
-        '/market/products/$productId', (json) => ProductDetail.fromJson(json));
+  Future<ProductDetail> getProductDetail(int productId) async {
+    return (await Environ.privateGetResopnse(
+        Environ.marketServer,
+        '/market/products/$productId',
+        (json) => ProductDetail.fromJson(json)))!;
   }
 
-  Future<List<FeedPart>?> getFeeds() async {
-    return await Environ.privateGetResopnse(
+  Future<List<FeedPart>> getFeeds() async {
+    return (await Environ.privateGetResopnse(
         Environ.marketServer,
         '/market/feed',
-        (json) =>
-            (json as List<dynamic>).map((e) => FeedPart.fromJson(e)).toList());
+        (json) => (json as List<dynamic>)
+            .map((e) => FeedPart.fromJson(e))
+            .toList()))!;
   }
 
   Future<ProductRatings?> getProductRatings(int productId,
@@ -52,17 +55,17 @@ class Market {
         body: {'content': content});
   }
 
-  Future<ProductSearch?> search(String keyword,
+  Future<ProductSearch> search(String keyword,
       {int offset = 0, ProductSearchMode mode = ProductSearchMode.full}) async {
     if (keyword.length < 2) keyword = keyword.padRight(2, ' ');
 
-    return await Environ.privateGetResopnse(Environ.marketServer,
+    return (await Environ.privateGetResopnse(Environ.marketServer,
         '/market/search', (json) => ProductSearch.fromJson(json),
         query: {
           'query': keyword,
           'offset': offset,
           'mode': mode.toString().split('.').last,
-        });
+        }))!;
   }
 
   Future<Recommended?> getRecommended({int id = 1}) async {

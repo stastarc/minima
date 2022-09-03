@@ -6,6 +6,7 @@ const locale = 'ko_KR';
 final _currencyFormat =
     NumberFormat.simpleCurrency(locale: locale, name: "", decimalDigits: 0);
 final _ratingFormat = NumberFormat("###.0", locale);
+final _detaildFormat = NumberFormat("###.00", locale);
 
 final _dateFormat = DateFormat("yyyy.MM.dd", locale);
 final _longDateFormat = DateFormat("yyyy. M. d. (E)", locale);
@@ -20,6 +21,10 @@ String currencyFormat(int price) {
 
 String ratingFormat(num rating) {
   return _ratingFormat.format(rating);
+}
+
+String detaildFormat(num rating) {
+  return _detaildFormat.format(rating);
 }
 
 String dateFormat(DateTime date) {

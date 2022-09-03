@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/backend/market/market.dart';
 import 'package:minima/app/frontend/market/widgets/product/bottom_bar.dart';
 import 'package:minima/app/frontend/market/widgets/product/content.dart';
@@ -13,6 +17,9 @@ import 'package:minima/shared/skeletons/skeleton_box.dart';
 import 'package:minima/shared/widgets/image_list.dart';
 import 'package:minima/shared/widgets/page.dart';
 import 'package:minima/shared/widgets/retry.dart';
+import 'package:markdown/markdown.dart';
+import 'package:markdown/src/ast.dart' as ast;
+import 'package:collection/collection.dart';
 
 import '../../../../shared/error.dart';
 
@@ -33,9 +40,39 @@ class _ProductPageState extends State<ProductPage> {
   dynamic product;
   late Future<void> initailized;
 
+  Iterable<Future<bool>> preloadDoc(Node node) sync* {
+    if (node is ast.Element) {
+      if (node.tag == 'img') {
+        final src = node.attributes['src'];
+        if (src != null) {
+          yield CDN.instance.preloadImage(src, absoluteUrl: true);
+        }
+      }
+      if (node.children != null) {
+        for (var child in node.children!) {
+          yield* preloadDoc(child);
+        }
+      }
+    }
+  }
+
   Future<void> initailize() async {
     try {
       product = await Market.instance.getProductDetail(widget.productId);
+
+      if (product is ProductDetail) {
+        final detail = product as ProductDetail;
+
+        final doc = Document(
+          inlineSyntaxes: <InlineSyntax>[]..add(TaskListSyntax()),
+          extensionSet: ExtensionSet.gitHubFlavored,
+          encodeHtml: false,
+        ).parseLines(const LineSplitter().convert(detail.content)).firstOrNull;
+
+        if (doc != null) {
+          await Future.wait(preloadDoc(doc));
+        }
+      }
     } catch (e) {
       product = BackendError.fromException(e);
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/backend/myplant/myplant.dart';
 import 'package:minima/app/frontend/myplant/widgets/calendar.dart';
 import 'package:minima/app/frontend/myplant/widgets/plant.dart';
@@ -23,6 +24,12 @@ class _MyPlantPageState extends State<MyPlantPage> {
   Future<void> initialize() async {
     try {
       myPlants = await MyPlant.instance.getMyPlants();
+
+      if (myPlants is List<MyPlantData>) {
+        await CDN.instance.preloadImages([
+          for (var plant in myPlants as List<MyPlantData>) plant.image,
+        ]);
+      }
     } catch (e) {
       myPlants = BackendError.fromException(e);
     }

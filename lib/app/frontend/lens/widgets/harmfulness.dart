@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/ph.dart';
 import 'package:minima/app/models/lens/analysis.dart';
 import 'package:minima/shared/widgets/rounded_card.dart';
 
@@ -8,16 +10,16 @@ class HarmfulnessView extends StatelessWidget {
   const HarmfulnessView({super.key, required this.data});
 
   Widget buildHarmfulness(AnalysisPlantHarmfulnessData data) {
-    IconData icon;
+    dynamic icon;
     String name;
 
     switch (data.type) {
       case 'dog':
-        icon = Icons.pets_outlined;
+        icon = Ph.dog;
         name = '강아지';
         break;
       case 'cat':
-        icon = Icons.pets_outlined;
+        icon = Ph.cat;
         name = '고양이';
         break;
       default:
@@ -27,10 +29,16 @@ class HarmfulnessView extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 28,
-        ),
+        if (icon is IconData)
+          Icon(
+            icon,
+            size: 28,
+          )
+        else
+          Iconify(
+            icon,
+            size: 28,
+          ),
         const SizedBox(width: 6),
         RichText(
             text: TextSpan(

@@ -8,6 +8,7 @@ class RCard extends StatelessWidget {
   final Color color;
   final double borderRadius;
   final double? width, height;
+  final bool columnMode;
 
   const RCard({
     super.key,
@@ -19,6 +20,7 @@ class RCard extends StatelessWidget {
     this.borderRadius = 14,
     this.width,
     this.height,
+    this.columnMode = false,
   });
 
   @override
@@ -33,13 +35,27 @@ class RCard extends StatelessWidget {
       ),
       child: suffix == null
           ? child
-          : Row(
-              crossAxisAlignment: crossAxisAlignment,
-              children: [
-                Expanded(child: child),
-                suffix!,
-              ],
-            ),
+          : columnMode
+              ? Column(
+                  crossAxisAlignment: crossAxisAlignment,
+                  children: [
+                    child,
+                    Container(
+                      margin: const EdgeInsets.only(top: 8),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: suffix,
+                      ),
+                    ),
+                  ],
+                )
+              : Row(
+                  crossAxisAlignment: crossAxisAlignment,
+                  children: [
+                    Expanded(child: child),
+                    suffix!,
+                  ],
+                ),
     );
   }
 }

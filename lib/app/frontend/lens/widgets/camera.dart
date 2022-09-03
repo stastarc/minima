@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
 class CameraView extends StatefulWidget {
@@ -35,6 +36,9 @@ class _CameraViewState extends State<CameraView> {
       imageFormatGroup: ImageFormatGroup.jpeg,
     );
     await cameraController!.initialize();
+    await cameraController!
+        .lockCaptureOrientation(DeviceOrientation.portraitUp);
+
     setState(() {
       isLoading = false;
     });

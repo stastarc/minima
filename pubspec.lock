@@ -134,6 +134,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
+  colorful_iconify_flutter:
+    dependency: transitive
+    description:
+      name: colorful_iconify_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   convert:
     dependency: transitive
     description:
@@ -266,12 +273,19 @@ packages:
     source: hosted
     version: "0.7.0"
   flutter_cache_manager:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_cache_manager
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.3.0"
+  flutter_font_icons:
+    dependency: "direct main"
+    description:
+      name: flutter_font_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.5"
   flutter_inappwebview:
     dependency: transitive
     description:
@@ -422,6 +436,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
+  iconify_flutter:
+    dependency: "direct main"
+    description:
+      name: iconify_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   image:
     dependency: "direct main"
     description:
@@ -772,6 +793,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
+  remixicon:
+    dependency: "direct main"
+    description:
+      name: remixicon
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   rxdart:
     dependency: transitive
     description:
@@ -980,34 +1008,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
-  webview_flutter:
-    dependency: "direct main"
-    description:
-      name: webview_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.4"
-  webview_flutter_android:
-    dependency: transitive
-    description:
-      name: webview_flutter_android
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.9.5"
-  webview_flutter_platform_interface:
-    dependency: transitive
-    description:
-      name: webview_flutter_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.9.2"
-  webview_flutter_wkwebview:
-    dependency: transitive
-    description:
-      name: webview_flutter_wkwebview
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.9.3"
   win32:
     dependency: transitive
     description:

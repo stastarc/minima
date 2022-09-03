@@ -91,6 +91,9 @@ class _RecommendedSheetState extends State<RecommendedSheet> {
         recommended = await market.getRecommended(id: current);
         var rec = recommended as Recommended;
         if (rec.content.isNotEmpty) choices.add(rec.content);
+        await CDN.instance.preloadImages([
+          for (var item in rec.items) item.image,
+        ]);
       }
     } catch (e) {
       recommended = BackendError.fromException(e);

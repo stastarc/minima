@@ -1,4 +1,7 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:minima/app/models/lens/analysis.dart';
 import 'package:minima/shared/widgets/rounded_card.dart';
 
@@ -13,23 +16,23 @@ class ManagementView extends StatelessWidget {
 
     switch (data.type) {
       case 'sunshine':
-        icon = Icons.question_mark_rounded;
+        icon = Feather.sun;
         title = '햇빛';
         break;
       case 'moisture':
-        icon = Icons.question_mark_rounded;
+        icon = Icons.water_drop_outlined;
         title = '수분';
         break;
       case 'temperature':
-        icon = Icons.question_mark_rounded;
+        icon = FluentIcons.temperature_24_regular;
         title = '온도';
         break;
       case 'pruning':
-        icon = Icons.question_mark_rounded;
+        icon = FluentIcons.cut_24_filled;
         title = '가지치기';
         break;
       case 'fertilizer':
-        icon = Icons.question_mark_rounded;
+        icon = Icons.medication_outlined;
         title = '영양제';
         break;
       default:
@@ -43,7 +46,7 @@ class ManagementView extends StatelessWidget {
           icon,
           size: 28,
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 10),
         Expanded(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

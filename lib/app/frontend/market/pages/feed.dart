@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/backend/market/market.dart';
 import 'package:minima/app/frontend/market/widgets/feed/recommended.dart';
 import 'package:minima/app/models/market/feed.dart';
@@ -27,6 +28,13 @@ class _FeedPageState extends State<FeedPage> {
   Future<void> initialize() async {
     try {
       feedData = widget.feedParts ?? await Market.instance.getFeeds();
+      if (feedData is List<FeedPart>) {
+        List<FeedPart> feedParts = feedData as List<FeedPart>;
+        await CDN.instance.preloadImages([
+          for (var part in feedParts)
+            for (var product in part.products) product.image,
+        ]);
+      }
     } catch (e) {
       feedData = BackendError.fromException(e);
     }

@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none'
 
-version: 1.0.0+9
+version: 1.0.0+11
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -34,14 +34,17 @@ dependencies:
   image_picker:
   flutter_local_notifications:
   workmanager:
-  webview_flutter:
   image:
   flutter_time_picker_spinner:
   device_info_plus:
   bootstrap_icons:
   fluentui_system_icons:
+  flutter_font_icons:
   google_sign_in:
-  
+  flutter_cache_manager:
+  iconify_flutter:
+  remixicon:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

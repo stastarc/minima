@@ -55,12 +55,14 @@ class _LensPageState extends State<LensPage> {
         return;
       }
 
-      await Navigator.push(
-          context,
-          slideRTL(AnalysisPage(
-            image: await image.readAsBytes(),
-            onClose: resume,
-          )));
+      if (mounted) {
+        await Navigator.push(
+            context,
+            slideRTL(AnalysisPage(
+              image: await image.readAsBytes(),
+              onClose: resume,
+            )));
+      }
     } catch (e) {
       Toast.show('사진을 읽을 수 없어요.\n$e', duration: Toast.lengthLong);
       resume();
@@ -82,12 +84,14 @@ class _LensPageState extends State<LensPage> {
         return;
       }
 
-      await Navigator.push(
-          context,
-          slideRTL(AnalysisPage(
-            image: data,
-            onClose: resume,
-          )));
+      if (mounted) {
+        await Navigator.push(
+            context,
+            slideRTL(AnalysisPage(
+              image: data,
+              onClose: resume,
+            )));
+      }
     } catch (e) {
       resume();
       Toast.show('카메라를 사용할 수 없어요.\n$e', duration: Toast.lengthLong);
