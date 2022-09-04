@@ -29,6 +29,7 @@ class MessageDialog extends StatelessWidget {
   final String title, message;
   final TextAlign textAlign;
   final List<MessageDialogButton> buttons;
+  final Widget? body;
 
   const MessageDialog({
     super.key,
@@ -36,6 +37,7 @@ class MessageDialog extends StatelessWidget {
     required this.message,
     required this.buttons,
     this.textAlign = TextAlign.left,
+    this.body,
   });
 
   @override
@@ -54,7 +56,7 @@ class MessageDialog extends StatelessWidget {
       ),
       contentPadding: EdgeInsets.fromLTRB(18, 12, 18, buttons.isEmpty ? 12 : 0),
       buttonPadding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
-      content: Text(message, textAlign: textAlign),
+      content: body ?? Text(message, textAlign: textAlign),
       actions: [
         for (final button in buttons)
           TextButton(
@@ -78,6 +80,7 @@ void showMessageDialog(
   required String message,
   required List<MessageDialogButton> buttons,
   TextAlign textAlign = TextAlign.left,
+  Widget? body,
 }) {
   showDialog(
       context: context,
@@ -86,5 +89,6 @@ void showMessageDialog(
             message: message,
             buttons: buttons,
             textAlign: textAlign,
+            body: body,
           ));
 }

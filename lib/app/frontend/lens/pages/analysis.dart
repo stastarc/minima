@@ -1,24 +1,18 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:minima/app/backend/lens/lens.dart';
 import 'package:minima/app/frontend/lens/widgets/analysis/analysis.dart';
 import 'package:minima/app/frontend/lens/widgets/result_view.dart';
-import 'package:minima/app/models/lens/analysis.dart';
-import 'package:minima/routers/_route.dart';
 import 'package:minima/shared/error.dart';
-import 'package:minima/shared/skeletons/skeleton.dart';
-import 'package:minima/shared/skeletons/skeleton_box.dart';
 import 'package:minima/shared/widgets/page.dart';
 import 'package:minima/shared/widgets/retry.dart';
 
 class AnalysisPage extends StatefulWidget {
   // final File image;
   final Uint8List image;
-  final VoidCallback? onClose;
 
-  const AnalysisPage({super.key, required this.image, this.onClose});
+  const AnalysisPage({super.key, required this.image});
 
   @override
   State createState() => _AnalysisPageState();
@@ -27,16 +21,20 @@ class AnalysisPage extends StatefulWidget {
 class _AnalysisPageState extends State<AnalysisPage> {
   static const backgroundHeight = 300.0;
   dynamic result;
+  bool fadeout = false;
   late Future<void> initialized;
 
   Future<void> initialize() async {
     try {
       result = await Lens.instance.analysis(widget.image);
+      fadeout = true;
+      if (mounted) setState(() {});
+      await Future.delayed(const Duration(milliseconds: 1010));
     } catch (e) {
       result = BackendError.fromException(e);
     }
-    if (!mounted) return;
-    setState(() {});
+    fadeout = false;
+    if (mounted) setState(() {});
   }
 
   void retry() {
@@ -66,7 +64,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
           return AnalysisResultView(result: result);
         }
 
-        return const Skeleton(child: AnalysisResultViewSkeleton());
+        return const AnalysisResultViewSkeleton();
       },
     );
   }
@@ -100,7 +98,6 @@ class _AnalysisPageState extends State<AnalysisPage> {
   @override
   Widget build(BuildContext context) {
     return PageWidget(
-        onClose: widget.onClose,
         fullScreen: true,
         titleColor: Colors.grey[200]!,
         child: SizedBox(
@@ -117,6 +114,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                   left: 0,
                   right: 0,
                   child: ListView(
+                    physics: const ClampingScrollPhysics(),
                     children: [
                       const SizedBox(height: backgroundHeight - (20 * 2) - 4),
                       Container(
@@ -125,7 +123,12 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: buildBody(),
+                        child: AnimatedOpacity(
+                          opacity: fadeout ? 0 : 1,
+                          duration: const Duration(milliseconds: 500),
+                          alwaysIncludeSemantics: true,
+                          child: buildBody(),
+                        ),
                       )
                     ],
                   ))

@@ -17,16 +17,18 @@ class MyPlant {
   static MyPlant? _instance;
   static MyPlant get instance => _instance ??= MyPlant();
 
-  // List<MyPlantData>? _myPlants;
+  List<MyPlantData>? _myPlants;
+  DateTime? cachedAt;
 
-  // Future<List<MyPlantData>> getCachedMyPlants() async {
-  //   var myPlants = (_myPlants ??= await getMyPlants(includeSchedule: true))!;
-  //   if (myPlants.isNotEmpty) {
-  //     if (DateTime.now().difference(myPlants.first.schedule!.today) >
-  //         const Duration(days: 1)) {
-  //       _myPlants = await getMyPlants(includeSchedule: true);
-  //     }
-  //   }
-  //   return myPlants;
-  // }
+  Future<List<MyPlantData>> getCachedMyPlants(
+      {bool includeSchedule = true}) async {
+    if (_myPlants == null ||
+        cachedAt == null ||
+        cachedAt!.isBefore(DateTime.now().subtract(const Duration(hours: 1)))) {
+      _myPlants = await getMyPlants(includeSchedule: includeSchedule);
+      cachedAt = DateTime.now();
+    }
+
+    return _myPlants!;
+  }
 }

@@ -32,10 +32,10 @@ class Lens {
     return res;
   }
 
-  Future<AnalysisCreditData?> getCredit() async {
-    var res = await Environ.privateGetResopnse(Environ.lensServer,
-        '/billing/credits/', (json) => AnalysisCreditData.fromJson(json));
-    if (res != null) _credit = res;
+  Future<AnalysisCreditData> getCredit() async {
+    var res = (await Environ.privateGetResopnse(Environ.lensServer,
+        '/billing/credits/', (json) => AnalysisCreditData.fromJson(json)))!;
+    _credit = res;
     return res;
   }
 

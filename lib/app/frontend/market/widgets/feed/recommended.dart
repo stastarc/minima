@@ -35,7 +35,7 @@ class RecommendedView extends StatelessWidget {
           children: [
             Text(comment,
                 style: const TextStyle(
-                    fontSize: 23,
+                    fontSize: 19,
                     fontWeight: FontWeight.bold,
                     color: Colors.black)),
             const SizedBox(height: 8),
@@ -46,7 +46,7 @@ class RecommendedView extends StatelessWidget {
                       child: const RecommendedSheet(),
                       padding: const EdgeInsets.fromLTRB(0, 12, 0, 24));
                 },
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: const Text(
                   '식물 추천받기',
                   textAlign: TextAlign.center,

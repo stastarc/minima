@@ -56,6 +56,7 @@ class _MyPlantItemPageState extends State<MyPlantItemPage> {
 
   Widget buildBody() {
     return ListView(
+      physics: const ClampingScrollPhysics(),
       controller: scroll ??= InfinityScrollController(
           onArrived: onArrived,
           onArrivedAt: onArrivedAt,
@@ -65,12 +66,12 @@ class _MyPlantItemPageState extends State<MyPlantItemPage> {
           ],
           proximityPixel: MediaQuery.of(context).size.height * 2),
       children: [
-        const SizedBox(height: 250 - 12 * 2),
+        const SizedBox(height: 250 - 20 * 2 - 4),
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Column(children: [
             const SizedBox(height: 26),
@@ -115,7 +116,7 @@ class _MyPlantItemPageState extends State<MyPlantItemPage> {
             child: Stack(children: [
               SizedBox(
                 width: double.infinity,
-                height: 250,
+                height: 260,
                 child: CDN.image(id: widget.myPlant.image, fit: BoxFit.cover),
               ),
               Positioned(

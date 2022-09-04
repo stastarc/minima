@@ -10,10 +10,8 @@ import 'package:minima/shared/error.dart';
 import 'package:minima/shared/skeletons/skeleton.dart';
 import 'package:minima/shared/skeletons/skeleton_box.dart';
 import 'package:minima/shared/skeletons/skeleton_text.dart';
-import 'package:minima/shared/widgets/bottom_sheet.dart';
 import 'package:minima/shared/widgets/button.dart';
 import 'package:minima/shared/widgets/datepicker.dart';
-import 'package:minima/shared/widgets/dialog.dart';
 import 'package:minima/shared/widgets/future_wait.dart';
 import 'package:minima/shared/widgets/image_list.dart';
 import 'package:minima/shared/widgets/open_image.dart';
@@ -232,6 +230,7 @@ class _DiaryEditPageState extends State<DiaryEditPage> {
             child: Column(children: [
               Expanded(
                   child: ListView(
+                physics: const ClampingScrollPhysics(),
                 children: [
                   DatePickerField(
                       title: null,

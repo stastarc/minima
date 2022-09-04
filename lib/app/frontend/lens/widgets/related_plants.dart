@@ -28,8 +28,7 @@ class RelatedPlantsView extends StatelessWidget {
               for (var plant in plants) ...[
                 Column(
                   children: [
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                    ClipOval(
                         child: CDN.image(
                             id: plant.image,
                             fit: BoxFit.cover,
@@ -42,8 +41,8 @@ class RelatedPlantsView extends StatelessWidget {
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
                           color: Color(0xFF1A1A1A)),
                     ),
                   ],

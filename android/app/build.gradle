@@ -52,7 +52,7 @@ android {
         applicationId "com.minima.minima"
         // 카메라 21
         // workmanager 23
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

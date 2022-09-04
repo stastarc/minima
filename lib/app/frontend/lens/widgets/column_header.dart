@@ -15,16 +15,16 @@ class ColumnHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (icon is IconData)
-            Icon(icon, size: 30)
+            Icon(icon, size: 28)
           else
-            Iconify(icon, size: 30),
+            Iconify(icon, size: 28),
           const SizedBox(width: 4),
           Text(
             title,
             style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 18,
+              fontSize: 17,
             ),
           ),
         ],

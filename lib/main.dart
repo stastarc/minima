@@ -28,7 +28,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-      overlays: [SystemUiOverlay.bottom]);
+      overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
   SystemChrome.setPreferredOrientations(
     [
       DeviceOrientation.portraitUp,
@@ -56,6 +56,7 @@ Future<void> main() async {
 
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           brightness: Brightness.light,
           primaryColor: const Color(0xFF54CF8A),

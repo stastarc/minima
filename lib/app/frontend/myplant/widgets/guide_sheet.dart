@@ -12,7 +12,6 @@ import 'package:minima/shared/widgets/button.dart';
 import 'package:minima/shared/widgets/future_builder_widget.dart';
 import 'package:minima/shared/widgets/future_wait.dart';
 import 'package:toast/toast.dart';
-import 'package:tuple/tuple.dart';
 
 class GuideSheet extends StatefulWidget {
   final MyPlantData plant;
@@ -52,8 +51,12 @@ class _GuideSheetState extends State<GuideSheet> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilderWidget<GuideData>(
-      futureBuilder: () async =>
-          (await MyPlant.instance.getGuide(widget.todo.name, widget.plant.id))!,
+      futureBuilder: () async {
+        final guide = (await MyPlant.instance
+            .getGuide(widget.todo.name, widget.plant.id))!;
+        await CDN.instance.preloadImage(guide.image);
+        return guide;
+      },
       completedBuilder: (guide) => Column(
         children: [
           Stack(
@@ -66,7 +69,10 @@ class _GuideSheetState extends State<GuideSheet> {
                     padding: const EdgeInsets.fromLTRB(32, 22, 32, 0),
                     width: double.infinity,
                     height: 220,
-                    child: CDN.image(id: guide.image, fit: BoxFit.cover),
+                    child: CDN.image(
+                        id: guide.image,
+                        fit: BoxFit.cover,
+                        placeholderColor: Colors.white),
                   ),
                   const ColumnHeader(
                     title: '튜토리얼',

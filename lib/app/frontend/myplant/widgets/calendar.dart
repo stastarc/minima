@@ -64,7 +64,7 @@ class _WidthCalendarState extends State<WidthCalendar> {
                     monthDateFormat(offsetDate),
                     style: const TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                         color: Color(0xFF3D3D3D),
                         decoration: TextDecoration.none),
                   ),

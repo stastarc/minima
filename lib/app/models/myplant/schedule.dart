@@ -15,9 +15,9 @@ class ScheduleInitData {
 class ScheduleToDoItme {
   static final Map<String, String> localizedNames = {
     'water': '물주기',
-    'fertilize': '영양제',
-    'prune': '가지치기',
-    'harvest': '수확',
+    'fertilize': '영양제 주기',
+    'prune': '가지치기 하기',
+    'harvest': '수확하기',
   };
 
   final String name;

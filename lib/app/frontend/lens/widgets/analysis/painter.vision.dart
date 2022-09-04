@@ -3,7 +3,7 @@ part of 'painter.dart';
 extension AnalysisPainterVision on AnalysisPainter {
   static const positionChunkSize = 92,
       viewChunkSize = 128,
-      minLightness = 100,
+      minLightness = 80,
       minDifference = 10;
   static const int R = 0, G = 1, B = 2, A = 3;
 

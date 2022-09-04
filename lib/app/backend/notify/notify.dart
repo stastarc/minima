@@ -37,7 +37,7 @@ class Notify {
 
   Future<void> _init() async {
     const settings = InitializationSettings(
-        android: AndroidInitializationSettings('mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('drawable/notify_icon'),
         iOS: IOSInitializationSettings(
             requestAlertPermission: false,
             requestBadgePermission: false,
@@ -83,17 +83,19 @@ class Notify {
     final now = DateTime.now();
     var cache = await get();
 
-    final diff =
-        cache.lastNotify != null ? now.difference(cache.lastNotify!) : null;
-    if (diff?.inDays == 0) return;
-    final settings = await get();
-    if (!settings.enabled || now.hour < settings.time.inHours) return;
+    if (!kDebugMode) {
+      final diff =
+          cache.lastNotify != null ? now.difference(cache.lastNotify!) : null;
+      if (diff?.inDays == 0) return;
+      final settings = await get();
+      if (!settings.enabled || now.hour < settings.time.inHours) return;
 
-    try {
-      if (!await Auth.instance.verifyToken()) return;
-    } catch (e) {
-      if (kDebugMode) print(e);
-      return;
+      try {
+        if (!await Auth.instance.verifyToken()) return;
+      } catch (e) {
+        if (kDebugMode) print(e);
+        return;
+      }
     }
 
     try {

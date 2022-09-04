@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:minima/app/backend/cdn/cdn.dart';
 import 'package:minima/app/backend/myplant/myplant.dart';
 import 'package:minima/app/frontend/myplant/pages/myplant.dart';
 import 'package:minima/app/frontend/myplant/pages/myplant_edit.dart';
 import 'package:minima/app/models/myplant/plant.dart';
+import 'package:minima/app/models/myplant/schedule.dart';
 import 'package:minima/routers/_route.dart';
+import 'package:minima/shared/number_format.dart';
 import 'package:minima/shared/skeletons/skeleton_box.dart';
 import 'package:minima/shared/skeletons/skeleton_text.dart';
 import 'package:minima/shared/widgets/bottom_sheet.dart';
@@ -39,34 +40,30 @@ class _MyPlantViewState extends State<MyPlantView> {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.spaceEvenly,
-      spacing: 4,
-      runSpacing: 16,
+    return Column(
       children: [
         for (final myPlant in widget.myPlants)
           MyPlantItem(
             myPlant: myPlant,
             onRefresh: widget.onRefresh,
           ),
-        ClipButton(
-          width: 160,
-          height: 160,
-          onPressed: onAdd,
-          child: Container(
-            color: const Color(0x14000000),
-            child: const Icon(
-              Icons.add,
-              size: 32,
-              color: Colors.white,
+        MyPlantItem.buildItem(
+            Container(
+              width: 80,
+              height: 80,
+              color: const Color(0x1F000000),
+              child: const Center(
+                  child: Icon(
+                Icons.add,
+                size: 32,
+                color: Colors.white,
+              )),
             ),
-          ),
-        ),
-        if (widget.myPlants.length % 2 == 0)
-          const SizedBox(
-            width: 160,
-            height: 160,
-          ),
+            '새 식물 추가하기',
+            '새로운 식물을 추가해보아요.',
+            null,
+            onAdd,
+            null)
       ],
     );
   }
@@ -81,6 +78,10 @@ class MyPlantItem extends StatelessWidget {
     required this.myPlant,
     required this.onRefresh,
   });
+
+  String getString(ScheduleToDoItme todo) {
+    return '${deliveryDateFormat(todo.last)} ${todo.localizedName}를 완료했어요.';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,29 +98,72 @@ class MyPlantItem extends StatelessWidget {
           )));
     }
 
-    return Column(children: [
-      ClipButton(
-        width: 160,
-        height: 160,
-        onPressed: onPressed,
-        overlay: Align(
-            alignment: Alignment.topRight,
-            child: PrimaryButton(
-                width: 0,
-                onPressed: onMenu,
-                padding: EdgeInsets.zero,
-                decoration: const BoxDecoration(shape: BoxShape.circle),
-                child: const Icon(Icons.more_vert,
-                    color: Colors.white, size: 22))),
-        child: CDN.image(id: myPlant.image, fit: BoxFit.cover),
-      ),
-      const SizedBox(height: 3),
-      Text(
+    return buildItem(
+        CDN.image(
+            id: myPlant.image, width: 100, height: 100, fit: BoxFit.cover),
         myPlant.name,
-        style: const TextStyle(
-            fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
+        myPlant.plantName,
+        getString(myPlant.schedule!.items
+            .reduce((a, b) => a.last.isAfter(b.last) ? a : b)),
+        onPressed,
+        onMenu);
+  }
+
+  static Widget buildItem(Widget icon, String name, String? type, String? more,
+      VoidCallback onPressed, VoidCallback? onMore) {
+    return InkWell(
+      onTap: onPressed,
+      child: Ink(
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Row(
+          children: [
+            ClipOval(
+              child: icon,
+            ),
+            const SizedBox(width: 18),
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                      fontSize: 17,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600),
+                ),
+                if (type != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    type,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ],
+                if (more != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    more,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ]
+              ],
+            )),
+            if (onMore != null)
+              GestureDetector(
+                  onTap: onMore,
+                  child: const Icon(Icons.more_vert,
+                      color: Colors.black87, size: 22))
+          ],
+        ),
       ),
-    ]);
+    );
   }
 }
 
@@ -134,19 +178,34 @@ class MyPlantViewSkeleton extends StatelessWidget {
       runSpacing: 12,
       children: [
         for (var i = 0; i < 4; i++)
-          Column(children: const [
-            SkeletonBox(
-              width: 160,
-              height: 160,
+          Ink(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Row(
+              children: [
+                const SkeletonBox(
+                  width: 100,
+                  height: 100,
+                  shape: BoxShape.circle,
+                ),
+                const SizedBox(width: 18),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    SkeletonText(
+                      wordLengths: [12],
+                      fontSize: 17,
+                    ),
+                    SizedBox(height: 4),
+                    SkeletonText(
+                      wordLengths: [8],
+                      fontSize: 14,
+                    ),
+                  ],
+                )),
+              ],
             ),
-            SizedBox(height: 8),
-            SizedBox(
-                width: 92,
-                child: SkeletonText(
-                  wordLengths: [8],
-                  wordWidth: 15,
-                ))
-          ])
+          )
       ],
     );
   }

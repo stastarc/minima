@@ -23,12 +23,12 @@ class _MyPlantPageState extends State<MyPlantPage> {
 
   Future<void> initialize() async {
     try {
-      myPlants = await MyPlant.instance.getMyPlants();
+      myPlants = await MyPlant.instance.getCachedMyPlants();
 
       if (myPlants is List<MyPlantData>) {
-        await CDN.instance.preloadImages([
-          for (var plant in myPlants as List<MyPlantData>) plant.image,
-        ]);
+        // await CDN.instance.preloadImages([
+        //   for (var plant in myPlants as List<MyPlantData>) plant.image,
+        // ]);
       }
     } catch (e) {
       myPlants = BackendError.fromException(e);

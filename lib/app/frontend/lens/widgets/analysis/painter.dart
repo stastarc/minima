@@ -23,6 +23,7 @@ class AnalysisPainter extends CustomPainter {
 
   int frame = 0, fps = 0, frameElapsedTime = 0;
   Animation<double> animation;
+  im.Image image;
   ui.Image? viewImage;
   VisionZone? vision;
   Dots? dots;
@@ -32,9 +33,12 @@ class AnalysisPainter extends CustomPainter {
       {required this.animation,
       required this.width,
       required this.height,
-      required image})
+      required this.image})
       : super(repaint: animation) {
     scale = width * height / (720 * 360);
+  }
+
+  void build() {
     _buildVision(image, Size(width, height));
   }
 

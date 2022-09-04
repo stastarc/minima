@@ -78,7 +78,7 @@ class CDN {
   }
 
   static Widget image({
-    Color placeholderColor = const Color.fromARGB(255, 192, 195, 210),
+    Color placeholderColor = const Color(0x12000000),
     double placeholderSize = 100,
     String errorComment = '이미지 준비중',
     BoxFit? fit,
@@ -101,12 +101,15 @@ class CDN {
         cacheManager: instance.cache,
         fadeInDuration: const Duration(milliseconds: 100),
         fadeInCurve: Curves.linear,
-        placeholder: (_, __) => Center(
-              child: Loading(
-                color: placeholderColor,
-                size: 52 * (placeholderSize / 100),
-              ),
+        placeholder: (_, __) => Container(
+              color: placeholderColor,
             ),
+        // Center(
+        //       child: Loading(
+        //         color: placeholderColor,
+        //         size: 52 * (placeholderSize / 100),
+        //       ),
+        //     ),
         errorWidget: (_, __, ___) => _buildError(
             errorComment: errorComment, placeholderSize: placeholderSize));
   }

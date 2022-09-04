@@ -32,7 +32,7 @@ class DiseaseCard extends StatelessWidget {
         style: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.w500,
-          fontSize: 14,
+          fontSize: 13,
         ),
       ),
       const SizedBox(height: 4),
@@ -65,9 +65,10 @@ class DiseaseCard extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        const SizedBox(height: 4),
         Text(
           disease!.content,
-          style: const TextStyle(fontSize: 14, color: Color(0xFF3D3D3D)),
+          style: const TextStyle(fontSize: 13, color: Color(0xFF3D3D3D)),
         ),
         Align(
             alignment: Alignment.topRight,
@@ -82,7 +83,7 @@ class DiseaseCard extends StatelessWidget {
                   ),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
-                    size: 17,
+                    size: 15,
                   )
                 ],
               ),

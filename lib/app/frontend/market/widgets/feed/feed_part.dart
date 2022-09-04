@@ -55,7 +55,7 @@ class _FeedPartViewState extends State<FeedPartView> {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
               child: Text(widget.title,
                   style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold))),
+                      fontSize: 19, fontWeight: FontWeight.bold))),
           ProductRow(products: widget.products, onPressed: onProductPressed),
         ]);
   }

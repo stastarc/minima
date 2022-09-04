@@ -24,6 +24,7 @@ class _AnalysisAnimationViewState extends State<AnalysisAnimationView>
   bool isLoading = true;
   late Animation<double> animation;
   late AnimationController controller;
+  late AnalysisPainter painter;
 
   @override
   void initState() {
@@ -34,9 +35,21 @@ class _AnalysisAnimationViewState extends State<AnalysisAnimationView>
       duration: const Duration(milliseconds: 1500),
     );
 
-    animation = controller.drive(CurveTween(curve: Curves.easeOut));
+    animation = controller.drive(Tween<double>(begin: 0, end: 1));
+    // animation = controller.drive(CurveTween(curve: Curves.easeOut));
 
+    painter = AnalysisPainter(
+        width: widget.width,
+        height: widget.height,
+        image: im.decodeImage(widget.image)!,
+        animation: animation);
     controller.repeat();
+
+    _load();
+  }
+
+  Future<void> _load() async {
+    painter.build();
   }
 
   @override
@@ -45,11 +58,7 @@ class _AnalysisAnimationViewState extends State<AnalysisAnimationView>
       width: widget.width,
       height: widget.height,
       child: CustomPaint(
-        painter: AnalysisPainter(
-            width: widget.width,
-            height: widget.height,
-            image: im.decodeImage(widget.image)!,
-            animation: animation),
+        painter: painter,
       ),
     );
   }

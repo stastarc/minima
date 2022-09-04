@@ -6,10 +6,22 @@ import 'package:minima/app/frontend/myplant/main.dart';
 import 'package:minima/app/frontend/market/main.dart';
 
 class MainPage extends StatefulWidget {
+  static _MainPageState? _state;
+  static const int MyPlantPage = 0, MarketPage = 2, LensPage = 1, MyPage = 3;
+
   const MainPage({super.key});
 
   @override
   State createState() => _MainPageState();
+
+  static bool tabMoveTo(int index) {
+    if (_state == null) {
+      return false;
+    }
+
+    _state!.tabController.index = index;
+    return true;
+  }
 }
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
@@ -18,6 +30,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    MainPage._state = this;
     tabController = TabController(vsync: this, length: 4);
     tabController.addListener(_handleTabSelection);
   }

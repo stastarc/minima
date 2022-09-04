@@ -49,7 +49,7 @@ class ProductItem extends StatelessWidget {
                 width: width,
                 child: image,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Container(
                 width: width,
                 alignment: Alignment.centerLeft,
@@ -58,7 +58,7 @@ class ProductItem extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF1A1A1A)),
                 ),

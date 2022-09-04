@@ -79,7 +79,7 @@ class ImageListView extends StatelessWidget {
     required this.images,
     this.width,
     this.height,
-    this.placeholderColor = const Color.fromARGB(255, 192, 195, 210),
+    this.placeholderColor = const Color(0x12000000),
     this.placeholderSize = 100,
     this.errorComment = '이미지 준비중',
     this.fit = BoxFit.cover,
