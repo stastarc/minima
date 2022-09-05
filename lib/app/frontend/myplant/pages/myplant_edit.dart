@@ -44,8 +44,8 @@ class _MyPlantEditPageState extends State<MyPlantEditPage> {
       return;
     }
 
-    if (name.length < 2) {
-      Toast.show('별명은 2글자 이상이어야 합니다.');
+    if (name.isEmpty) {
+      Toast.show('별명은 1글자 이상이어야 합니다.');
       return;
     }
 

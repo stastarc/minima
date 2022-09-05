@@ -42,7 +42,8 @@ class _MyPlantPageState extends State<MyPlantPage> {
     });
   }
 
-  void onRefresh() {
+  void refresh() {
+    MyPlant.instance.clearCache();
     retry();
   }
 
@@ -64,7 +65,7 @@ class _MyPlantPageState extends State<MyPlantPage> {
               return RetryButton(
                 text: '피드를 가져올 수 없습니다.',
                 error: myPlants ?? BackendError.unknown(),
-                onPressed: retry,
+                onPressed: refresh,
               );
             } else {
               final myPlants = this.myPlants as List<MyPlantData>;
@@ -81,11 +82,11 @@ class _MyPlantPageState extends State<MyPlantPage> {
                               color: Colors.black))),
                   WidthCalendar(myPlants: myPlants),
                   const SizedBox(height: 14),
-                  ToDoView(myPlants: myPlants, onRefresh: onRefresh),
+                  ToDoView(myPlants: myPlants, onRefresh: refresh),
                   const SizedBox(height: 14),
                   MyPlantView(
                     myPlants: myPlants,
-                    onRefresh: retry,
+                    onRefresh: refresh,
                   )
                 ],
               );

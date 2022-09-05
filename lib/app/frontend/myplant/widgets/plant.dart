@@ -80,7 +80,7 @@ class MyPlantItem extends StatelessWidget {
   });
 
   String getString(ScheduleToDoItme todo) {
-    return '${deliveryDateFormat(todo.last)} ${todo.localizedName}를 완료했어요.';
+    return '${deliveryDateFormat(todo.next)}에 ${todo.localizedName}가 있어요.';
   }
 
   @override

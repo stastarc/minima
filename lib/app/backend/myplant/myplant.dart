@@ -31,4 +31,9 @@ class MyPlant {
 
     return _myPlants!;
   }
+
+  void clearCache() {
+    _myPlants = null;
+    cachedAt = null;
+  }
 }

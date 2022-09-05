@@ -28,7 +28,7 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-      overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+      overlays: [SystemUiOverlay.bottom]);
   SystemChrome.setPreferredOrientations(
     [
       DeviceOrientation.portraitUp,

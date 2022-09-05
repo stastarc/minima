@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none'
 
-version: 1.0.0+16
+version: 1.0.0+18
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -57,6 +57,7 @@ flutter:
 
   assets:
     - assets/
+    - assets/html/
     - assets/images/
     - assets/images/dummy/
     - assets/images/icons/
@@ -76,9 +77,9 @@ flutter:
           weight: 500
         - asset: assets/fonts/SpoqaHanSansNeo/bold.otf
           weight: 700
-    - family: SegoeUIEmoji
+    - family: TwitterColorEmoji
       fonts:
-        - asset: assets/fonts/SegoeUIEmoji/default.ttf
+        - asset: assets/fonts/TwitterColorEmoji/default.ttf
 
 flutter_icons:
   ios: true
